@@ -1,0 +1,30 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Shoalace.Domain.Entities;
+using Shoalace.Domain.Enums;
+using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Queries;
+using Shoalace.Infra.Contexto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Shoalace.Infra.Repositories
+{
+    public class EventoRepository : BaseRepository<Evento>, IEventoRepository
+    {
+        public EventoRepository(ShoalaceContexto ShoalaceContexto) : base(ShoalaceContexto) { }
+
+        public new async Task<Evento> ObterPorId(long id) =>
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterPorId(id)).FirstOrDefaultAsync();
+
+        public async Task<List<Evento>> ObterTodosPorUsuario(long usuarioId) =>
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosPorUsuario(usuarioId)).ToListAsync();
+
+        public async Task<List<Evento>> ObterTodosPorData(DateTime data) =>
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosPorData(data)).ToListAsync();
+
+        public async Task<List<Evento>> ObterPorCategoriaECidade(ECategoria categoria, string cidade) =>
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterPorCategoriaECidade(categoria, cidade)).ToListAsync();
+    }
+}

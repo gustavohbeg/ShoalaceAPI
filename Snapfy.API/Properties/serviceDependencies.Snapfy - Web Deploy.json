@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/SnapfyAPIapi/apis/SnapfyAPI",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/snapfy/databases/Snapfy",
+      "type": "mssql.azure",
+      "connectionId": "SqlServerConnection",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}
