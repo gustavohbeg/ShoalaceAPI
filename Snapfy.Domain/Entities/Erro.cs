@@ -10,7 +10,8 @@ namespace Shoalace.Domain.Entities
             DataHora = dataHora;
             Parametros = parametros;
             Message = message;
-            StackTrace = stackTrace;
+              StackTrace = stackTrace;
+
         }
 
         public int Id { get; private set; }
