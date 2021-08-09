@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace Shoalace.Domain.Entities
 {
     public class Acesso : Base
@@ -15,4 +16,5 @@ namespace Shoalace.Domain.Entities
         
         public bool Checar(string codigo) => Codigo == codigo;
     }
+
 }
