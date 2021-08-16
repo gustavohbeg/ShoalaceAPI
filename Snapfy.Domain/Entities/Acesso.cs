@@ -8,12 +8,12 @@ namespace Shoalace.Domain.Entities
         public Acesso(long usuarioId) : base()
         {
             UsuarioId = usuarioId;
-            Codigo = new Random().ToString();
+            Codigo = "1234";
         }
 
         public long UsuarioId { get; private set; }
         public string Codigo { get; private set; }
-        
+
         public bool Checar(string codigo) => Codigo == codigo;
     }
 
