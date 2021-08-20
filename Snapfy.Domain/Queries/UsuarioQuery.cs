@@ -9,7 +9,7 @@ namespace Shoalace.Domain.Queries
         public static Expression<Func<Usuario, bool>> ObterPorNumero(long numero) =>
             u => u.Numero == numero;
 
-        public static Expression<Func<Usuario, bool>> ObterContatos(long numero) =>
-            u => u.Numero != numero;
+        public static Expression<Func<Usuario, bool>> ObterContatos(long id) =>
+            u => u.Id != id;
     }
 }

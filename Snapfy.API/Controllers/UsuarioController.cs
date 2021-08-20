@@ -34,13 +34,13 @@ namespace Shoalace.API.Controllers
         /// <summary>
         /// Pegar todos os contatos
         /// </summary>
-        /// <param name="numero">Id do usuario</param>
+        /// <param name="id">Id do usuario</param>
         /// <returns>Retorna todos os contatos</returns>
-        [HttpGet("contatos/{id:int}")]
-        public async Task<IActionResult> ObterContatos(long numero) =>
+        [HttpGet("contatos/{id:long}")]
+        public async Task<IActionResult> ObterContatos(long id) =>
             RetornoController(
                 new ResultadoCommand(
-                    await _usuarioRepository.ObterContatos(numero)
+                    await _usuarioRepository.ObterContatos(id)
                 )
             );
 

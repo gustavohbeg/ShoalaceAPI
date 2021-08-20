@@ -7,6 +7,6 @@ namespace Shoalace.Domain.Interfaces.Repositories
     public interface IUsuarioRepository : IBaseRepository<Usuario>
     {
         Task<Usuario> ObterPorNumero(long numero);
-        Task<List<Usuario>> ObterContatos(long numero);
+        Task<List<Usuario>> ObterContatos(long id);
     }
 }
