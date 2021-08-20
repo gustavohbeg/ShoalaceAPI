@@ -13,7 +13,10 @@ namespace Shoalace.Infra.Repositories
     {
         public UsuarioRepository(ShoalaceContexto ShoalaceContexto) : base(ShoalaceContexto) { }
 
-        public async Task<List<Usuario>> ObterContatos(long id) =>
-        await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterContatos(id)).ToListAsync();
+        public async Task<Usuario> ObterPorNumero(long numero) =>
+            await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterPorNumero(numero)).FirstOrDefaultAsync();
+
+        public async Task<List<Usuario>> ObterContatos(long numero) =>
+            await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterContatos(numero)).ToListAsync();
     }
 }

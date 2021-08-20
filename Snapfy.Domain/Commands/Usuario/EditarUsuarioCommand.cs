@@ -7,6 +7,7 @@ namespace Shoalace.Domain.Commands.Usuario
     public class EditarUsuarioCommand : Command
     {
         public long Id { get; set; }
+        public long Numero { get; set; }
         public DateTime Aniversario { get; set; }
         public ESexo Sexo { get; set; }
         public byte Foto { get; set; }

@@ -27,7 +27,7 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            Usuario usuario = new(comando.Aniversario, comando.Sexo, comando.Foto, comando.Nome, comando.Bio, comando.Visto, comando.Latitude, comando.Longitude, comando.Token);
+            Usuario usuario = new(comando.Numero, comando.Aniversario, comando.Sexo, comando.Foto, comando.Nome, comando.Bio, comando.Visto, comando.Latitude, comando.Longitude, comando.Token);
 
             if (retorno.Valid)
             {
@@ -58,7 +58,7 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            usuario.PreencherUsuario(comando.Aniversario, comando.Sexo, comando.Foto, comando.Nome, comando.Bio, comando.Visto, comando.Latitude, comando.Longitude, comando.Token);
+            usuario.PreencherUsuario(comando.Numero, comando.Aniversario, comando.Sexo, comando.Foto, comando.Nome, comando.Bio, comando.Visto, comando.Latitude, comando.Longitude, comando.Token);
 
             if (retorno.Valid)
             {

@@ -331,6 +331,9 @@ namespace Shoalace.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("Numero")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Sexo")
                         .HasColumnType("int");
 
@@ -348,7 +351,7 @@ namespace Shoalace.Infra.Migrations
             modelBuilder.Entity("Shoalace.Domain.Entities.Evento", b =>
                 {
                     b.HasOne("Shoalace.Domain.Entities.Grupo", "Grupo")
-                        .WithMany()
+                        .WithMany("Eventos")
                         .HasForeignKey("GrupoId");
 
                     b.Navigation("Grupo");
@@ -453,6 +456,8 @@ namespace Shoalace.Infra.Migrations
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Grupo", b =>
                 {
+                    b.Navigation("Eventos");
+
                     b.Navigation("Membros");
                 });
 
