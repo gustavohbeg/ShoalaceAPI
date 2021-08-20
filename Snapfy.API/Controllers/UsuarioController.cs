@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Usuario;
+using Shoalace.Domain.Entities;
 using Shoalace.Domain.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Responses;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Shoalace.API.Controllers
 {
@@ -12,10 +16,14 @@ namespace Shoalace.API.Controllers
     public class UsuarioController : BaseController
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IGrupoRepository _grupoRepository;
+        private readonly IMensagemRepository _mensagemRepository;
         private readonly UsuarioHandler _usuarioHandler;
-        public UsuarioController(IUsuarioRepository usuarioRepository, UsuarioHandler usuarioHandler)
+        public UsuarioController(IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, UsuarioHandler usuarioHandler)
         {
             _usuarioRepository = usuarioRepository;
+            _grupoRepository = grupoRepository;
+            _mensagemRepository = mensagemRepository;
             _usuarioHandler = usuarioHandler;
         }
 
@@ -43,6 +51,67 @@ namespace Shoalace.API.Controllers
                     await _usuarioRepository.ObterContatos(id)
                 )
             );
+
+        /// <summary>
+        /// Pegar todos os contatos com ultima mensagem
+        /// </summary>
+        /// <param name="id">Id do usuario</param>
+        /// <returns>Retorna todos os contatos</returns>
+        [HttpGet("contatosHome/{id:long}")]
+        public async Task<IActionResult> ObterContatosHome(long id)
+        {
+            List<ContatosHome> contatosHome = new();
+
+            List<Usuario> contatos = await _usuarioRepository.ObterContatos(id);
+            if ((contatos != null) && (contatos.Count > 0))
+            {
+                foreach (Usuario usuario in contatos)
+                {
+                    Mensagem mensagem = await _mensagemRepository.ObterUltimaMensagem(id, usuario.Id, false);
+                    if (mensagem != null)
+                    {
+                        contatosHome.Add(
+                           new ContatosHome()
+                           {
+                               Id = usuario.Id,
+                               Nome = usuario.Nome,
+                               Foto = usuario.Foto.Value,
+                               IsGrupo = false,
+                               Mensagem = mensagem
+                           }
+                        );
+                    }
+                }
+            }
+
+            List<Grupo> grupos = await _grupoRepository.ObterTodosPorUsuario(id);
+            if ((grupos != null) && (grupos.Count > 0))
+            {
+                foreach (Grupo grupo in grupos)
+                {
+                    Mensagem mensagem = await _mensagemRepository.ObterUltimaMensagem(id, grupo.Id, true);
+                    if (mensagem != null)
+                    {
+                        contatosHome.Add(
+                           new ContatosHome()
+                           {
+                               Id = grupo.Id,
+                               Nome = grupo.Nome,
+                               Foto = grupo.Foto.Value,
+                               IsGrupo = true,
+                               Mensagem = mensagem
+                           }
+                        );
+                    }
+                }
+            }
+
+            return RetornoController(
+                new ResultadoCommand(
+                    contatosHome.OrderBy(c => c.Mensagem.Cadastro)
+                )
+            );
+        }
 
         /// <summary>
         /// Pegar um Usuario pelo Id

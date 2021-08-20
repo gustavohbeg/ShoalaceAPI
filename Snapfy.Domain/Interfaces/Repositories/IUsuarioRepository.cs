@@ -1,4 +1,5 @@
 ﻿using Shoalace.Domain.Entities;
+using Shoalace.Domain.Responses;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -6,13 +6,13 @@ namespace Shoalace.Domain.Commands.Mensagem
     public class EditarMensagemCommand : Command
     {
         public long Id { get; set; }
-        public string Texto { get; private set; }
-        public long UsuarioId { get; private set; }
-        public long UsuarioDestinoId { get; private set; }
-        public long GrupoId { get; private set; }
-        public byte? Audio { get; private set; }
-        public byte? Foto { get; private set; }
-        public EStatus Status { get; private set; }
+        public string Texto { get; set; }
+        public long UsuarioId { get; set; }
+        public long? UsuarioDestinoId { get; set; }
+        public long? GrupoId { get; set; }
+        public byte? Audio { get; set; }
+        public byte? Foto { get; set; }
+        public EStatus Status { get; set; }
 
         public override void Validate()
         {

@@ -19,12 +19,12 @@ namespace Shoalace.Infra.Repositories
             await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterPorId(id)).FirstOrDefaultAsync();
 
         public async Task<List<Evento>> ObterTodosPorUsuario(long usuarioId) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosPorUsuario(usuarioId)).ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
 
         public async Task<List<Evento>> ObterTodosPorData(DateTime data) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosPorData(data)).ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosPorData(data)).AsNoTracking().ToListAsync();
 
         public async Task<List<Evento>> ObterPorCategoriaECidade(ECategoria categoria, string cidade) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterPorCategoriaECidade(categoria, cidade)).ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterPorCategoriaECidade(categoria, cidade)).AsNoTracking().ToListAsync();
     }
 }
