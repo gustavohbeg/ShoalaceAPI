@@ -25,7 +25,5 @@ namespace Shoalace.Domain.Entities
         public EStatus Status { get; private set; }
         public long MensagemId { get; private set; }
         public Mensagem Mensagem { get; private set; }
-
-        public bool Entregue { get => Status == EStatus.Entregue; }
     }
 }

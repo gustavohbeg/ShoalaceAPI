@@ -77,7 +77,9 @@ namespace Shoalace.API.Controllers
                                Nome = usuario.Nome,
                                Foto = usuario.Foto.Value,
                                IsGrupo = false,
-                               Mensagem = mensagem
+                               Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
+                               Status = mensagem.Status,
+                               Cadastro = mensagem.Cadastro
                            }
                         );
                     }
@@ -99,7 +101,9 @@ namespace Shoalace.API.Controllers
                                Nome = grupo.Nome,
                                Foto = grupo.Foto.Value,
                                IsGrupo = true,
-                               Mensagem = mensagem
+                               Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
+                               Status = mensagem.Status,
+                               Cadastro = mensagem.Cadastro
                            }
                         );
                     }
@@ -108,7 +112,7 @@ namespace Shoalace.API.Controllers
 
             return RetornoController(
                 new ResultadoCommand(
-                    contatosHome.OrderBy(c => c.Mensagem.Cadastro)
+                    contatosHome.OrderBy(c => c.Cadastro)
                 )
             );
         }

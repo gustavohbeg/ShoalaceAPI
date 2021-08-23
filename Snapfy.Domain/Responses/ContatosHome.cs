@@ -14,6 +14,8 @@ namespace Shoalace.Domain.Responses
         public string Nome { get; set; }
         public byte Foto { get; set; }
         public bool IsGrupo { get; set; }
-        public Mensagem Mensagem { get; set; }
+        public string Texto { get; set; }
+        public EStatus Status { get; set; }
+        public DateTime Cadastro { get; set; }
     }
 }

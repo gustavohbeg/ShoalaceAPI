@@ -44,6 +44,7 @@ namespace Shoalace.Domain.Entities
         public double? Latitude { get; private set; }
         public double? Longitude { get; private set; }
         public string Token { get; private set; }
+
         public bool Online { get => Visto >= DateTime.Now.AddMinutes(-1); }
 
         public void AtualizarVisto() => Visto = DateTime.Now;
