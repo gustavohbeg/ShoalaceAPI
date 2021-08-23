@@ -17,5 +17,6 @@ namespace Shoalace.Domain.Responses
         public string Texto { get; set; }
         public EStatus Status { get; set; }
         public DateTime Cadastro { get; set; }
+        public int Quantidade { get; set; }
     }
 }

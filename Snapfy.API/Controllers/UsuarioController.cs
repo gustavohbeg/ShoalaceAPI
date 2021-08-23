@@ -79,7 +79,8 @@ namespace Shoalace.API.Controllers
                                IsGrupo = false,
                                Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
                                Status = mensagem.Status,
-                               Cadastro = mensagem.Cadastro
+                               Cadastro = mensagem.Cadastro,
+                               Quantidade = 2
                            }
                         );
                     }
@@ -103,7 +104,8 @@ namespace Shoalace.API.Controllers
                                IsGrupo = true,
                                Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
                                Status = mensagem.Status,
-                               Cadastro = mensagem.Cadastro
+                               Cadastro = mensagem.Cadastro,
+                               Quantidade = 2
                            }
                         );
                     }
