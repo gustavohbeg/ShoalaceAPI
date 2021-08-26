@@ -38,14 +38,6 @@ namespace Shoalace.Domain.Entities
                 _membros.Add(membro);
         }
 
-        public void AdicionarMembros(List<Membro> membros)
-        {
-            foreach (Membro membro in membros)
-            {
-                AdicionarMembro(membro);
-            }
-        }
-
         public void RemoverMembro(Membro membro)
         {
             if (_membros.Contains(membro))

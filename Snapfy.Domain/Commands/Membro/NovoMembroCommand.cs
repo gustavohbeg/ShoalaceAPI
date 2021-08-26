@@ -2,7 +2,7 @@
 
 namespace Shoalace.Domain.Commands.Grupo
 {
-    public class InserirMembroCommand : Command
+    public class NovoMembroCommand : Command
     {
         public long UsuarioId { get; set; }
         public long GrupoId { get; set; }

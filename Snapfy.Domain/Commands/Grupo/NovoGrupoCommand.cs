@@ -9,7 +9,7 @@ namespace Shoalace.Domain.Commands.Grupo
         public string Nome { get; set; }
         public byte? Foto { get; set; }
         public long UsuarioId { get; set; }
-        public List<Membro> Membros { get; set; }
+        public List<MembroCommand> Membros { get; set; }
 
         public override void Validate()
         {

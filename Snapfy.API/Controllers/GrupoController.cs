@@ -104,7 +104,7 @@ namespace Shoalace.API.Controllers
         /// <param name="comando">Dados do membro</param>
         /// <returns>Retorna o membro inserido</returns>
         [HttpPost("membros")]
-        public async Task<IActionResult> InserirMembro([FromBody] InserirMembroCommand comando) =>
+        public async Task<IActionResult> InserirMembro([FromBody] NovoMembroCommand comando) =>
             RetornoController(await _grupoHandler.ManipularAsync(comando));
     }
 }

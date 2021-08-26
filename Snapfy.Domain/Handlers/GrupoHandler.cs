@@ -29,8 +29,11 @@ namespace Shoalace.Domain.Handlers
             }
 
             Grupo grupo = new(comando.Nome, comando.Foto, comando.UsuarioId);
-            grupo.AdicionarMembros(comando.Membros);
-
+            foreach (MembroCommand membroCommand in comando.Membros)
+            {
+                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, membroCommand.GrupoId, membroCommand.Admin));
+            }
+            
             if (retorno.Valid)
             {
                 await _grupoRepository.Adicionar(grupo);
@@ -53,7 +56,11 @@ namespace Shoalace.Domain.Handlers
             }
 
             Grupo grupo = await _grupoRepository.ObterPorId(comando.Id);
-            grupo.AdicionarMembros(comando.Membros);
+
+            foreach (MembroCommand membroCommand in comando.Membros)
+            {
+                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, membroCommand.GrupoId, membroCommand.Admin));
+            }
 
             if (grupo == null)
             {
@@ -131,7 +138,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
-        public async Task<IResultadoCommand> ManipularAsync(InserirMembroCommand comando)
+        public async Task<IResultadoCommand> ManipularAsync(NovoMembroCommand comando)
         {
             ResultadoCommand retorno = new();
 
