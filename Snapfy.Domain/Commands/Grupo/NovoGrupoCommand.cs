@@ -1,4 +1,6 @@
 ﻿using Flunt.Validations;
+using Shoalace.Domain.Entities;
+using System.Collections.Generic;
 
 namespace Shoalace.Domain.Commands.Grupo
 {
@@ -7,6 +9,7 @@ namespace Shoalace.Domain.Commands.Grupo
         public string Nome { get; set; }
         public byte? Foto { get; set; }
         public long UsuarioId { get; set; }
+        public List<Membro> Membros { get; set; }
 
         public override void Validate()
         {

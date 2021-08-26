@@ -29,6 +29,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             Grupo grupo = new(comando.Nome, comando.Foto, comando.UsuarioId);
+            grupo.AdicionarMembros(comando.Membros);
 
             if (retorno.Valid)
             {
@@ -52,6 +53,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             Grupo grupo = await _grupoRepository.ObterPorId(comando.Id);
+            grupo.AdicionarMembros(comando.Membros);
 
             if (grupo == null)
             {
