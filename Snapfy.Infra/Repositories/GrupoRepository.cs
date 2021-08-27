@@ -16,6 +16,9 @@ namespace Shoalace.Infra.Repositories
         public new async Task<Grupo> ObterPorId(long id) =>
             await _ShoalaceContexto.Grupo.Include(g => g.Membros).Where(GrupoQuery.ObterPorId(id)).FirstOrDefaultAsync();
 
+        public async Task<List<Grupo>> ObterTodos(long usuarioId) =>
+            await _ShoalaceContexto.Grupo.Include(g => g.Membros).Where(GrupoQuery.ObterTodosPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
+
         public async Task<List<Grupo>> ObterTodosPorUsuario(long usuarioId) =>
             await _ShoalaceContexto.Grupo.Include(g => g.Membros).Where(GrupoQuery.ObterTodosPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
     }
