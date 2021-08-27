@@ -31,7 +31,7 @@ namespace Shoalace.Domain.Handlers
             Grupo grupo = new(comando.Nome, comando.Foto, comando.UsuarioId);
             foreach (MembroCommand membroCommand in comando.Membros)
             {
-                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, membroCommand.GrupoId, membroCommand.Admin));
+                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, 0, membroCommand.Admin));
             }
             
             if (retorno.Valid)
@@ -59,7 +59,7 @@ namespace Shoalace.Domain.Handlers
 
             foreach (MembroCommand membroCommand in comando.Membros)
             {
-                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, membroCommand.GrupoId, membroCommand.Admin));
+                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, comando.Id, membroCommand.Admin));
             }
 
             if (grupo == null)

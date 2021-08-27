@@ -5,8 +5,7 @@ namespace Shoalace.Domain.Commands.Grupo
     public class MembroCommand : Command
     {
         public long UsuarioId { get; set; }
-        public long GrupoId { get; set; }
-        public bool Admin { get; private set; }
+        public bool Admin { get; set; }
 
         public override void Validate()
         {
