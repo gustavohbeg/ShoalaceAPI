@@ -8,6 +8,7 @@ using Shoalace.Domain.Responses;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Shoalace.Domain.Enums;
 
 namespace Shoalace.API.Controllers
 {
@@ -93,8 +94,6 @@ namespace Shoalace.API.Controllers
                 foreach (Grupo grupo in grupos)
                 {
                     Mensagem mensagem = await _mensagemRepository.ObterUltimaMensagem(id, grupo.Id, true);
-                    if (mensagem != null)
-                    {
                         contatosHome.Add(
                            new ContatosHome()
                            {
@@ -102,13 +101,12 @@ namespace Shoalace.API.Controllers
                                Nome = grupo.Nome,
                                Foto = grupo.Foto.Value,
                                IsGrupo = true,
-                               Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
-                               Status = mensagem.Status,
-                               Cadastro = mensagem.Cadastro,
+                               Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
+                               Status = mensagem != null ? mensagem.Status : EStatus.Entregue,
+                               Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
                                Quantidade = 2
                            }
                         );
-                    }
                 }
             }
 
