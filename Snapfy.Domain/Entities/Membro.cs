@@ -22,7 +22,6 @@ namespace Shoalace.Domain.Entities
         public long UsuarioId { get; private set; }
         public Usuario Usuario { get; private set; }
         public long GrupoId { get; private set; }
-        public Grupo Grupo { get; private set; }
         public bool Admin { get; private set; }
 
         public void SetarAdmin(bool admin) => Admin = admin;

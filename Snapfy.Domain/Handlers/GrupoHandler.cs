@@ -28,7 +28,7 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            Grupo grupo = new(comando.Nome, comando.Foto, comando.UsuarioId);
+            Grupo grupo = new(comando.Nome, comando.Foto);
             foreach (MembroCommand membroCommand in comando.Membros)
             {
                 grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, 0, membroCommand.Admin));
@@ -68,7 +68,7 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            grupo.PreencherGrupo(comando.Nome, comando.Foto, comando.UsuarioId);
+            grupo.PreencherGrupo(comando.Nome, comando.Foto);
 
             if (retorno.Valid)
             {
@@ -124,7 +124,7 @@ namespace Shoalace.Domain.Handlers
             List<Grupo> grupos = new();
             foreach (NovoGrupoCommand grupoCommand in comando.Grupos)
             {
-                grupo = new(grupoCommand.Nome, grupoCommand.Foto, grupoCommand.UsuarioId);
+                grupo = new(grupoCommand.Nome, grupoCommand.Foto);
                 retorno.AddNotifications(grupo);
                 grupos.Add(grupo);
             }

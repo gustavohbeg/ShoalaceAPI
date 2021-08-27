@@ -55,7 +55,6 @@ namespace Shoalace.Domain.Entities
         public DateTime? Hora { get; private set; }
         public ETipo Tipo { get; private set; }
         public long? GrupoId { get; private set; }
-        public Grupo Grupo { get; private set; }
         public byte? Foto { get; private set; }
         public ECategoria Categoria { get; private set; }
         public IReadOnlyCollection<MembroEvento> MembrosEvento { get => _membrosEvento; }
