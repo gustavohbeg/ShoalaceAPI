@@ -37,7 +37,7 @@ namespace Shoalace.API.Controllers
         /// Retorna todos os eventos por usuario
         /// </summary>
         /// <returns>Retorna uma lista de eventos por usuario</returns>
-        [HttpGet("{usuarioId:int}")]
+        [HttpGet("usuarios/{usuarioId:int}")]
         public async Task<IActionResult> ObterEventosPorUsuario(int usuarioId) =>
             RetornoController(
                 new ResultadoCommand(

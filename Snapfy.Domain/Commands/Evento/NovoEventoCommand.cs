@@ -1,6 +1,7 @@
 ﻿using Flunt.Validations;
 using Shoalace.Domain.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace Shoalace.Domain.Commands.Evento
 {
@@ -18,6 +19,7 @@ namespace Shoalace.Domain.Commands.Evento
         public long? GrupoId { get; set; }
         public byte? Foto { get; set; }
         public ECategoria Categoria { get; set; }
+        public List<MembroEventoCommand> Membros { get; set; }
 
         public override void Validate()
         {

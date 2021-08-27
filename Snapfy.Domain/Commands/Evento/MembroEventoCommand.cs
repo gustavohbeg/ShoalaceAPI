@@ -1,21 +1,23 @@
 ﻿using Flunt.Validations;
 using Shoalace.Domain.Enums;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Shoalace.Domain.Commands.Evento
 {
-    public class InserirMembroEventoCommand : Command
+    public class MembroEventoCommand : Command
     {
         public long UsuarioId { get; set; }
-        public long EventoId { get; set; }
-        public bool Admin { get; private set; }
         public EComparecer Comparecer { get; set; }
+        public bool Admin { get; set; }
 
         public override void Validate()
         {
             AddNotifications(new Contract()
-                 .AreNotEquals(UsuarioId, 0, "MembroEvento.UsuarioId", "Usuario é obrigatório.")
-                 .AreNotEquals(EventoId, 0, "MembroEvento.EventoId", "Evento é obrigatório.")
+                 .AreNotEquals(UsuarioId, 0, "Membro.UsuarioId", "Usuario é obrigatório.")
                  );
         }
     }

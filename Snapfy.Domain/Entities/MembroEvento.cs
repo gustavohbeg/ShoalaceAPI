@@ -25,7 +25,6 @@ namespace Shoalace.Domain.Entities
         public long UsuarioId { get; private set; }
         public Usuario Usuario { get; private set; }
         public long EventoId { get; private set; }
-        public Evento Evento { get; private set; }
         public EComparecer Comparecer { get; private set; }
         public bool Admin { get; private set; }
 
