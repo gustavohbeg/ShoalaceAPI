@@ -8,5 +8,7 @@ namespace Shoalace.Domain.Interfaces.Repositories
     {
         Task<List<Mensagem>> ObterPendentesPorUsuario(long usuarioId);
         Task<Mensagem> ObterUltimaMensagem(long usuarioId, long contatoId, bool isGrupo);
+        Task<List<Mensagem>> ObterTodosPorUsuario(long usuarioId, long contatoId);
+        Task<List<Mensagem>> ObterTodosPorGrupo(long grupoId);
     }
 }

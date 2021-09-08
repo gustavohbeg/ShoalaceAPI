@@ -11,7 +11,13 @@ namespace Shoalace.Domain.Queries
         public static Expression<Func<Mensagem, bool>> ObterPorId(long id) =>
             m => m.Id == id;
 
-        public static Expression<Func<Mensagem, bool>> ObterUltimaMensagem(long usuarioId, long contatoId, bool isGrupo)
+        public static Expression<Func<Mensagem, bool>> ObterPorUsuario(long usuarioId, long contatoId) =>
+            m => (m.UsuarioId == usuarioId && m.UsuarioDestinoId == contatoId) || (m.UsuarioId == contatoId && m.UsuarioDestinoId == usuarioId);
+
+        public static Expression<Func<Mensagem, bool>> ObterPorGrupo(long grupoId) =>
+            m => m.GrupoId == grupoId;
+
+        public static Expression<Func<Mensagem, bool>> ObterPorContato(long usuarioId, long contatoId, bool isGrupo)
         {
             if (isGrupo)
                 return m => m.GrupoId == contatoId;

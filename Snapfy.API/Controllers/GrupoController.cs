@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Grupo;
+using Shoalace.Domain.Entities;
 using Shoalace.Domain.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Responses;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Shoalace.API.Controllers
@@ -12,10 +15,12 @@ namespace Shoalace.API.Controllers
     public class GrupoController : BaseController
     {
         private readonly IGrupoRepository _grupoRepository;
+        private readonly IMensagemRepository _mensagemRepository;
         private readonly GrupoHandler _grupoHandler;
-        public GrupoController(IGrupoRepository grupoRepository, GrupoHandler grupoHandler)
+        public GrupoController(IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, GrupoHandler grupoHandler)
         {
             _grupoRepository = grupoRepository;
+            _mensagemRepository = mensagemRepository;
             _grupoHandler = grupoHandler;
         }
 
@@ -36,7 +41,7 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="usuarioId">Id do usuario</param>
         /// <returns>Retorna um grupo</returns>
-        [HttpGet("{usuarioId:int}")]
+        [HttpGet("{usuarioId:long}")]
         public async Task<IActionResult> ObterTodosPorUsuario(long usuarioId) =>
             RetornoController(
                 new ResultadoCommand(
@@ -49,13 +54,56 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="id">Id do grupo</param>
         /// <returns>Retorna um grupo</returns>
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:long}")]
         public async Task<IActionResult> ObterGrupo(long id) =>
             RetornoController(
                 new ResultadoCommand(
                     await _grupoRepository.ObterPorId(id)
                 )
             );
+
+        /// <summary>
+        /// Pegar um Grupo com mensagens pelo Id
+        /// </summary>
+        /// <param name="grupoId">Id do usuario</param>
+        /// <returns>Retorna um usuario</returns>
+        [HttpGet("mensagens/{grupoId:long}")]
+        public async Task<IActionResult> ObterUsuarioComMensagem(long grupoId)
+        {
+            Grupo grupo = await _grupoRepository.ObterPorId(grupoId);
+            ContatosChat contatoChat = new();
+            if (grupo != null)
+            {
+                List<Mensagem> mensagens = await _mensagemRepository.ObterTodosPorGrupo(grupoId);
+                List<MensagemResponse> mensagensResponse = new();
+
+                foreach (Mensagem mensagem in mensagens)
+                {
+                    mensagensResponse.Add(new MensagemResponse()
+                    {
+                        Id = mensagem.Id,
+                        Texto = mensagem.Texto,
+                        UsuarioId = mensagem.UsuarioId,
+                        UsuarioDestinoId = mensagem.UsuarioDestinoId,
+                        GrupoId = mensagem.GrupoId,
+                        Audio = mensagem.Audio,
+                        Foto = mensagem.Foto,
+                        Status = mensagem.Status
+                    });
+                }
+                contatoChat.Id = grupo.Id;
+                contatoChat.Nome = grupo.Nome;
+                contatoChat.Foto = grupo.Foto;
+                contatoChat.IsGrupo = true;
+                contatoChat.Cadastro = grupo.Cadastro;
+                contatoChat.Mensagens = mensagensResponse;
+            }
+            return RetornoController(
+                 new ResultadoCommand(
+                     contatoChat
+                 )
+             );
+        }
 
         /// <summary>
         /// Salva um novo grupo
@@ -89,7 +137,7 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="id">Id do grupo</param>
         /// <returns>Retorna se a operação deu sucesso ou não</returns>
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:long}")]
         public async Task<IActionResult> ExcluirGrupo(long id) =>
             RetornoController(await _grupoHandler.ManipularAsync(
                 new ExcluirCommand()

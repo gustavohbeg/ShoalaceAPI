@@ -37,8 +37,8 @@ namespace Shoalace.API.Controllers
         /// Retorna todos os eventos por usuario
         /// </summary>
         /// <returns>Retorna uma lista de eventos por usuario</returns>
-        [HttpGet("usuarios/{usuarioId:int}")]
-        public async Task<IActionResult> ObterEventosPorUsuario(int usuarioId) =>
+        [HttpGet("usuarios/{usuarioId:long}")]
+        public async Task<IActionResult> ObterEventosPorUsuario(long usuarioId) =>
             RetornoController(
                 new ResultadoCommand(
                     await _eventoRepository.ObterTodosPorUsuario(usuarioId)
@@ -74,8 +74,8 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="id">Id do evento</param>
         /// <returns>Retorna um evento</returns>
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> ObterEvento(int id) =>
+        [HttpGet("{id:long}")]
+        public async Task<IActionResult> ObterEvento(long id) =>
             RetornoController(
                 new ResultadoCommand(
                     await _eventoRepository.ObterPorId(id)
@@ -110,20 +110,6 @@ namespace Shoalace.API.Controllers
             RetornoController(await _eventoHandler.ManipularAsync(comando));
 
         /// <summary>
-        /// Deleta um evento
-        /// </summary>
-        /// <param name="id">Id do evento</param>
-        /// <returns>Retorna se a operação deu sucesso ou não</returns>
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> ExcluirEvento(int id) =>
-            RetornoController(await _eventoHandler.ManipularAsync(
-                new ExcluirCommand()
-                {
-                    Id = id,
-                }
-            ));
-
-        /// <summary>
         /// Inserir membroEvento
         /// </summary>
         /// <param name="comando">Dados do membroEvento</param>
@@ -131,5 +117,19 @@ namespace Shoalace.API.Controllers
         [HttpPost("membros")]
         public async Task<IActionResult> InserirMembro([FromBody] InserirMembroEventoCommand comando) =>
             RetornoController(await _eventoHandler.ManipularAsync(comando));
+
+        /// <summary>
+        /// Deleta um evento
+        /// </summary>
+        /// <param name="id">Id do evento</param>
+        /// <returns>Retorna se a operação deu sucesso ou não</returns>
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> ExcluirEvento(long id) =>
+            RetornoController(await _eventoHandler.ManipularAsync(
+                new ExcluirCommand()
+                {
+                    Id = id,
+                }
+            ));
     }
 }

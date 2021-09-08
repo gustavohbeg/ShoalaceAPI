@@ -43,7 +43,7 @@ namespace Shoalace.API.Controllers
         /// <summary>
         /// Pegar todos os contatos
         /// </summary>
-        /// <param name="id">Id do usuario</param>
+        /// <param name="id">Id do usuario logado</param>
         /// <returns>Retorna todos os contatos</returns>
         [HttpGet("contatos/{id:long}")]
         public async Task<IActionResult> ObterContatos(long id) =>
@@ -94,19 +94,19 @@ namespace Shoalace.API.Controllers
                 foreach (Grupo grupo in grupos)
                 {
                     Mensagem mensagem = await _mensagemRepository.ObterUltimaMensagem(id, grupo.Id, true);
-                        contatosHome.Add(
-                           new ContatosHome()
-                           {
-                               Id = grupo.Id,
-                               Nome = grupo.Nome,
-                               Foto = grupo.Foto.Value,
-                               IsGrupo = true,
-                               Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
-                               Status = mensagem != null ? mensagem.Status : EStatus.Entregue,
-                               Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
-                               Quantidade = 2
-                           }
-                        );
+                    contatosHome.Add(
+                       new ContatosHome()
+                       {
+                           Id = grupo.Id,
+                           Nome = grupo.Nome,
+                           Foto = grupo.Foto.Value,
+                           IsGrupo = true,
+                           Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
+                           Status = mensagem != null ? mensagem.Status : EStatus.Entregue,
+                           Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
+                           Quantidade = 2
+                       }
+                    );
                 }
             }
 
@@ -122,13 +122,57 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="numero">Id do usuario</param>
         /// <returns>Retorna um usuario</returns>
-        [HttpGet("{numero:long}")]
-        public async Task<IActionResult> ObterUsuario(long numero) =>
+        [HttpGet("{id:long}")]
+        public async Task<IActionResult> ObterUsuario(long id) =>
             RetornoController(
                 new ResultadoCommand(
-                    await _usuarioRepository.ObterPorNumero(numero)
+                    await _usuarioRepository.ObterPorId(id)
                 )
             );
+
+        /// <summary>
+        /// Pegar um Usuario com mensagem pelo Id
+        /// </summary>
+        /// <param name="usuarioId">Id do usuario</param>
+        /// /// <param name="contatoId">Id do usuario</param>
+        /// <returns>Retorna um usuario</returns>
+        [HttpGet("mensagens/{usuarioId:long}/{contatoId:long}")]
+        public async Task<IActionResult> ObterUsuarioComMensagem(long usuarioId, long contatoId)
+        {
+            Usuario contato = await _usuarioRepository.ObterPorId(contatoId);
+            ContatosChat contatoChat = new();
+            if (contato != null)
+            {
+                List<Mensagem> mensagens = await _mensagemRepository.ObterTodosPorUsuario(usuarioId, contatoId);
+                List<MensagemResponse> mensagensResponse = new();
+
+                foreach (Mensagem mensagem in mensagens)
+                {
+                    mensagensResponse.Add(new MensagemResponse()
+                    {
+                        Id = mensagem.Id,
+                        Texto = mensagem.Texto,
+                        UsuarioId = mensagem.UsuarioId,
+                        UsuarioDestinoId = mensagem.UsuarioDestinoId,
+                        GrupoId = mensagem.GrupoId,
+                        Audio = mensagem.Audio,
+                        Foto = mensagem.Foto,
+                        Status = mensagem.Status
+                    });
+                }
+                contatoChat.Id = contato.Id;
+                contatoChat.Nome = contato.Nome;
+                contatoChat.Foto = contato.Foto;
+                contatoChat.IsGrupo = false;
+                contatoChat.Cadastro = contato.Cadastro;
+                contatoChat.Mensagens = mensagensResponse;
+            }
+            return RetornoController(
+                 new ResultadoCommand(
+                     contatoChat
+                 )
+             );
+        }
 
         /// <summary>
         /// Salva um novo usuario
@@ -156,6 +200,20 @@ namespace Shoalace.API.Controllers
         [HttpPut]
         public async Task<IActionResult> AlterarEmpresa([FromBody] EditarUsuarioCommand comando) =>
             RetornoController(await _usuarioHandler.ManipularAsync(comando));
+
+        /// <summary>
+        /// Deleta um usuario
+        /// </summary>
+        /// <param name="id">Id do usuario</param>
+        /// <returns>Retorna se a operação deu sucesso ou não</returns>
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> ExcluirUsuario(long id) =>
+            RetornoController(await _usuarioHandler.ManipularAsync(
+                new ExcluirCommand()
+                {
+                    Id = id,
+                }
+            ));
 
     }
 }

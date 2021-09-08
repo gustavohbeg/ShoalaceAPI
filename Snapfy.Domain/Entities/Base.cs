@@ -15,6 +15,6 @@ namespace Shoalace.Domain.Entities
         public long Id { get; protected set; }
         public DateTime Cadastro { get; protected set; }
         public DateTime Alterado { get; protected set; }
-        public bool Pertence(long id) => id == Id;
+        public bool Pertence(int id) => id == Id;
     }
 }

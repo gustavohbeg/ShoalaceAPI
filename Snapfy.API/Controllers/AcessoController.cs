@@ -36,8 +36,8 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="id">Id do acesso</param>
         /// <returns>Retorna um acesso</returns>
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> ObterAcesso(int id) =>
+        [HttpGet("{id:long}")]
+        public async Task<IActionResult> ObterAcesso(long id) =>
             RetornoController(
                 new ResultadoCommand(
                     await _acessoRepository.ObterPorId(id)
@@ -85,8 +85,8 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="id">Id do acesso</param>
         /// <returns>Retorna se a operação deu sucesso ou não</returns>
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> ExcluirAcesso(int id) =>
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> ExcluirAcesso(long id) =>
             RetornoController(await _acessoHandler.ManipularAsync(
                 new ExcluirCommand()
                 {

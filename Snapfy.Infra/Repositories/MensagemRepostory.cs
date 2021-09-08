@@ -16,7 +16,13 @@ namespace Shoalace.Infra.Repositories
         public async Task<List<Mensagem>> ObterPendentesPorUsuario(long usuarioId) =>
             await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPendentesPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
 
+        public async Task<List<Mensagem>> ObterTodosPorUsuario(long usuarioId, long contatoId) =>
+            await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPorUsuario(usuarioId, contatoId)).AsNoTracking().ToListAsync();
+
+        public async Task<List<Mensagem>> ObterTodosPorGrupo(long grupoId) =>
+            await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPorGrupo(grupoId)).AsNoTracking().ToListAsync();
+
         public async Task<Mensagem> ObterUltimaMensagem(long usuarioId, long contatoId, bool isGrupo) =>
-            await _ShoalaceContexto.Mensagem.Where(MensagemQuery.ObterUltimaMensagem(usuarioId, contatoId, isGrupo)).OrderBy(m => m.Cadastro).AsNoTracking().FirstOrDefaultAsync();
+            await _ShoalaceContexto.Mensagem.Where(MensagemQuery.ObterPorContato(usuarioId, contatoId, isGrupo)).OrderBy(m => m.Cadastro).AsNoTracking().FirstOrDefaultAsync();
     }
 }

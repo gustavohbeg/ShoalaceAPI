@@ -36,8 +36,8 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="usuarioId">Id do usuario</param>
         /// <returns>Retorna uma lista de mensagens</returns>
-        [HttpGet("pendentes/{usuarioId:int}")]
-        public async Task<IActionResult> ObterMensagensPendentes(int usuarioId) =>
+        [HttpGet("pendentes/{usuarioId:long}")]
+        public async Task<IActionResult> ObterMensagensPendentes(long usuarioId) =>
             RetornoController(
                 new ResultadoCommand(
                     await _mensagemRepository.ObterPendentesPorUsuario(usuarioId)
@@ -49,8 +49,8 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="id">Id da mensagem</param>
         /// <returns>Retorna uma menssagem</returns>
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> ObterMensagem(int id) =>
+        [HttpGet("{id:long}")]
+        public async Task<IActionResult> ObterMensagem(long id) =>
             RetornoController(
                 new ResultadoCommand(
                     await _mensagemRepository.ObterPorId(id)
@@ -89,8 +89,8 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="id">Id da mensagem</param>
         /// <returns>Retorna se a operação deu sucesso ou não</returns>
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> ExcluirMensagem(int id) =>
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> ExcluirMensagem(long id) =>
             RetornoController(await _mensagemHandler.ManipularAsync(
                 new ExcluirCommand()
                 {
