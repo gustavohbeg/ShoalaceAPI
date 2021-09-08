@@ -120,13 +120,26 @@ namespace Shoalace.API.Controllers
         /// <summary>
         /// Pegar um Usuario pelo Id
         /// </summary>
-        /// <param name="numero">Id do usuario</param>
+        /// <param name="usuarioId">Id do usuario</param>
         /// <returns>Retorna um usuario</returns>
         [HttpGet("{id:long}")]
         public async Task<IActionResult> ObterUsuario(long id) =>
             RetornoController(
                 new ResultadoCommand(
                     await _usuarioRepository.ObterPorId(id)
+                )
+            );
+
+        /// <summary>
+        /// Pegar um Usuario pelo Numero
+        /// </summary>
+        /// <param name="numero">Numero do usuario</param>
+        /// <returns>Retorna um usuario</returns>
+        [HttpGet("numero/{numero:long}")]
+        public async Task<IActionResult> ObterUsuarioPorNumero(long numero) =>
+            RetornoController(
+                new ResultadoCommand(
+                    await _usuarioRepository.ObterPorNumero(numero)
                 )
             );
 
