@@ -112,7 +112,7 @@ namespace Shoalace.API.Controllers
 
             return RetornoController(
                 new ResultadoCommand(
-                    contatosHome.OrderBy(c => c.Cadastro)
+                    contatosHome.OrderByDescending(c => c.Cadastro)
                 )
             );
         }
