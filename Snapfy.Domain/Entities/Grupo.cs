@@ -15,6 +15,7 @@ namespace Shoalace.Domain.Entities
             _eventos = new List<Evento>();
         }
 
+
         public void PreencherGrupo(string nome, string foto)
         {
             Alterado = DateTime.Now;
