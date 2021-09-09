@@ -17,7 +17,7 @@ namespace Shoalace.Domain.Commands.Evento
         public DateTime? Hora { get; set; }
         public ETipo Tipo { get; set; }
         public long? GrupoId { get; set; }
-        public byte? Foto { get; set; }
+        public string Foto { get; set; }
         public ECategoria Categoria { get; set; }
         public List<MembroEventoCommand> Membros { get; set; }
 

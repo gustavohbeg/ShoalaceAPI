@@ -14,8 +14,8 @@ namespace Shoalace.Domain.Responses
         public long UsuarioId { get; set; }
         public long? UsuarioDestinoId { get; set; }
         public long? GrupoId { get; set; }
-        public byte? Audio { get; set; }
-        public byte? Foto { get; set; }
+        public string Audio { get; set; }
+        public string Foto { get; set; }
         public EStatus Status { get; set; }
     }
 }

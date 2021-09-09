@@ -9,7 +9,7 @@ namespace Shoalace.Domain.Commands.Usuario
         public long Numero { get; set; }
         public DateTime Aniversario { get; set; }
         public ESexo Sexo { get; set; }
-        public byte Foto { get; set; }
+        public string Foto { get; set; }
         public string Nome { get; set; }
         public string Bio { get; set; }
         public DateTime Visto { get; set; }

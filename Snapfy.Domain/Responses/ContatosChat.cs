@@ -10,7 +10,7 @@ namespace Shoalace.Domain.Responses
     {
         public long Id { get; set; }
         public string Nome { get; set; }
-        public byte? Foto { get; set; }
+        public string Foto { get; set; }
         public bool IsGrupo { get; set; }
         public DateTime Cadastro { get; set; }
         public List<MensagemResponse> Mensagens { get; set; }

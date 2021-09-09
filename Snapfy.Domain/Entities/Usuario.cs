@@ -5,7 +5,7 @@ namespace Shoalace.Domain.Entities
 {
     public class Usuario : Base
     {
-        public Usuario(long numero, DateTime aniversario, ESexo sexo, byte? foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token) : base()
+        public Usuario(long numero, DateTime aniversario, ESexo sexo, string foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token) : base()
         {
             Numero = numero;
             Aniversario = aniversario;
@@ -19,7 +19,7 @@ namespace Shoalace.Domain.Entities
             Token = token;
         }
 
-        public void PreencherUsuario(long numero, DateTime aniversario, ESexo sexo, byte? foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token)
+        public void PreencherUsuario(long numero, DateTime aniversario, ESexo sexo, string foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token)
         {
             Numero = numero;
             Alterado = DateTime.Now;
@@ -37,7 +37,7 @@ namespace Shoalace.Domain.Entities
         public long Numero { get; private set; }
         public DateTime Aniversario { get; private set; }
         public ESexo Sexo { get; private set; }
-        public byte? Foto { get; private set; }
+        public string Foto { get; private set; }
         public string Nome { get; private set; }
         public string Bio { get; private set; }
         public DateTime Visto { get; private set; }

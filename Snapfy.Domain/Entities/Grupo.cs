@@ -7,7 +7,7 @@ namespace Shoalace.Domain.Entities
     {
         private readonly List<Membro> _membros;
         private readonly List<Evento> _eventos;
-        public Grupo(string nome, byte? foto) : base()
+        public Grupo(string nome, string foto) : base()
         {
             Nome = nome;
             Foto = foto;
@@ -15,7 +15,7 @@ namespace Shoalace.Domain.Entities
             _eventos = new List<Evento>();
         }
 
-        public void PreencherGrupo(string nome, byte? foto)
+        public void PreencherGrupo(string nome, string foto)
         {
             Alterado = DateTime.Now;
             Nome = nome;
@@ -23,7 +23,7 @@ namespace Shoalace.Domain.Entities
         }
 
         public string Nome { get; private set; }
-        public byte? Foto { get; private set; }
+        public string Foto { get; private set; }
 
         public IReadOnlyCollection<Membro> Membros { get => _membros; }
         public IReadOnlyCollection<Evento> Eventos { get => _eventos; }

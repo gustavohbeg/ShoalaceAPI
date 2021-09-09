@@ -7,7 +7,7 @@ namespace Shoalace.Domain.Commands.Grupo
     public class NovoGrupoCommand : Command
     {
         public string Nome { get; set; }
-        public byte? Foto { get; set; }
+        public string Foto { get; set; }
         public List<MembroCommand> Membros { get; set; }
 
         public override void Validate()

@@ -8,7 +8,7 @@ namespace Shoalace.Domain.Entities
     public class Evento : Base
     {
         private readonly List<MembroEvento> _membrosEvento;
-        public Evento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, byte? foto, ECategoria categoria) : base()
+        public Evento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, string foto, ECategoria categoria) : base()
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -26,7 +26,7 @@ namespace Shoalace.Domain.Entities
             _membrosEvento = new List<MembroEvento>();
         }
 
-        public void PreencherEvento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, byte? foto, ECategoria categoria)
+        public void PreencherEvento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, string foto, ECategoria categoria)
         {
             Alterado = DateTime.Now;
             Titulo = titulo;
@@ -55,7 +55,7 @@ namespace Shoalace.Domain.Entities
         public DateTime? Hora { get; private set; }
         public ETipo Tipo { get; private set; }
         public long? GrupoId { get; private set; }
-        public byte? Foto { get; private set; }
+        public string Foto { get; private set; }
         public ECategoria Categoria { get; private set; }
         public IReadOnlyCollection<MembroEvento> MembrosEvento { get => _membrosEvento; }
 

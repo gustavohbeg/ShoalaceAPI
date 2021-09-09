@@ -76,9 +76,9 @@ namespace Shoalace.API.Controllers
                            {
                                Id = usuario.Id,
                                Nome = usuario.Nome,
-                               Foto = usuario.Foto.Value,
+                               Foto = usuario.Foto,
                                IsGrupo = false,
-                               Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
+                               Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
                                Status = mensagem.Status,
                                Cadastro = mensagem.Cadastro,
                                Quantidade = 2
@@ -99,9 +99,9 @@ namespace Shoalace.API.Controllers
                        {
                            Id = grupo.Id,
                            Nome = grupo.Nome,
-                           Foto = grupo.Foto.Value,
+                           Foto = grupo.Foto,
                            IsGrupo = true,
-                           Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio.HasValue ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
+                           Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
                            Status = mensagem != null ? mensagem.Status : EStatus.Entregue,
                            Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
                            Quantidade = 2
