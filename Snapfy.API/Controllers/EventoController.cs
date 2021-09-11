@@ -46,6 +46,18 @@ namespace Shoalace.API.Controllers
             );
 
         /// <summary>
+        /// Retorna todos os eventos do explorar
+        /// </summary>
+        /// <returns>Retorna uma lista de eventos a explorar</returns>
+        [HttpGet("explorar")]
+        public async Task<IActionResult> ObterEventosExplorar() =>
+            RetornoController(
+                new ResultadoCommand(
+                    await _eventoRepository.ObterTodosExplorar()
+                )
+            );
+
+        /// <summary>
         /// Retorna todos os eventos por data
         /// </summary>
         /// <returns>Retorna uma lista de eventos por data</returns>
@@ -116,6 +128,15 @@ namespace Shoalace.API.Controllers
         /// <returns>Retorna o membroEvento inserido</returns>
         [HttpPost("membros")]
         public async Task<IActionResult> InserirMembro([FromBody] InserirMembroEventoCommand comando) =>
+            RetornoController(await _eventoHandler.ManipularAsync(comando));
+
+        /// <summary>
+        /// Alterar membroEvento
+        /// </summary>
+        /// <param name="comando">Dados do membroEvento</param>
+        /// <returns>Retorna o membroEvento inserido</returns>
+        [HttpPut("membros")]
+        public async Task<IActionResult> InserirMembro([FromBody] EditarMembroEventoCommand comando) =>
             RetornoController(await _eventoHandler.ManipularAsync(comando));
 
         /// <summary>

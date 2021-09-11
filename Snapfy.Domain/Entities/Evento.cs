@@ -68,6 +68,11 @@ namespace Shoalace.Domain.Entities
             _membrosEvento.Add(membroEvento);
         }
 
+        public void FazerCheckIn(MembroEvento membroEvento)
+        {
+            _membrosEvento.FirstOrDefault(a => a.Id == membroEvento.Id)?.PreencherMembroEvento(membroEvento.UsuarioId, membroEvento.EventoId, membroEvento.Comparecer, membroEvento.Admin);
+        }
+
         public void RemoverMembro(MembroEvento membroEvento)
         {
             _membrosEvento.Remove(membroEvento);

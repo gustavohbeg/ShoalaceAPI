@@ -5,6 +5,7 @@ using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shoalace.Domain.Handlers
@@ -150,9 +151,38 @@ namespace Shoalace.Domain.Handlers
             }
 
             MembroEvento membroEvento = new(comando.UsuarioId, comando.EventoId, comando.Comparecer, comando.Admin);
-            
+
             Evento evento = await _eventoRepository.ObterPorId(comando.EventoId);
             evento.AdicionarMembroEvento(membroEvento);
+
+            if (retorno.Valid)
+            {
+                _eventoRepository.Atualizar(evento);
+                await _eventoRepository.Commit();
+                retorno.PreencherRetorno(evento);
+            }
+
+            return retorno;
+        }
+
+        public async Task<IResultadoCommand> ManipularAsync(EditarMembroEventoCommand comando)
+        {
+            ResultadoCommand retorno = new();
+
+            comando.Validate();
+            if (comando.Invalid)
+            {
+                retorno.AddNotifications(comando);
+                return retorno;
+            }
+
+            Evento evento = await _eventoRepository.ObterPorId(comando.EventoId);
+
+            MembroEvento membroEvento = evento.MembrosEvento.FirstOrDefault(a => a.Id == comando.Id);
+            membroEvento.PreencherMembroEvento(comando.UsuarioId, comando.EventoId, comando.Comparecer, comando.Admin);
+            retorno.AddNotifications(membroEvento);
+            if (retorno.Valid)
+                evento.FazerCheckIn(membroEvento);
 
             if (retorno.Valid)
             {
