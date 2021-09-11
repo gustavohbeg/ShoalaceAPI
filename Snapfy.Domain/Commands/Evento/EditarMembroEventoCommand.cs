@@ -14,7 +14,6 @@ namespace Shoalace.Domain.Commands.Evento
         public override void Validate()
         {
             AddNotifications(new Contract()
-                .AreNotEquals(Id, 0, "MembroEvento.Id", "Membro é obrigatório.")
                 .AreNotEquals(UsuarioId, 0, "MembroEvento.UsuarioId", "Usuario é obrigatório.")
                 .AreNotEquals(EventoId, 0, "MembroEvento.EventoId", "Evento é obrigatório.")
                 );

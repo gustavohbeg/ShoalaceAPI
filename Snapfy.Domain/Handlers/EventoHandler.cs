@@ -178,7 +178,7 @@ namespace Shoalace.Domain.Handlers
 
             Evento evento = await _eventoRepository.ObterPorId(comando.EventoId);
 
-            MembroEvento membroEvento = evento.MembrosEvento.FirstOrDefault(a => a.Id == comando.Id);
+            MembroEvento membroEvento = evento.MembrosEvento.FirstOrDefault(a => a.Id == comando.Id || a.UsuarioId == comando.UsuarioId);
             membroEvento.PreencherMembroEvento(comando.UsuarioId, comando.EventoId, comando.Comparecer, comando.Admin);
             retorno.AddNotifications(membroEvento);
             if (retorno.Valid)

@@ -70,7 +70,7 @@ namespace Shoalace.Domain.Entities
 
         public void FazerCheckIn(MembroEvento membroEvento)
         {
-            _membrosEvento.FirstOrDefault(a => a.Id == membroEvento.Id)?.PreencherMembroEvento(membroEvento.UsuarioId, membroEvento.EventoId, membroEvento.Comparecer, membroEvento.Admin);
+            _membrosEvento.FirstOrDefault(a => a.Id == membroEvento.Id || a.UsuarioId == membroEvento.UsuarioId)?.PreencherMembroEvento(membroEvento.UsuarioId, membroEvento.EventoId, membroEvento.Comparecer, membroEvento.Admin);
         }
 
         public void RemoverMembro(MembroEvento membroEvento)
