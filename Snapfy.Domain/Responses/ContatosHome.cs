@@ -18,5 +18,6 @@ namespace Shoalace.Domain.Responses
         public EStatus Status { get; set; }
         public DateTime Cadastro { get; set; }
         public int NaoLidas { get; set; }
+        public long UsuarioId { get; set; }
     }
 }
