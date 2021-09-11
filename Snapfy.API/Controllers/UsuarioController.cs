@@ -106,7 +106,7 @@ namespace Shoalace.API.Controllers
                            Status = mensagem != null ? mensagem.Status : EStatus.Entregue,
                            Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
                            NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatus.Lida ? 1 : 0,
-                           UsuarioId = mensagem.UsuarioId
+                           UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
                        }
                     );
                 }
