@@ -16,18 +16,18 @@ namespace Shoalace.Infra.Repositories
         public EventoRepository(ShoalaceContexto ShoalaceContexto) : base(ShoalaceContexto) { }
 
         public new async Task<Evento> ObterPorId(long id) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterPorId(id)).FirstOrDefaultAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterPorId(id)).FirstOrDefaultAsync();
 
         public async Task<List<Evento>> ObterTodosPorUsuario(long usuarioId) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
 
         public async Task<List<Evento>> ObterTodosExplorar() =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosExplorar()).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosExplorar()).AsNoTracking().ToListAsync();
 
         public async Task<List<Evento>> ObterTodosPorData(DateTime data) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterTodosPorData(data)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosPorData(data)).AsNoTracking().ToListAsync();
 
         public async Task<List<Evento>> ObterPorCategoriaECidade(ECategoria categoria, string cidade) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).Where(EventoQuery.ObterPorCategoriaECidade(categoria, cidade)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterPorCategoriaECidade(categoria, cidade)).AsNoTracking().ToListAsync();
     }
 }
