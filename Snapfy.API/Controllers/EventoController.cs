@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Evento;
+using Shoalace.Domain.Commands.Usuario;
 using Shoalace.Domain.Enums;
 using Shoalace.Domain.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
@@ -128,6 +129,15 @@ namespace Shoalace.API.Controllers
         /// <returns>Retorna o membroEvento inserido</returns>
         [HttpPost("membros")]
         public async Task<IActionResult> InserirMembro([FromBody] InserirMembroEventoCommand comando) =>
+            RetornoController(await _eventoHandler.ManipularAsync(comando));
+
+        /// <summary>
+        /// Salva foto de evento
+        /// </summary>
+        /// <param name="comando">Dados do evento</param>
+        /// <returns>Retorna o usuario inserido</returns>
+        [HttpPost("image")]
+        public async Task<IActionResult> UploadImage([FromBody] UploadImageCommand comando) =>
             RetornoController(await _eventoHandler.ManipularAsync(comando));
 
         /// <summary>

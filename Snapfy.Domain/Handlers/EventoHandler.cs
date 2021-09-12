@@ -1,9 +1,11 @@
 ﻿using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Evento;
+using Shoalace.Domain.Commands.Usuario;
 using Shoalace.Domain.Entities;
 using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Interfaces.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,10 +15,12 @@ namespace Shoalace.Domain.Handlers
     public class EventoHandler : IHandler<NovoEventoCommand>, IHandler<EditarEventoCommand>
     {
         private readonly IEventoRepository _eventoRepository;
+        private readonly IFileUpload _fileUpload;
 
-        public EventoHandler(IEventoRepository eventoRepository)
+        public EventoHandler(IEventoRepository eventoRepository, IFileUpload fileUpload)
         {
             _eventoRepository = eventoRepository;
+            _fileUpload = fileUpload;
         }
         public async Task<IResultadoCommand> ManipularAsync(NovoEventoCommand comando)
         {
@@ -191,6 +195,13 @@ namespace Shoalace.Domain.Handlers
                 retorno.PreencherRetorno(membroEvento);
             }
 
+            return retorno;
+        }
+
+        public async Task<IResultadoCommand> ManipularAsync(UploadImageCommand comando)
+        {
+            ResultadoCommand retorno = new();
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs"));
             return retorno;
         }
     }
