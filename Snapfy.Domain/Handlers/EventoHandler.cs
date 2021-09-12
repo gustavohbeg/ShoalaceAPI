@@ -159,7 +159,7 @@ namespace Shoalace.Domain.Handlers
             {
                 _eventoRepository.Atualizar(evento);
                 await _eventoRepository.Commit();
-                retorno.PreencherRetorno(evento);
+                retorno.PreencherRetorno(membroEvento);
             }
 
             return retorno;
@@ -188,7 +188,7 @@ namespace Shoalace.Domain.Handlers
             {
                 _eventoRepository.Atualizar(evento);
                 await _eventoRepository.Commit();
-                retorno.PreencherRetorno(evento);
+                retorno.PreencherRetorno(membroEvento);
             }
 
             return retorno;
