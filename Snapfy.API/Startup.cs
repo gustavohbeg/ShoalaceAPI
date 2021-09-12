@@ -7,8 +7,10 @@ using Microsoft.OpenApi.Models;
 using Shoalace.API.Filters;
 using Shoalace.Domain.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Interfaces.Services;
 using Shoalace.Infra.Contexto;
 using Shoalace.Infra.Repositories;
+using Shoalace.Infra.Services;
 
 namespace Shoalace.API
 {
@@ -58,6 +60,7 @@ namespace Shoalace.API
             services.AddScoped<MensagemHandler>();
             services.AddScoped<UsuarioHandler>();
 
+            services.AddScoped<IFileUpload, FileUpload>();
 
             services.AddSwaggerGen(c =>
             {

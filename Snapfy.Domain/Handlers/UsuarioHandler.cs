@@ -4,6 +4,7 @@ using Shoalace.Domain.Entities;
 using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Interfaces.Services;
 using System.Threading.Tasks;
 
 namespace Shoalace.Domain.Handlers
@@ -11,10 +12,12 @@ namespace Shoalace.Domain.Handlers
     public class UsuarioHandler : IHandler<NovoUsuarioCommand>, IHandler<EditarUsuarioCommand>
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IFileUpload _fileUpload;
 
-        public UsuarioHandler(IUsuarioRepository usuarioRepository)
+        public UsuarioHandler(IUsuarioRepository usuarioRepository, IFileUpload fileUpload)
         {
             _usuarioRepository = usuarioRepository;
+            _fileUpload = fileUpload;
         }
         public async Task<IResultadoCommand> ManipularAsync(NovoUsuarioCommand comando)
         {
@@ -127,6 +130,13 @@ namespace Shoalace.Domain.Handlers
                 retorno.PreencherRetorno(usuario);
             }
 
+            return retorno;
+        }
+
+        public async Task<IResultadoCommand> ManipularAsync(UploadImageCommand comando)
+        {
+            ResultadoCommand retorno = new();
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs"));
             return retorno;
         }
     }

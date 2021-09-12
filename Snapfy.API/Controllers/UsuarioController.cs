@@ -199,6 +199,16 @@ namespace Shoalace.API.Controllers
             RetornoController(await _usuarioHandler.ManipularAsync(comando));
 
         /// <summary>
+        /// Salva foto de usuario
+        /// </summary>
+        /// <param name="comando">Dados do usuario</param>
+        /// <returns>Retorna o usuario inserido</returns>
+        [HttpPost("image")]
+        public async Task<IActionResult> UploadImage([FromBody] UploadImageCommand comando) =>
+            RetornoController(await _usuarioHandler.ManipularAsync(comando));
+
+
+        /// <summary>
         /// Atualizar visto
         /// </summary>
         /// <param name="comando"></param>
