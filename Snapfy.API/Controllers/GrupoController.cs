@@ -104,6 +104,28 @@ namespace Shoalace.API.Controllers
                     });
                 }
 
+                List<EventoResponse> eventosResponse = new();
+                foreach (Evento evento in grupo.Eventos)
+                {
+                    eventosResponse.Add(new EventoResponse()
+                    {
+                        Id = evento.Id,
+                        Titulo = evento.Titulo,
+                        Descricao = evento.Descricao,
+                        Cidade = evento.Cidade,
+                        Local = evento.Local,
+                        Valor = evento.Valor,
+                        Latitude = evento.Latitude,
+                        Longitude = evento.Longitude,
+                        Data = evento.Data,
+                        Hora = evento.Hora,
+                        Tipo = evento.Tipo,
+                        GrupoId = evento.GrupoId,
+                        Foto = evento.Foto,
+                        Categoria = evento.Categoria
+                    });
+                }
+
                 contatoChat.Id = grupo.Id;
                 contatoChat.Nome = grupo.Nome;
                 contatoChat.Foto = grupo.Foto;
@@ -111,6 +133,7 @@ namespace Shoalace.API.Controllers
                 contatoChat.Cadastro = grupo.Cadastro;
                 contatoChat.Mensagens = mensagensResponse;
                 contatoChat.Membros = membroResponse;
+                contatoChat.Eventos = eventosResponse;
             }
             return RetornoController(
                  new ResultadoCommand(

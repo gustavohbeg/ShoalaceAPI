@@ -15,5 +15,6 @@ namespace Shoalace.Domain.Responses
         public DateTime Cadastro { get; set; }
         public List<MensagemResponse> Mensagens { get; set; }
         public List<MembroResponse> Membros { get; set; }
+        public List<EventoResponse> Eventos { get; set; }
     }
 }
