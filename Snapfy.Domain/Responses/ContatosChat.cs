@@ -14,5 +14,6 @@ namespace Shoalace.Domain.Responses
         public bool IsGrupo { get; set; }
         public DateTime Cadastro { get; set; }
         public List<MensagemResponse> Mensagens { get; set; }
+        public List<MembroResponse> Membros { get; set; }
     }
 }

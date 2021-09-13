@@ -77,7 +77,7 @@ namespace Shoalace.API.Controllers
             {
                 List<Mensagem> mensagens = await _mensagemRepository.ObterTodosPorGrupo(grupoId);
                 List<MensagemResponse> mensagensResponse = new();
-
+                
                 foreach (Mensagem mensagem in mensagens)
                 {
                     mensagensResponse.Add(new MensagemResponse()
@@ -92,12 +92,25 @@ namespace Shoalace.API.Controllers
                         Status = mensagem.Status
                     });
                 }
+
+                List<MembroResponse> membroResponse = new();
+                foreach (Membro membro in grupo.Membros)
+                {
+                    membroResponse.Add(new MembroResponse()
+                    {
+                        Id = membro.Id,
+                        UsuarioId = membro.UsuarioId,
+                        Admin = membro.Admin
+                    });
+                }
+
                 contatoChat.Id = grupo.Id;
                 contatoChat.Nome = grupo.Nome;
                 contatoChat.Foto = grupo.Foto;
                 contatoChat.IsGrupo = true;
                 contatoChat.Cadastro = grupo.Cadastro;
                 contatoChat.Mensagens = mensagensResponse;
+                contatoChat.Membros = membroResponse;
             }
             return RetornoController(
                  new ResultadoCommand(
