@@ -153,12 +153,21 @@ namespace Shoalace.Domain.Handlers
                 retorno.AddNotifications(comando);
                 return retorno;
             }
-
-            MembroEvento membroEvento = new(comando.UsuarioId, comando.EventoId, comando.Comparecer, comando.Admin);
-
             Evento evento = await _eventoRepository.ObterPorId(comando.EventoId);
-            evento.AdicionarMembroEvento(membroEvento);
-
+            MembroEvento membroEvento; 
+            membroEvento = evento.MembrosEvento.FirstOrDefault(a => a.UsuarioId == comando.UsuarioId);
+            if (membroEvento != null && membroEvento.Id > 0)
+            {
+                membroEvento.PreencherMembroEvento(comando.UsuarioId, comando.EventoId, comando.Comparecer, comando.Admin);
+                retorno.AddNotifications(membroEvento);
+                if (retorno.Valid)
+                    evento.FazerCheckIn(membroEvento);
+            }
+            else
+            {
+                membroEvento = new(comando.UsuarioId, comando.EventoId, comando.Comparecer, comando.Admin);
+                evento.AdicionarMembroEvento(membroEvento);
+            }
             if (retorno.Valid)
             {
                 _eventoRepository.Atualizar(evento);
