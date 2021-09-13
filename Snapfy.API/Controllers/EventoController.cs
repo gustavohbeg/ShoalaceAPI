@@ -135,7 +135,7 @@ namespace Shoalace.API.Controllers
         /// Salva foto de evento
         /// </summary>
         /// <param name="comando">Dados do evento</param>
-        /// <returns>Retorna o usuario inserido</returns>
+        /// <returns>Retorna a url da foto inserido</returns>
         [HttpPost("image")]
         public async Task<IActionResult> UploadImage([FromBody] UploadImageCommand comando) =>
             RetornoController(await _eventoHandler.ManipularAsync(comando));

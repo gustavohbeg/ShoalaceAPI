@@ -1,9 +1,11 @@
 ﻿using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Grupo;
+using Shoalace.Domain.Commands.Usuario;
 using Shoalace.Domain.Entities;
 using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Interfaces.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,10 +14,12 @@ namespace Shoalace.Domain.Handlers
     public class GrupoHandler : IHandler<NovoGrupoCommand>, IHandler<EditarGrupoCommand>
     {
         private readonly IGrupoRepository _grupoRepository;
+        private readonly IFileUpload _fileUpload;
 
-        public GrupoHandler(IGrupoRepository grupoRepository)
+        public GrupoHandler(IGrupoRepository grupoRepository, IFileUpload fileUpload)
         {
             _grupoRepository = grupoRepository;
+            _fileUpload = fileUpload;
         }
         public async Task<IResultadoCommand> ManipularAsync(NovoGrupoCommand comando)
         {
@@ -161,6 +165,13 @@ namespace Shoalace.Domain.Handlers
                 retorno.PreencherRetorno(grupo);
             }
 
+            return retorno;
+        }
+
+        public async Task<IResultadoCommand> ManipularAsync(UploadImageCommand comando)
+        {
+            ResultadoCommand retorno = new();
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs"));
             return retorno;
         }
     }

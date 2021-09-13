@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Grupo;
+using Shoalace.Domain.Commands.Usuario;
 using Shoalace.Domain.Entities;
 using Shoalace.Domain.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
@@ -121,6 +122,15 @@ namespace Shoalace.API.Controllers
         /// <returns>Retorna o grupo inserido</returns>
         [HttpPost("lista")]
         public async Task<IActionResult> SalvarListaGrupos([FromBody] NovoListaGrupoCommand comando) =>
+            RetornoController(await _grupoHandler.ManipularAsync(comando));
+
+        /// <summary>
+        /// Salva foto de grupo
+        /// </summary>
+        /// <param name="comando">Dados do grupo</param>
+        /// <returns>Retorna a url da foto inserido</returns>
+        [HttpPost("image")]
+        public async Task<IActionResult> UploadImage([FromBody] UploadImageCommand comando) =>
             RetornoController(await _grupoHandler.ManipularAsync(comando));
 
         /// <summary>
