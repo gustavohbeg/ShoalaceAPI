@@ -62,15 +62,15 @@ namespace Shoalace.Domain.Handlers
             }
 
             Evento evento = await _eventoRepository.ObterPorId(comando.Id);
-            foreach (MembroEventoCommand membroCommand in comando.Membros)
-            {
-                evento.AdicionarMembroEvento(new MembroEvento(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
-            }
 
             if (evento == null)
             {
                 retorno.AddNotification("Evento.Id", "Evento não encontrado");
                 return retorno;
+            }
+            foreach (MembroEventoCommand membroCommand in comando.Membros)
+            {
+                evento.AdicionarMembroEvento(new MembroEvento(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
             }
 
             evento.PreencherEvento(comando.Titulo, comando.Descricao, comando.Local, comando.Valor, comando.Latitude, comando.Longitude, comando.Data, comando.Hora, comando.Tipo, comando.GrupoId, comando.Foto, comando.Categoria);

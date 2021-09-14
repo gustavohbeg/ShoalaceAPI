@@ -65,7 +65,8 @@ namespace Shoalace.Domain.Entities
 
         public void AdicionarMembroEvento(MembroEvento membroEvento)
         {
-            _membrosEvento.Add(membroEvento);
+            if (!_membrosEvento.Any(m => m.UsuarioId == membroEvento.UsuarioId))
+                _membrosEvento.Add(membroEvento);
         }
 
         public void FazerCheckIn(MembroEvento membroEvento)
@@ -75,7 +76,8 @@ namespace Shoalace.Domain.Entities
 
         public void RemoverMembro(MembroEvento membroEvento)
         {
-            _membrosEvento.Remove(membroEvento);
+            if (_membrosEvento.Any(m => m.UsuarioId == membroEvento.UsuarioId))
+                _membrosEvento.Remove(membroEvento);
         }
     }
 }
