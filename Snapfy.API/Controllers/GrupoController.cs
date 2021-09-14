@@ -7,6 +7,7 @@ using Shoalace.Domain.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
 using Shoalace.Domain.Responses;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shoalace.API.Controllers
@@ -71,107 +72,21 @@ namespace Shoalace.API.Controllers
         [HttpGet("mensagens/{grupoId:long}")]
         public async Task<IActionResult> ObterUsuarioComMensagem(long grupoId)
         {
-            Grupo grupo = await _grupoRepository.ObterPorId(grupoId);
-            ContatosChat contatoChat = new();
-            if (grupo != null)
+            ContatoChatResponse contatoChat = await _grupoRepository.ObterContatoChatPorId(grupoId);
+            if (contatoChat != null)
             {
                 List<Mensagem> mensagens = await _mensagemRepository.ObterTodosPorGrupo(grupoId);
-                List<MensagemResponse> mensagensResponse = new();
-                
-                foreach (Mensagem mensagem in mensagens)
-                {
-                    mensagensResponse.Add(new MensagemResponse()
-                    {
-                        Id = mensagem.Id,
-                        Texto = mensagem.Texto,
-                        UsuarioId = mensagem.UsuarioId,
-                        UsuarioDestinoId = mensagem.UsuarioDestinoId,
-                        GrupoId = mensagem.GrupoId,
-                        Audio = mensagem.Audio,
-                        Foto = mensagem.Foto,
-                        Status = mensagem.Status
-                    });
-                }
-
-                List<MembroResponse> membroResponse = new();
-                foreach (Membro membro in grupo.Membros)
-                {
-                    membroResponse.Add(new MembroResponse()
-                    {
-                        Id = membro.Id,
-                        UsuarioId = membro.UsuarioId,
-                        Admin = membro.Admin,
-                        Usuario = new UsuarioResponse()
-                        {
-                            Id = membro.Usuario.Id,
-                            Numero = membro.Usuario.Numero,
-                            Aniversario = membro.Usuario.Aniversario,
-                            Sexo = membro.Usuario.Sexo,
-                            Foto = membro.Usuario.Foto,
-                            Nome = membro.Usuario.Nome,
-                            Bio = membro.Usuario.Bio,
-                            Visto = membro.Usuario.Visto,
-                            Online = membro.Usuario.Online
-                        }
-                    });
-                }
-
-                List<EventoResponse> eventosResponse = new();
-                foreach (Evento evento in grupo.Eventos)
-                {
-                    List<MembroEventoResponse> membrosEventoResponse = new();
-                    foreach (MembroEvento membroEvento in evento.MembrosEvento)
-                    {
-                        membrosEventoResponse.Add(new MembroEventoResponse()
-                        {
-                            Id = membroEvento.Id,
-                            UsuarioId = membroEvento.UsuarioId,
-                            EventoId = membroEvento.EventoId,
-                            Comparecer = membroEvento.Comparecer,
-                            Admin = membroEvento.Admin,
-                            Usuario = new UsuarioResponse()
-                            {
-                                Id = membroEvento.Usuario.Id,
-                                Numero = membroEvento.Usuario.Numero,
-                                Aniversario = membroEvento.Usuario.Aniversario,
-                                Sexo = membroEvento.Usuario.Sexo,
-                                Foto = membroEvento.Usuario.Foto,
-                                Nome = membroEvento.Usuario.Nome,
-                                Bio = membroEvento.Usuario.Bio,
-                                Visto = membroEvento.Usuario.Visto,
-                                Online = membroEvento.Usuario.Online
-                            }
-                        });
-                    }
-
-                    eventosResponse.Add(new EventoResponse()
-                    {
-                        Id = evento.Id,
-                        Titulo = evento.Titulo,
-                        Descricao = evento.Descricao,
-                        Cidade = evento.Cidade,
-                        Local = evento.Local,
-                        Valor = evento.Valor,
-                        Latitude = evento.Latitude,
-                        Longitude = evento.Longitude,
-                        Data = evento.Data,
-                        Hora = evento.Hora,
-                        Tipo = evento.Tipo,
-                        GrupoId = evento.GrupoId,
-                        Foto = evento.Foto,
-                        Categoria = evento.Categoria,
-                        MembrosEvento = membrosEventoResponse
-                    });
-                }
-
-                contatoChat.Id = grupo.Id;
-                contatoChat.Nome = grupo.Nome;
-                contatoChat.Foto = grupo.Foto;
-                contatoChat.IsGrupo = true;
-                contatoChat.Cadastro = grupo.Cadastro;
-                contatoChat.Mensagens = mensagensResponse;
-                contatoChat.Membros = membroResponse;
-                contatoChat.Eventos = eventosResponse;
+               
+                contatoChat.Mensagens = mensagens.Select(msg => new MensagemResponse() {
+                    Id = msg.Id,
+                    Texto = msg.Texto,
+                    UsuarioId = msg.UsuarioId,
+                    UsuarioDestinoId = msg.UsuarioDestinoId,
+                    GrupoId = msg.GrupoId,
+                    Audio = msg.Audio,
+                    Foto = msg.Foto,
+                    Status = msg.Status
+                }).ToList();
             }
             return RetornoController(
                  new ResultadoCommand(

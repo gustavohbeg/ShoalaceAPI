@@ -9,6 +9,7 @@ namespace Shoalace.Domain.Interfaces.Repositories
     {
         Task<Usuario> ObterPorNumero(long numero);
         Task<Usuario> ObterPorId(long id);
+        Task<ContatoChatResponse> ObterContatoChatPorId(long id);
         Task<List<Usuario>> ObterContatos(long id);
     }
 }

@@ -20,6 +20,16 @@ namespace Shoalace.Infra.Repositories
         public async Task<Usuario> ObterPorId(long id) =>
             await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterPorId(id)).FirstOrDefaultAsync();
 
+        public async Task<ContatoChatResponse> ObterContatoChatPorId(long id) =>
+            await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterPorId(id))
+            .Select(u => new ContatoChatResponse() {
+                Id = u.Id,
+                Nome = u.Nome,
+                Foto = u.Foto,
+                IsGrupo = false,
+                Cadastro = u.Cadastro,
+            }).FirstOrDefaultAsync();
+        
         public async Task<List<Usuario>> ObterContatos(long id) =>
             await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterContatos(id)).AsNoTracking().ToListAsync();
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shoalace.Domain.Responses
 {
-    public class ContatosChat
+    public class ContatoChatResponse
     {
         public long Id { get; set; }
         public string Nome { get; set; }

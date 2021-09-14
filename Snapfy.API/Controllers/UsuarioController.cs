@@ -154,33 +154,21 @@ namespace Shoalace.API.Controllers
         [HttpGet("mensagens/{usuarioId:long}/{contatoId:long}")]
         public async Task<IActionResult> ObterUsuarioComMensagem(long usuarioId, long contatoId)
         {
-            Usuario contato = await _usuarioRepository.ObterPorId(contatoId);
-            ContatosChat contatoChat = new();
-            if (contato != null)
+            ContatoChatResponse contatoChat = await _usuarioRepository.ObterContatoChatPorId(contatoId);
+            if (contatoChat != null)
             {
                 List<Mensagem> mensagens = await _mensagemRepository.ObterTodosPorUsuario(usuarioId, contatoId);
-                List<MensagemResponse> mensagensResponse = new();
-
-                foreach (Mensagem mensagem in mensagens)
-                {
-                    mensagensResponse.Add(new MensagemResponse()
-                    {
-                        Id = mensagem.Id,
-                        Texto = mensagem.Texto,
-                        UsuarioId = mensagem.UsuarioId,
-                        UsuarioDestinoId = mensagem.UsuarioDestinoId,
-                        GrupoId = mensagem.GrupoId,
-                        Audio = mensagem.Audio,
-                        Foto = mensagem.Foto,
-                        Status = mensagem.Status
-                    });
-                }
-                contatoChat.Id = contato.Id;
-                contatoChat.Nome = contato.Nome;
-                contatoChat.Foto = contato.Foto;
-                contatoChat.IsGrupo = false;
-                contatoChat.Cadastro = contato.Cadastro;
-                contatoChat.Mensagens = mensagensResponse;
+               
+                contatoChat.Mensagens = mensagens.Select(m => new MensagemResponse() {
+                    Id = m.Id,
+                    Texto = m.Texto,
+                    UsuarioId = m.UsuarioId,
+                    UsuarioDestinoId = m.UsuarioDestinoId,
+                    GrupoId = m.GrupoId,
+                    Audio = m.Audio,
+                    Foto = m.Foto,
+                    Status = m.Status
+                }).ToList();
             }
             return RetornoController(
                  new ResultadoCommand(
