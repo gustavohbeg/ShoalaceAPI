@@ -107,6 +107,19 @@ namespace Shoalace.API.Controllers
                 List<EventoResponse> eventosResponse = new();
                 foreach (Evento evento in grupo.Eventos)
                 {
+                    List<MembroEventoResponse> membrosEventoResponse = new();
+                    foreach (MembroEvento membroEvento in evento.MembrosEvento)
+                    {
+                        membrosEventoResponse.Add(new MembroEventoResponse()
+                        {
+                            Id = membroEvento.Id,
+                            UsuarioId = membroEvento.UsuarioId,
+                            EventoId = membroEvento.EventoId,
+                            Comparecer = membroEvento.Comparecer,
+                            Admin = membroEvento.Admin
+                        });
+                    }
+
                     eventosResponse.Add(new EventoResponse()
                     {
                         Id = evento.Id,
@@ -122,7 +135,8 @@ namespace Shoalace.API.Controllers
                         Tipo = evento.Tipo,
                         GrupoId = evento.GrupoId,
                         Foto = evento.Foto,
-                        Categoria = evento.Categoria
+                        Categoria = evento.Categoria,
+                        MembrosEvento = membrosEventoResponse
                     });
                 }
 

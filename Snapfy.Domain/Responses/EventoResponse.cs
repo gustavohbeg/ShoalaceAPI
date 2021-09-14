@@ -23,5 +23,6 @@ namespace Shoalace.Domain.Responses
         public long? GrupoId { get; set; }
         public string Foto { get; set; }
         public ECategoria Categoria { get; set; }
+        public List<MembroEventoResponse> MembrosEvento { get; set; }
     }
 }
