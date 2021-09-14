@@ -42,7 +42,7 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="usuarioId">Id do usuario</param>
         /// <returns>Retorna um grupo</returns>
-        [HttpGet("{usuarioId:long}")]
+        [HttpGet("usuario/{usuarioId:long}")]
         public async Task<IActionResult> ObterTodosPorUsuario(long usuarioId) =>
             RetornoController(
                 new ResultadoCommand(
