@@ -100,7 +100,19 @@ namespace Shoalace.API.Controllers
                     {
                         Id = membro.Id,
                         UsuarioId = membro.UsuarioId,
-                        Admin = membro.Admin
+                        Admin = membro.Admin,
+                        Usuario = new UsuarioResponse()
+                        {
+                            Id = membro.Usuario.Id,
+                            Numero = membro.Usuario.Numero,
+                            Aniversario = membro.Usuario.Aniversario,
+                            Sexo = membro.Usuario.Sexo,
+                            Foto = membro.Usuario.Foto,
+                            Nome = membro.Usuario.Nome,
+                            Bio = membro.Usuario.Bio,
+                            Visto = membro.Usuario.Visto,
+                            Online = membro.Usuario.Online
+                        }
                     });
                 }
 
@@ -116,7 +128,19 @@ namespace Shoalace.API.Controllers
                             UsuarioId = membroEvento.UsuarioId,
                             EventoId = membroEvento.EventoId,
                             Comparecer = membroEvento.Comparecer,
-                            Admin = membroEvento.Admin
+                            Admin = membroEvento.Admin,
+                            Usuario = new UsuarioResponse()
+                            {
+                                Id = membroEvento.Usuario.Id,
+                                Numero = membroEvento.Usuario.Numero,
+                                Aniversario = membroEvento.Usuario.Aniversario,
+                                Sexo = membroEvento.Usuario.Sexo,
+                                Foto = membroEvento.Usuario.Foto,
+                                Nome = membroEvento.Usuario.Nome,
+                                Bio = membroEvento.Usuario.Bio,
+                                Visto = membroEvento.Usuario.Visto,
+                                Online = membroEvento.Usuario.Online
+                            }
                         });
                     }
 

@@ -14,5 +14,6 @@ namespace Shoalace.Domain.Responses
         public long UsuarioId { get; set; }
         public EComparecer Comparecer { get; set; }
         public bool Admin { get; set; }
+        public UsuarioResponse Usuario { get; set; }
     }
 }
