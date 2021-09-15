@@ -11,6 +11,7 @@ namespace Shoalace.Domain.Interfaces.Repositories
         new Task<Evento> ObterPorId(long id);
         Task<List<Evento>> ObterTodosPorUsuario(long UsuarioId);
         Task<List<Evento>> ObterTodosExplorar();
+        Task<List<Evento>> ObterTodosProximos();
         Task<List<Evento>> ObterTodosPorData(DateTime data);
         Task<List<Evento>> ObterPorCategoriaECidade(ECategoria categoria, string cidade);
     }
