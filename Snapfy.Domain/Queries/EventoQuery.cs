@@ -14,11 +14,11 @@ namespace Shoalace.Domain.Queries
         public static Expression<Func<Evento, bool>> ObterTodosPorUsuario(long usuarioId) =>
             e => (e.MembrosEvento != null && (e.MembrosEvento.Any(m => m.UsuarioId == usuarioId)));
 
+        public static Expression<Func<Evento, bool>> ObterProximosPorUsuario(long usuarioId) =>
+            e => e.Data >= DateTime.Now && e.MembrosEvento != null && e.MembrosEvento.Any(m => m.UsuarioId == usuarioId);
+
         public static Expression<Func<Evento, bool>> ObterTodosExplorar() =>
            e => e.Categoria != ECategoria.Privado && e.Data >= DateTime.Now;
-
-        public static Expression<Func<Evento, bool>> ObterTodosProximos() =>
-           e => e.Data >= DateTime.Now;
 
         public static Expression<Func<Evento, bool>> ObterTodosPorData(DateTime data) =>
             e => e.Data == data;

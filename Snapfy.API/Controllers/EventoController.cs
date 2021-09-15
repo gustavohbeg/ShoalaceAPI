@@ -59,14 +59,14 @@ namespace Shoalace.API.Controllers
             );
 
         /// <summary>
-        /// Retorna todos os eventos proximos
+        /// Retorna os proximos por Usuario
         /// </summary>
-        /// <returns>Retorna uma lista de eventos a explorar</returns>
-        [HttpGet("proximos")]
-        public async Task<IActionResult> ObterEventosProximos() =>
+        /// <returns>Retorna uma lista de eventos proximos</returns>
+        [HttpGet("usuarios/{usuarioId:long}/proximos")]
+        public async Task<IActionResult> ObterProximosPorUsuario(long usuarioId) =>
             RetornoController(
                 new ResultadoCommand(
-                    await _eventoRepository.ObterTodosProximos()
+                    await _eventoRepository.ObterProximosPorUsuario(usuarioId)
                 )
             );
 
