@@ -19,12 +19,14 @@ namespace Shoalace.API.Controllers
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IGrupoRepository _grupoRepository;
         private readonly IMensagemRepository _mensagemRepository;
+        private readonly IEventoRepository _eventoRepository;
         private readonly UsuarioHandler _usuarioHandler;
-        public UsuarioController(IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, UsuarioHandler usuarioHandler)
+        public UsuarioController(IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, IEventoRepository eventoRepository, UsuarioHandler usuarioHandler)
         {
             _usuarioRepository = usuarioRepository;
             _grupoRepository = grupoRepository;
             _mensagemRepository = mensagemRepository;
+            _eventoRepository = eventoRepository;
             _usuarioHandler = usuarioHandler;
         }
 
@@ -157,6 +159,7 @@ namespace Shoalace.API.Controllers
             ContatoChatResponse contatoChat = await _usuarioRepository.ObterContatoChatPorId(contatoId);
             if (contatoChat != null)
             {
+
                 List<Mensagem> mensagens = await _mensagemRepository.ObterTodosPorUsuario(usuarioId, contatoId);
                
                 contatoChat.Mensagens = mensagens.Select(m => new MensagemResponse() {
@@ -168,6 +171,46 @@ namespace Shoalace.API.Controllers
                     Audio = m.Audio,
                     Foto = m.Foto,
                     Status = m.Status
+                }).ToList();
+
+                List<Evento> eventos = await _eventoRepository.ObterPor2Usuarios(usuarioId, contatoId);
+
+                contatoChat.Eventos = eventos.Select(e => new EventoResponse()
+                {
+                    Id = e.Id,
+                    Titulo = e.Titulo,
+                    Descricao = e.Descricao,
+                    Cidade = e.Cidade,
+                    Local = e.Local,
+                    Valor = e.Valor,
+                    Latitude = e.Latitude,
+                    Longitude = e .Longitude,
+                    Data = e.Data,
+                    Hora = e.Hora,
+                    Tipo = e.Tipo,
+                    GrupoId = e.GrupoId,
+                    Foto = e.Foto,
+                    Categoria = e.Categoria,
+                    MembrosEvento = e.MembrosEvento.Select(m => new MembroEventoResponse() { 
+                    Id = m.Id,
+                    EventoId = m.EventoId,
+                    UsuarioId = m.UsuarioId,
+                    Comparecer = m.Comparecer,
+                    Admin = m.Admin,
+                    Usuario = new UsuarioResponse()
+                    {
+                        Id = m.Usuario.Id,
+                        Numero = m.Usuario.Numero,
+                        Aniversario = m.Usuario.Aniversario,
+                        Sexo = m.Usuario.Sexo,
+                        Foto = m.Usuario.Foto,
+                        Nome = m.Usuario.Nome,
+                        Bio = m.Usuario.Bio,
+                        Visto = m.Usuario.Visto,
+                        Online = m.Usuario.Online
+                    }
+                    }).ToList()
+                   
                 }).ToList();
             }
             return RetornoController(
