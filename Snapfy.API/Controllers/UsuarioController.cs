@@ -81,12 +81,24 @@ namespace Shoalace.API.Controllers
                                Foto = usuario.Foto,
                                IsGrupo = false,
                                Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
+                               Mensagem = new MensagemResponse()
+                               {
+                                   Id = mensagem.Id,
+                                   Texto = mensagem.Texto,
+                                   UsuarioId = mensagem.UsuarioId,
+                                   UsuarioDestinoId = mensagem.UsuarioDestinoId,
+                                   GrupoId = mensagem.GrupoId,
+                                   Audio = mensagem.Audio,
+                                   Foto = mensagem.Foto,
+                                   Status = mensagem.Status
+                               },
+
                                Status = mensagem.Status,
                                Cadastro = mensagem.Cadastro,
                                NaoLidas = mensagem.UsuarioId != id && mensagem.Status != EStatus.Lida ? 1 : 0,
                                UsuarioId = mensagem.UsuarioId
                            }
-                        ) ;
+                        );
                     }
                 }
             }
@@ -159,10 +171,8 @@ namespace Shoalace.API.Controllers
             ContatoChatResponse contatoChat = await _usuarioRepository.ObterContatoChatPorId(contatoId);
             if (contatoChat != null)
             {
-
-                List<Mensagem> mensagens = await _mensagemRepository.ObterTodosPorUsuario(usuarioId, contatoId);
-               
-                contatoChat.Mensagens = mensagens.Select(m => new MensagemResponse() {
+                contatoChat.Mensagens = (await _mensagemRepository.ObterTodosPorUsuario(usuarioId, contatoId)).Select(m => new MensagemResponse()
+                {
                     Id = m.Id,
                     Texto = m.Texto,
                     UsuarioId = m.UsuarioId,
@@ -173,9 +183,7 @@ namespace Shoalace.API.Controllers
                     Status = m.Status
                 }).ToList();
 
-                List<Evento> eventos = await _eventoRepository.ObterPor2Usuarios(usuarioId, contatoId);
-
-                contatoChat.Eventos = eventos.Select(e => new EventoResponse()
+                contatoChat.Eventos = (await _eventoRepository.ObterPor2Usuarios(usuarioId, contatoId)).Select(e => new EventoResponse()
                 {
                     Id = e.Id,
                     Titulo = e.Titulo,
@@ -184,33 +192,34 @@ namespace Shoalace.API.Controllers
                     Local = e.Local,
                     Valor = e.Valor,
                     Latitude = e.Latitude,
-                    Longitude = e .Longitude,
+                    Longitude = e.Longitude,
                     Data = e.Data,
                     Hora = e.Hora,
                     Tipo = e.Tipo,
                     GrupoId = e.GrupoId,
                     Foto = e.Foto,
                     Categoria = e.Categoria,
-                    MembrosEvento = e.MembrosEvento.Select(m => new MembroEventoResponse() { 
-                    Id = m.Id,
-                    EventoId = m.EventoId,
-                    UsuarioId = m.UsuarioId,
-                    Comparecer = m.Comparecer,
-                    Admin = m.Admin,
-                    Usuario = new UsuarioResponse()
+                    MembrosEvento = e.MembrosEvento.Select(m => new MembroEventoResponse()
                     {
-                        Id = m.Usuario.Id,
-                        Numero = m.Usuario.Numero,
-                        Aniversario = m.Usuario.Aniversario,
-                        Sexo = m.Usuario.Sexo,
-                        Foto = m.Usuario.Foto,
-                        Nome = m.Usuario.Nome,
-                        Bio = m.Usuario.Bio,
-                        Visto = m.Usuario.Visto,
-                        Online = m.Usuario.Online
-                    }
+                        Id = m.Id,
+                        EventoId = m.EventoId,
+                        UsuarioId = m.UsuarioId,
+                        Comparecer = m.Comparecer,
+                        Admin = m.Admin,
+                        Usuario = new UsuarioResponse()
+                        {
+                            Id = m.Usuario.Id,
+                            Numero = m.Usuario.Numero,
+                            Aniversario = m.Usuario.Aniversario,
+                            Sexo = m.Usuario.Sexo,
+                            Foto = m.Usuario.Foto,
+                            Nome = m.Usuario.Nome,
+                            Bio = m.Usuario.Bio,
+                            Visto = m.Usuario.Visto,
+                            Online = m.Usuario.Online
+                        }
                     }).ToList()
-                   
+
                 }).ToList();
             }
             return RetornoController(

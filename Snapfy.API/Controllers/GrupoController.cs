@@ -75,9 +75,7 @@ namespace Shoalace.API.Controllers
             ContatoChatResponse contatoChat = await _grupoRepository.ObterContatoChatPorId(grupoId);
             if (contatoChat != null)
             {
-                List<Mensagem> mensagens = await _mensagemRepository.ObterTodosPorGrupo(grupoId);
-               
-                contatoChat.Mensagens = mensagens.Select(msg => new MensagemResponse() {
+                contatoChat.Mensagens = (await _mensagemRepository.ObterTodosPorGrupo(grupoId)).Select(msg => new MensagemResponse() {
                     Id = msg.Id,
                     Texto = msg.Texto,
                     UsuarioId = msg.UsuarioId,

@@ -19,5 +19,6 @@ namespace Shoalace.Domain.Responses
         public DateTime Cadastro { get; set; }
         public int NaoLidas { get; set; }
         public long UsuarioId { get; set; }
+        public MensagemResponse Mensagem { get; set; }
     }
 }
