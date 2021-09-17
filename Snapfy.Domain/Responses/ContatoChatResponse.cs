@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shoalace.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,9 @@ namespace Shoalace.Domain.Responses
         public long Id { get; set; }
         public string Nome { get; set; }
         public string Foto { get; set; }
+        public string Bio { get; set; }
+        public DateTime Aniversario { get; set; }
+        public ESexo Sexo { get; set; }
         public bool IsGrupo { get; set; }
         public DateTime Cadastro { get; set; }
         public List<MensagemResponse> Mensagens { get; set; }
