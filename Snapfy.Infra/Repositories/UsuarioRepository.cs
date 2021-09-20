@@ -28,7 +28,8 @@ namespace Shoalace.Infra.Repositories
                 Foto = u.Foto,
                 Bio = u.Bio,
                 Aniversario = u.Aniversario,
-                Genero = u.Sexo,
+                Sexo = u.Sexo,
+                Numero = u.Numero,
                 IsGrupo = false,
                 Cadastro = u.Cadastro,
             }).FirstOrDefaultAsync();
