@@ -14,7 +14,7 @@ namespace Shoalace.Infra.Repositories
     {
         public GrupoRepository(ShoalaceContexto ShoalaceContexto) : base(ShoalaceContexto) { }
 
-        public async Task<Grupo> ObterPorId(long id) =>
+        public new async Task<Grupo> ObterPorId(long id) =>
             await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).Where(GrupoQuery.ObterPorId(id)).FirstOrDefaultAsync();
         
         public async Task<ContatoChatResponse> ObterContatoChatPorId(long id) =>
@@ -42,7 +42,7 @@ namespace Shoalace.Infra.Repositories
                         Visto = m.Usuario.Visto,
                         Online = m.Usuario.Online
                     }
-                }).ToList(),
+                }).OrderBy(m => m.Usuario.Nome).ToList(),
                 Eventos = g.Eventos.Select(e => new EventoResponse() {
                     Id = e.Id,
                     Titulo = e.Titulo,
@@ -78,7 +78,7 @@ namespace Shoalace.Infra.Repositories
                             Online = me.Usuario.Online
                         }
                     }).ToList()
-                }).ToList()
+                }).OrderBy(m => m.Data).ToList()
             }).FirstOrDefaultAsync(); 
        
         public async Task<List<Grupo>> ObterTodos(long usuarioId) =>

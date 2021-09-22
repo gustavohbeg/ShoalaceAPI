@@ -19,21 +19,21 @@ namespace Shoalace.Infra.Repositories
             await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterPorId(id)).FirstOrDefaultAsync();
 
         public async Task<List<Evento>> ObterTodosPorUsuario(long usuarioId) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosPorUsuario(usuarioId)).AsNoTracking().OrderBy(m => m.Data).ToListAsync();
 
         public async Task<List<Evento>> ObterPor2Usuarios(long usuarioId, long contatoId) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterPor2Usuarios(usuarioId, contatoId)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterPor2Usuarios(usuarioId, contatoId)).AsNoTracking().OrderBy(m => m.Data).ToListAsync();
 
         public async Task<List<Evento>> ObterProximosPorUsuario(long usuarioId) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterProximosPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterProximosPorUsuario(usuarioId)).AsNoTracking().OrderBy(m => m.Data).ToListAsync();
 
         public async Task<List<Evento>> ObterTodosExplorar() =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosExplorar()).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosExplorar()).AsNoTracking().OrderBy(m => m.Data).ToListAsync();
 
         public async Task<List<Evento>> ObterTodosPorData(DateTime data) =>
             await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosPorData(data)).AsNoTracking().ToListAsync();
 
         public async Task<List<Evento>> ObterPorCategoriaECidade(ECategoria categoria, string cidade) =>
-            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterPorCategoriaECidade(categoria, cidade)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterPorCategoriaECidade(categoria, cidade)).AsNoTracking().OrderBy(m => m.Data).ToListAsync();
     }
 }
