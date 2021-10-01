@@ -4,6 +4,7 @@ using Shoalace.Domain.Entities;
 using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Services;
 using System.Threading.Tasks;
 
 namespace Shoalace.Domain.Handlers
@@ -43,6 +44,7 @@ namespace Shoalace.Domain.Handlers
             {
                 await _acessoRepository.Adicionar(acesso);
                 await _acessoRepository.Commit();
+                Comlete.SendCode(acesso.UsuarioId.ToString(), acesso.Codigo);
                 retorno.PreencherRetorno(acesso);
             }
 

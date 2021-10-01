@@ -17,5 +17,6 @@ namespace Shoalace.Domain.Responses
         public string Audio { get; set; }
         public string Foto { get; set; }
         public EStatus Status { get; set; }
+        public DateTime Cadastro { get; set; }
     }
 }

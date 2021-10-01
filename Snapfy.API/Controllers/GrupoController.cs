@@ -83,7 +83,8 @@ namespace Shoalace.API.Controllers
                     GrupoId = msg.GrupoId,
                     Audio = msg.Audio,
                     Foto = msg.Foto,
-                    Status = msg.Status
+                    Status = msg.Status,
+                    Cadastro = msg.Cadastro
                 }).ToList();
             }
             return RetornoController(

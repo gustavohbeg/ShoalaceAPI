@@ -90,7 +90,8 @@ namespace Shoalace.API.Controllers
                                    GrupoId = mensagem.GrupoId,
                                    Audio = mensagem.Audio,
                                    Foto = mensagem.Foto,
-                                   Status = mensagem.Status
+                                   Status = mensagem.Status,
+                                   Cadastro = mensagem.Cadastro
                                },
 
                                Status = mensagem.Status,
@@ -180,7 +181,8 @@ namespace Shoalace.API.Controllers
                     GrupoId = m.GrupoId,
                     Audio = m.Audio,
                     Foto = m.Foto,
-                    Status = m.Status
+                    Status = m.Status,
+                    Cadastro = m.Cadastro
                 }).ToList();
 
                 contatoChat.Eventos = (await _eventoRepository.ObterPor2Usuarios(usuarioId, contatoId)).Select(e => new EventoResponse()
