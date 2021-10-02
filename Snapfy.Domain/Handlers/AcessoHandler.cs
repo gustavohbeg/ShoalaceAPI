@@ -44,7 +44,7 @@ namespace Shoalace.Domain.Handlers
             {
                 await _acessoRepository.Adicionar(acesso);
                 await _acessoRepository.Commit();
-                Comlete.SendCode(acesso.UsuarioId.ToString(), acesso.Codigo);
+                //Comlete.SendCode(acesso.UsuarioId.ToString(), acesso.Codigo); COMENTADO PARA NÃO GASTAR CRÉDITOS
                 retorno.PreencherRetorno(acesso);
             }
 
