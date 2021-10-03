@@ -5,6 +5,7 @@ using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
 using Shoalace.Domain.Interfaces.Services;
+using Shoalace.Domain.Services;
 using System.Threading.Tasks;
 
 namespace Shoalace.Domain.Handlers
@@ -37,6 +38,7 @@ namespace Shoalace.Domain.Handlers
                 await _usuarioRepository.Adicionar(usuario);
                 await _usuarioRepository.Commit();
                 retorno.PreencherRetorno(usuario);
+                ExpoService.SendNotification(usuario.Token, "Cadastro", "Cadastrado com sucesso");
             }
 
             return retorno;
