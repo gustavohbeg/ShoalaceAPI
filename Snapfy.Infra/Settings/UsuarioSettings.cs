@@ -10,6 +10,7 @@ namespace Shoalace.Infra.Settings
         {
             builder.HasKey(u => u.Id);
             builder.Property(u => u.Nome).IsRequired();
+            builder.Property(u => u.Token).IsRequired();
         }
     }
 }

@@ -5,6 +5,7 @@ using Shoalace.Domain.Enums;
 using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,10 +14,13 @@ namespace Shoalace.Domain.Handlers
     public class MensagemHandler : IHandler<NovoMensagemCommand>, IHandler<EditarMensagemCommand>
     {
         private readonly IMensagemRepository _mensagemRepository;
-
-        public MensagemHandler(IMensagemRepository mensagemRepository)
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IGrupoRepository _grupoRepository;
+        public MensagemHandler(IMensagemRepository mensagemRepository, IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository)
         {
             _mensagemRepository = mensagemRepository;
+            _usuarioRepository = usuarioRepository;
+            _grupoRepository = grupoRepository;
         }
         public async Task<IResultadoCommand> ManipularAsync(NovoMensagemCommand comando)
         {
@@ -28,14 +32,52 @@ namespace Shoalace.Domain.Handlers
                 retorno.AddNotifications(comando);
                 return retorno;
             }
+            Usuario usuarioOrigem = null;
+            Usuario usuarioDestino = null;
+            Grupo grupo = null;
+            if (comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0)
+            {
+                usuarioOrigem = await _usuarioRepository.ObterPorId(comando.UsuarioId);
+                if (usuarioOrigem == null)
+                {
+                    retorno.AddNotification("Mensagem.UsuarioId", "Usuario não encontrado");
+                    return retorno;
+                }
 
-            Mensagem mensagem = new(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId, comando.GrupoId, comando.Audio, comando.Foto, EStatus.Enviado);
+                usuarioDestino = await _usuarioRepository.ObterPorId(comando.UsuarioDestinoId.Value);
+                if (usuarioDestino == null)
+                {
+                    retorno.AddNotification("Mensagem.UsuarioDestinoId", "Usuario não encontrado");
+                    return retorno;
+                }
+            }
+            else if (comando.GrupoId != null && comando.GrupoId > 0)
+            {
+                grupo = await _grupoRepository.ObterPorId(comando.GrupoId.Value);
+
+                if (grupo == null)
+                {
+                    retorno.AddNotification("Mensagem.GrupoId", "Grupo não encontrado");
+                    return retorno;
+                }
+            }
+
+            Mensagem mensagem = new(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0 ? comando.UsuarioDestinoId : null, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Audio, comando.Foto, EStatus.Enviado);
+            retorno.AddNotifications(mensagem);
 
             if (retorno.Valid)
             {
                 await _mensagemRepository.Adicionar(mensagem);
                 await _mensagemRepository.Commit();
                 retorno.PreencherRetorno(mensagem);
+                if (mensagem.UsuarioDestinoId != null && !string.IsNullOrEmpty(usuarioDestino.Token))
+                {
+                    ExpoService.SendNotification(usuarioDestino.Token, usuarioOrigem.Nome, mensagem.Texto);
+                }
+                else if (mensagem.GrupoId != null)
+                {
+                    //
+                }
             }
 
             return retorno;
@@ -52,6 +94,36 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
+            Usuario usuarioOrigem = null;
+            Usuario usuarioDestino = null;
+            Grupo grupo = null;
+            if (comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0)
+            {
+                usuarioOrigem = await _usuarioRepository.ObterPorId(comando.UsuarioId);
+                if (usuarioOrigem == null)
+                {
+                    retorno.AddNotification("Mensagem.UsuarioId", "Usuario não encontrado");
+                    return retorno;
+                }
+
+                usuarioDestino = await _usuarioRepository.ObterPorId(comando.UsuarioDestinoId.Value);
+                if (usuarioDestino == null)
+                {
+                    retorno.AddNotification("usuarioDestino.UsuarioId", "Usuario não encontrado");
+                    return retorno;
+                }
+            }
+            else if (comando.GrupoId != null && comando.GrupoId > 0)
+            {
+                grupo = await _grupoRepository.ObterPorId(comando.GrupoId.Value);
+
+                if (grupo == null)
+                {
+                    retorno.AddNotification("Mensagem.GrupoId", "Grupo não encontrado");
+                    return retorno;
+                }
+            }
+
             Mensagem mensagem = await _mensagemRepository.ObterPorId(comando.Id);
 
             if (mensagem == null)
@@ -60,7 +132,8 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            mensagem.PreencherMensagem(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId, comando.GrupoId, comando.Audio, comando.Foto, comando.Status);
+            mensagem.PreencherMensagem(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0 ? comando.UsuarioDestinoId : null, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Audio, comando.Foto, comando.Status);
+            retorno.AddNotifications(mensagem);
 
             if (retorno.Valid)
             {

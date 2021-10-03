@@ -7,10 +7,7 @@ namespace Shoalace.Domain.Entities
     {
         public MembroEvento(long usuarioId, long eventoId, EComparecer comparecer, bool admin) : base()
         {
-            UsuarioId = usuarioId;
-            EventoId = eventoId;
-            Comparecer = comparecer;
-            Admin = admin;
+            PreencherMembroEvento(usuarioId, eventoId, comparecer, admin);
         }
 
         public void PreencherMembroEvento(long usuarioId, long eventoId, EComparecer comparecer, bool admin)

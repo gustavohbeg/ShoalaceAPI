@@ -22,6 +22,7 @@ namespace Shoalace.Domain.Commands.Usuario
             AddNotifications(new Contract()
               .IsNotNull(Aniversario, "Usuario.Aniversario", "Aniversário é obrigatório")
               .IsNotNullOrEmpty(Nome, "Usuario.Nome", "Nome é obrigatório.")
+              .IsNotNullOrEmpty(Nome, "Usuario.Token", "Token é obrigatório.")
               );
         }
     }

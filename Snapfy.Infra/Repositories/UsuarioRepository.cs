@@ -17,7 +17,7 @@ namespace Shoalace.Infra.Repositories
         public async Task<Usuario> ObterPorNumero(long numero) =>
             await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterPorNumero(numero)).FirstOrDefaultAsync();
 
-        public async Task<Usuario> ObterPorId(long id) =>
+        public new async Task<Usuario> ObterPorId(long id) =>
             await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterPorId(id)).FirstOrDefaultAsync();
 
         public async Task<ContatoChatResponse> ObterContatoChatPorId(long id) =>

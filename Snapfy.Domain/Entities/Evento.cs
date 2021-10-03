@@ -10,20 +10,8 @@ namespace Shoalace.Domain.Entities
         private readonly List<MembroEvento> _membrosEvento;
         public Evento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, string foto, ECategoria categoria) : base()
         {
-            Titulo = titulo;
-            Descricao = descricao;
-            Cidade = "";
-            Local = local;
-            Valor = valor;
-            Latitude = latitude;
-            Longitude = longitude;
-            Data = data;
-            Hora = hora;
-            Tipo = tipo;
-            GrupoId = grupoId;
-            Foto = foto;
-            Categoria = categoria;
             _membrosEvento = new List<MembroEvento>();
+            PreencherEvento(titulo, descricao, local, valor, latitude, longitude, data, hora, tipo, grupoId, foto, categoria);
         }
 
         public void PreencherEvento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, string foto, ECategoria categoria)
@@ -42,6 +30,13 @@ namespace Shoalace.Domain.Entities
             GrupoId = grupoId;
             Foto = foto;
             Categoria = categoria;
+
+            if (string.IsNullOrEmpty(Titulo))
+                AddNotification("Evento.Titulo", "Titulo do evento é obrigatório");
+
+            if (Data == DateTime.MinValue)
+                AddNotification("Evento.Data", "Data do evento é obrigatório");
+
         }
 
         public string Titulo { get; private set; }

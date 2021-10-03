@@ -7,9 +7,7 @@ namespace Shoalace.Domain.Entities
     {
         public StatusMensagem(long membroId, EStatus status, long mensagemId) : base()
         {
-            MembroId = membroId;
-            Status = status;
-            MensagemId = mensagemId;
+            PreencherStatusMensagem(membroId, status, mensagemId);
         }
 
         public void PreencherStatusMensagem(long membroId, EStatus status, long mensagemId)

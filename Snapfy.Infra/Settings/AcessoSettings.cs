@@ -9,7 +9,7 @@ namespace Shoalace.Infra.Settings
         public void Configure(EntityTypeBuilder<Acesso> builder)
         {
             builder.HasKey(a => a.Id);
-            builder.Property(a => a.Codigo).IsRequired();
+            builder.Property(a => a.Codigo).IsRequired().HasMaxLength(4);
         }
     }
 }

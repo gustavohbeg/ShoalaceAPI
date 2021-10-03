@@ -6,9 +6,7 @@ namespace Shoalace.Domain.Entities
     {
         public Membro(long usuarioId, long grupoId, bool admin) : base()
         {
-            UsuarioId = usuarioId;
-            GrupoId = grupoId;
-            Admin = admin;
+            PreencherMembro(usuarioId, grupoId, admin);
         }
 
         public void PreencherMembro(long usuarioId, long grupoId, bool admin)

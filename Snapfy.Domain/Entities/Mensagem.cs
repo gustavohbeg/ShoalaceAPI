@@ -9,14 +9,8 @@ namespace Shoalace.Domain.Entities
         private readonly List<StatusMensagem> _statusMensagens;
         public Mensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatus status) : base()
         {
-            Texto = texto;
-            UsuarioId = usuarioId;
-            UsuarioDestinoId = usuarioDestinoId;
-            GrupoId = grupoId;
-            Audio = audio;
-            Foto = foto;
-            Status = status;
             _statusMensagens = new List<StatusMensagem>();
+            PreencherMensagem(texto, usuarioId, usuarioDestinoId, grupoId, audio, foto, status);
         }
 
         public void PreencherMensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatus status)

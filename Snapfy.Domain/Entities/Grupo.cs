@@ -9,10 +9,9 @@ namespace Shoalace.Domain.Entities
         private readonly List<Evento> _eventos;
         public Grupo(string nome, string foto) : base()
         {
-            Nome = nome;
-            Foto = foto;
             _membros = new List<Membro>();
             _eventos = new List<Evento>();
+            PreencherGrupo(nome, foto);
         }
 
 
@@ -21,6 +20,9 @@ namespace Shoalace.Domain.Entities
             Alterado = DateTime.Now;
             Nome = nome;
             Foto = foto;
+
+            if (string.IsNullOrEmpty(Nome))
+                AddNotification("Grupo.Nome", "Nome do grupo é obrigatório");
         }
 
         public string Nome { get; private set; }

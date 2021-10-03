@@ -29,9 +29,7 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            Acesso acesso;
-
-            acesso = await _acessoRepository.ObterPorUsuario(comando.UsuarioId);
+            Acesso acesso = await _acessoRepository.ObterPorUsuario(comando.UsuarioId);
             if (acesso != null)
             {
                 _acessoRepository.Remover(acesso);
@@ -39,7 +37,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             acesso = new(comando.UsuarioId);
-
+            retorno.AddNotifications(acesso);
             if (retorno.Valid)
             {
                 await _acessoRepository.Adicionar(acesso);
@@ -66,7 +64,7 @@ namespace Shoalace.Domain.Handlers
 
             if (acesso == null)
             {
-                retorno.AddNotification("Acesso.Codigo", "Acesso não encontrado");
+                retorno.AddNotification("Acesso.Usuario", "Acesso não encontrado");
                 return retorno;
             }
 
@@ -81,25 +79,6 @@ namespace Shoalace.Domain.Handlers
                 _acessoRepository.Remover(acesso);
                 await _acessoRepository.Commit();
                 retorno.PreencherRetorno(acesso);
-            }
-
-            return retorno;
-        }
-
-        public async Task<IResultadoCommand> ManipularAsync(ChecarTokenCommand comando)
-        {
-            ResultadoCommand retorno = new();
-
-            comando.Validate();
-            if (comando.Invalid)
-            {
-                retorno.AddNotifications(comando);
-                return retorno;
-            }
-
-            if (retorno.Valid)
-            {
-                retorno.PreencherRetorno(new { token = "ABCDEF" });
             }
 
             return retorno;
@@ -129,6 +108,25 @@ namespace Shoalace.Domain.Handlers
                 _acessoRepository.Remover(acesso);
                 await _acessoRepository.Commit();
                 retorno.PreencherRetorno(acesso);
+            }
+
+            return retorno;
+        }
+
+        public async Task<IResultadoCommand> ManipularAsync(ChecarTokenCommand comando)
+        {
+            ResultadoCommand retorno = new();
+
+            comando.Validate();
+            if (comando.Invalid)
+            {
+                retorno.AddNotifications(comando);
+                return retorno;
+            }
+
+            if (retorno.Valid)
+            {
+                retorno.PreencherRetorno(new { token = "ABCDEF" });
             }
 
             return retorno;

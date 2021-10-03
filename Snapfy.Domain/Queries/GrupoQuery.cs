@@ -11,6 +11,6 @@ namespace Shoalace.Domain.Queries
             g => g.Id == id;
 
         public static Expression<Func<Grupo, bool>> ObterTodosPorUsuario(long usuarioId) =>
-            g => (g.Membros != null && (g.Membros.Any(m => m.UsuarioId == usuarioId)));
+            g => g.Membros != null && g.Membros.Any(m => m.UsuarioId == usuarioId);
     }
 }

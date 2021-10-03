@@ -33,6 +33,8 @@ namespace Shoalace.Domain.Handlers
             }
 
             Grupo grupo = new(comando.Nome, comando.Foto);
+            retorno.AddNotifications(grupo);
+
             foreach (MembroCommand membroCommand in comando.Membros)
             {
                 grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, 0, membroCommand.Admin));
@@ -61,18 +63,19 @@ namespace Shoalace.Domain.Handlers
 
             Grupo grupo = await _grupoRepository.ObterPorId(comando.Id);
 
-            foreach (MembroCommand membroCommand in comando.Membros)
-            {
-                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, comando.Id, membroCommand.Admin));
-            }
-
             if (grupo == null)
             {
                 retorno.AddNotification("Grupo.Id", "Grupo não encontrado");
                 return retorno;
             }
 
+            foreach (MembroCommand membroCommand in comando.Membros)
+            {
+                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, comando.Id, membroCommand.Admin));
+            }
+
             grupo.PreencherGrupo(comando.Nome, comando.Foto);
+            retorno.AddNotifications(grupo);
 
             if (retorno.Valid)
             {
@@ -153,9 +156,16 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
+            Grupo grupo = await _grupoRepository.ObterPorId(comando.GrupoId);
+
+            if (grupo == null)
+            {
+                retorno.AddNotification("Grupo.Id", "Grupo não encontrado");
+                return retorno;
+            }
+
             Membro membro = new(comando.UsuarioId, comando.GrupoId, comando.Admin);
 
-            Grupo grupo = await _grupoRepository.ObterPorId(comando.GrupoId);
             grupo.AdicionarMembro(membro);
 
             if (retorno.Valid)
