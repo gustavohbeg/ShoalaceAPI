@@ -39,7 +39,7 @@ namespace Shoalace.Domain.Handlers
                 await _usuarioRepository.Adicionar(usuario);
                 await _usuarioRepository.Commit();
                 retorno.PreencherRetorno(usuario);
-                ExpoService.SendNotification(usuario.Token, "Cadastro", "Cadastrado com sucesso");
+                //ExpoService.SendNotification(usuario.Token, "Cadastro", "Cadastrado com sucesso");
             }
 
             return retorno;

@@ -74,31 +74,14 @@ namespace Shoalace.API.Controllers
                     if (mensagem != null)
                     {
                         contatosHome.Add(
-                           new ContatosHome()
-                           {
-                               Id = usuario.Id,
-                               Nome = usuario.Nome,
-                               Foto = usuario.Foto,
-                               IsGrupo = false,
-                               Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
-                               Mensagem = new MensagemResponse()
-                               {
-                                   Id = mensagem.Id,
-                                   Texto = mensagem.Texto,
-                                   UsuarioId = mensagem.UsuarioId,
-                                   UsuarioDestinoId = mensagem.UsuarioDestinoId,
-                                   GrupoId = mensagem.GrupoId,
-                                   Audio = mensagem.Audio,
-                                   Foto = mensagem.Foto,
-                                   Status = mensagem.Status,
-                                   Cadastro = mensagem.Cadastro
-                               },
-
-                               Status = mensagem.Status,
-                               Cadastro = mensagem.Cadastro,
-                               NaoLidas = mensagem.UsuarioId != id && mensagem.Status != EStatus.Lida ? 1 : 0,
-                               UsuarioId = mensagem.UsuarioId
-                           }
+                           new ContatosHome(usuario.Id, usuario.Nome, usuario.Foto, false,
+                               string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
+                               mensagem.Status,
+                               mensagem.Cadastro,
+                               mensagem.UsuarioId != id && mensagem.Status != EStatus.Lida ? 1 : 0,
+                               mensagem.UsuarioId,
+                               new MensagemResponse(mensagem.Id, mensagem.Texto, mensagem.UsuarioId, mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro)
+                           )
                         );
                     }
                 }
@@ -111,18 +94,14 @@ namespace Shoalace.API.Controllers
                 {
                     Mensagem mensagem = await _mensagemRepository.ObterUltimaMensagem(id, grupo.Id, true);
                     contatosHome.Add(
-                       new ContatosHome()
-                       {
-                           Id = grupo.Id,
-                           Nome = grupo.Nome,
-                           Foto = grupo.Foto,
-                           IsGrupo = true,
-                           Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
-                           Status = mensagem != null ? mensagem.Status : EStatus.Entregue,
-                           Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
-                           NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatus.Lida ? 1 : 0,
-                           UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
-                       }
+                       new ContatosHome(grupo.Id, grupo.Nome, grupo.Foto, true,
+                           mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
+                           mensagem != null ? mensagem.Status : EStatus.Entregue,
+                           mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
+                           mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatus.Lida ? 1 : 0,
+                           mensagem != null ? mensagem.UsuarioId : 0,
+                           null
+                       )
                     );
                 }
             }
@@ -172,57 +151,9 @@ namespace Shoalace.API.Controllers
             ContatoChatResponse contatoChat = await _usuarioRepository.ObterContatoChatPorId(contatoId);
             if (contatoChat != null)
             {
-                contatoChat.Mensagens = (await _mensagemRepository.ObterTodosPorUsuario(usuarioId, contatoId)).Select(m => new MensagemResponse()
-                {
-                    Id = m.Id,
-                    Texto = m.Texto,
-                    UsuarioId = m.UsuarioId,
-                    UsuarioDestinoId = m.UsuarioDestinoId,
-                    GrupoId = m.GrupoId,
-                    Audio = m.Audio,
-                    Foto = m.Foto,
-                    Status = m.Status,
-                    Cadastro = m.Cadastro
-                }).ToList();
-
-                contatoChat.Eventos = (await _eventoRepository.ObterPor2Usuarios(usuarioId, contatoId)).Select(e => new EventoResponse()
-                {
-                    Id = e.Id,
-                    Titulo = e.Titulo,
-                    Descricao = e.Descricao,
-                    Cidade = e.Cidade,
-                    Local = e.Local,
-                    Valor = e.Valor,
-                    Latitude = e.Latitude,
-                    Longitude = e.Longitude,
-                    Data = e.Data,
-                    Hora = e.Hora,
-                    Tipo = e.Tipo,
-                    GrupoId = e.GrupoId,
-                    Foto = e.Foto,
-                    Categoria = e.Categoria,
-                    MembrosEvento = e.MembrosEvento.Select(m => new MembroEventoResponse()
-                    {
-                        Id = m.Id,
-                        EventoId = m.EventoId,
-                        UsuarioId = m.UsuarioId,
-                        Comparecer = m.Comparecer,
-                        Admin = m.Admin,
-                        Usuario = new UsuarioResponse()
-                        {
-                            Id = m.Usuario.Id,
-                            Numero = m.Usuario.Numero,
-                            Aniversario = m.Usuario.Aniversario,
-                            Sexo = m.Usuario.Sexo,
-                            Foto = m.Usuario.Foto,
-                            Nome = m.Usuario.Nome,
-                            Bio = m.Usuario.Bio,
-                            Visto = m.Usuario.Visto,
-                            Online = m.Usuario.Online
-                        }
-                    }).ToList()
-
-                }).ToList();
+                contatoChat.Mensagens = (await _mensagemRepository.ObterTodosPorUsuario(usuarioId, contatoId)).Select(m => new MensagemResponse(m.Id, m.Texto, m.UsuarioId, m.UsuarioDestinoId, m.GrupoId, m.Audio, m.Foto, m.Status, m.Cadastro)).ToList();
+                contatoChat.Eventos = (await _eventoRepository.ObterPor2Usuarios(usuarioId, contatoId)).Select(e => new EventoResponse(e.Id, e.Titulo, e.Descricao, e.Cidade, e.Local, e.Valor, e.Latitude, e.Longitude, e.Data, e.Hora, e.Tipo, e.GrupoId, e.Foto, e.Categoria,
+               e.MembrosEvento.Select(m => new MembroEventoResponse(m.Id, m.EventoId, m.UsuarioId, m.Comparecer, m.Admin, new UsuarioResponse(m.UsuarioId, m.Usuario.Numero, m.Usuario.Aniversario, m.Usuario.Sexo, m.Usuario.Foto, m.Usuario.Nome, m.Usuario.Bio, m.Usuario.Visto, m.Usuario.Online))).ToList())).ToList();
             }
             return RetornoController(
                  new ResultadoCommand(

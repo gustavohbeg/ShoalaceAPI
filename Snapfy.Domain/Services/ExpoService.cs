@@ -10,12 +10,12 @@ namespace Shoalace.Domain.Services
 {
     public static class ExpoService
     {
-        public static async void SendNotification(string token, string title, string body)
+        public static async void SendNotification(List<string> tokens, string title, string body)
         {
             var expoSDKClient = new PushApiClient();
             var pushTicketReq = new PushTicketRequest()
             {
-                PushTo = new List<string>() {token},
+                PushTo = tokens,
                 PushBadgeCount = 7,
                 PushTitle = title,
                 PushBody = body,

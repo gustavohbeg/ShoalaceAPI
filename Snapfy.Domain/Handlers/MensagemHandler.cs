@@ -72,11 +72,13 @@ namespace Shoalace.Domain.Handlers
                 retorno.PreencherRetorno(mensagem);
                 if (mensagem.UsuarioDestinoId != null && !string.IsNullOrEmpty(usuarioDestino.Token))
                 {
-                    ExpoService.SendNotification(usuarioDestino.Token, usuarioOrigem.Nome, mensagem.Texto);
+                    ExpoService.SendNotification(new List<string>() { usuarioDestino.Token }, usuarioOrigem.Nome, mensagem.Texto);
                 }
                 else if (mensagem.GrupoId != null)
                 {
-                    //
+                    List<string> tokens = new();
+                    foreach (Membro membro in grupo.Membros) tokens.Add(membro.Usuario.Token);
+                    ExpoService.SendNotification(tokens, usuarioOrigem.Nome, mensagem.Texto);
                 }
             }
 
