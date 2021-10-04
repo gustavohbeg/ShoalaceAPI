@@ -18,12 +18,71 @@ namespace Shoalace.Infra.Repositories
             await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).Where(GrupoQuery.ObterPorId(id)).FirstOrDefaultAsync();
 
         public async Task<ContatoChatResponse> ObterContatoChatPorId(long id) =>
-            await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).Where(GrupoQuery.ObterPorId(id)).Select(g => new ContatoChatResponse(g.Id, 0, g.Nome, g.Foto, "", null, null, true, g.Cadastro, new List<MensagemResponse>(),
-                g.Membros.Select(m => new MembroResponse(m.Id, m.UsuarioId, m.Admin, new UsuarioResponse(m.UsuarioId, m.Usuario.Numero, m.Usuario.Aniversario, m.Usuario.Sexo, m.Usuario.Foto, m.Usuario.Nome, m.Usuario.Bio, m.Usuario.Visto, m.Usuario.Online)
-                )).OrderBy(m => m.Usuario.Nome).ToList(),
-                g.Eventos.Select(e => new EventoResponse(e.Id, e.Titulo, e.Descricao, e.Cidade, e.Local, e.Valor, e.Latitude, e.Longitude, e.Data, e.Hora, e.Tipo, e.GrupoId, e.Foto, e.Categoria,
-                    e.MembrosEvento.Select(me => new MembroEventoResponse(me.Id, me.UsuarioId, me.EventoId, me.Comparecer, me.Admin, new UsuarioResponse(me.Usuario.Id, me.Usuario.Numero, me.Usuario.Aniversario, me.Usuario.Sexo, me.Usuario.Foto, me.Usuario.Nome, me.Usuario.Bio, me.Usuario.Visto, me.Usuario.Online))).ToList())
-                ).OrderBy(m => m.Data).ToList())).FirstOrDefaultAsync();
+            await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).Where(GrupoQuery.ObterPorId(id))
+            .Select(g => new ContatoChatResponse()
+            {
+                Id = g.Id,
+                Nome = g.Nome,
+                Foto = g.Foto,
+                IsGrupo = true,
+                Cadastro = g.Cadastro,
+                Mensagens = new List<MensagemResponse>(),
+                Membros = g.Membros.Select(m => new MembroResponse()
+                {
+                    Id = m.Id,
+                    UsuarioId = m.UsuarioId,
+                    Admin = m.Admin,
+                    Usuario = new UsuarioResponse()
+                    {
+                        Id = m.Usuario.Id,
+                        Numero = m.Usuario.Numero,
+                        Aniversario = m.Usuario.Aniversario,
+                        Sexo = m.Usuario.Sexo,
+                        Foto = m.Usuario.Foto,
+                        Nome = m.Usuario.Nome,
+                        Bio = m.Usuario.Bio,
+                        Visto = m.Usuario.Visto,
+                        Online = m.Usuario.Online
+                    }
+                }).OrderBy(m => m.Usuario.Nome).ToList(),
+                Eventos = g.Eventos.Select(e => new EventoResponse()
+                {
+                    Id = e.Id,
+                    Titulo = e.Titulo,
+                    Descricao = e.Descricao,
+                    Cidade = e.Cidade,
+                    Local = e.Local,
+                    Valor = e.Valor,
+                    Latitude = e.Latitude,
+                    Longitude = e.Longitude,
+                    Data = e.Data,
+                    Hora = e.Hora,
+                    Tipo = e.Tipo,
+                    GrupoId = e.GrupoId,
+                    Foto = e.Foto,
+                    Categoria = e.Categoria,
+                    MembrosEvento = e.MembrosEvento.Select(me => new MembroEventoResponse()
+                    {
+                        Id = me.Id,
+                        UsuarioId = me.UsuarioId,
+                        EventoId = me.EventoId,
+                        Comparecer = me.Comparecer,
+                        Admin = me.Admin,
+                        Usuario = new UsuarioResponse()
+                        {
+                            Id = me.Usuario.Id,
+                            Numero = me.Usuario.Numero,
+                            Aniversario = me.Usuario.Aniversario,
+                            Sexo = me.Usuario.Sexo,
+                            Foto = me.Usuario.Foto,
+                            Nome = me.Usuario.Nome,
+                            Bio = me.Usuario.Bio,
+                            Visto = me.Usuario.Visto,
+                            Online = me.Usuario.Online
+                        }
+                    }).ToList()
+                }).OrderBy(m => m.Data).ToList()
+            }).FirstOrDefaultAsync();
 
         public async Task<List<Grupo>> ObterTodos(long usuarioId) =>
             await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).Where(GrupoQuery.ObterTodosPorUsuario(usuarioId)).AsNoTracking().ToListAsync();

@@ -9,25 +9,6 @@ namespace Shoalace.Domain.Responses
 {
     public class EventoResponse
     {
-        public EventoResponse(long id, string titulo, string descricao, string cidade, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, string foto, ECategoria categoria, List<MembroEventoResponse> membrosEvento)
-        {
-            Id = id;
-            Titulo = titulo;
-            Descricao = descricao;
-            Cidade = cidade;
-            Local = local;
-            Valor = valor;
-            Latitude = latitude;
-            Longitude = longitude;
-            Data = data;
-            Hora = hora;
-            Tipo = tipo;
-            GrupoId = grupoId;
-            Foto = foto;
-            Categoria = categoria;
-            MembrosEvento = membrosEvento;
-        }
-
         public long Id { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }

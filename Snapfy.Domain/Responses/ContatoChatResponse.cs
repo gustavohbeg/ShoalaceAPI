@@ -9,22 +9,6 @@ namespace Shoalace.Domain.Responses
 {
     public class ContatoChatResponse
     {
-        public ContatoChatResponse(long id, long numero, string nome, string foto, string bio, DateTime? aniversario, ESexo? sexo, bool isGrupo, DateTime cadastro, List<MensagemResponse> mensagens, List<MembroResponse> membros, List<EventoResponse> eventos)
-        {
-            Id = id;
-            Numero = numero;
-            Nome = nome;
-            Foto = foto;
-            Bio = bio;
-            Aniversario = aniversario;
-            Sexo = sexo;
-            IsGrupo = isGrupo;
-            Cadastro = cadastro;
-            Mensagens = mensagens;
-            Membros = membros;
-            Eventos = eventos;
-        }
-
         public long Id { get; set; }
         public long Numero { get; set; }
         public string Nome { get; set; }
