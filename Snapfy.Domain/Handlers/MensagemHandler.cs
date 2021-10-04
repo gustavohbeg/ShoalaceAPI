@@ -5,6 +5,7 @@ using Shoalace.Domain.Enums;
 using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Responses;
 using Shoalace.Domain.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,18 +33,18 @@ namespace Shoalace.Domain.Handlers
                 retorno.AddNotifications(comando);
                 return retorno;
             }
-            Usuario usuarioOrigem = null;
+
+            Usuario usuarioOrigem = await _usuarioRepository.ObterPorId(comando.UsuarioId);
+            if (usuarioOrigem == null)
+            {
+                retorno.AddNotification("Mensagem.UsuarioId", "Usuario não encontrado");
+                return retorno;
+            }
+
             Usuario usuarioDestino = null;
             Grupo grupo = null;
             if (comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0)
             {
-                usuarioOrigem = await _usuarioRepository.ObterPorId(comando.UsuarioId);
-                if (usuarioOrigem == null)
-                {
-                    retorno.AddNotification("Mensagem.UsuarioId", "Usuario não encontrado");
-                    return retorno;
-                }
-
                 usuarioDestino = await _usuarioRepository.ObterPorId(comando.UsuarioDestinoId.Value);
                 if (usuarioDestino == null)
                 {
@@ -69,7 +70,7 @@ namespace Shoalace.Domain.Handlers
             {
                 await _mensagemRepository.Adicionar(mensagem);
                 await _mensagemRepository.Commit();
-                retorno.PreencherRetorno(mensagem);
+                retorno.PreencherRetorno(new MensagemResponse(mensagem.Id, mensagem.Texto, mensagem.UsuarioId, mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro ));
                 if (mensagem.UsuarioDestinoId != null && !string.IsNullOrEmpty(usuarioDestino.Token))
                 {
                     ExpoService.SendNotification(new List<string>() { usuarioDestino.Token }, usuarioOrigem.Nome, mensagem.Texto);
@@ -77,8 +78,13 @@ namespace Shoalace.Domain.Handlers
                 else if (mensagem.GrupoId != null)
                 {
                     List<string> tokens = new();
-                    foreach (Membro membro in grupo.Membros) tokens.Add(membro.Usuario.Token);
-                    ExpoService.SendNotification(tokens, usuarioOrigem.Nome, mensagem.Texto);
+                    foreach (Membro membro in grupo.Membros)
+                    {
+                        if (!string.IsNullOrEmpty(membro.Usuario.Token))
+                            tokens.Add(membro.Usuario.Token);
+                    }
+                    if (tokens.Count > 0)
+                        ExpoService.SendNotification(tokens, usuarioOrigem.Nome, mensagem.Texto);
                 }
             }
 
@@ -141,7 +147,7 @@ namespace Shoalace.Domain.Handlers
             {
                 _mensagemRepository.Atualizar(mensagem);
                 await _mensagemRepository.Commit();
-                retorno.PreencherRetorno(mensagem);
+                retorno.PreencherRetorno(new MensagemResponse(mensagem.Id, mensagem.Texto, mensagem.UsuarioId, mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro));
             }
 
             return retorno;
