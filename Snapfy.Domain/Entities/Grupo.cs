@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Shoalace.Domain.Entities
 {
@@ -31,15 +32,16 @@ namespace Shoalace.Domain.Entities
         public IReadOnlyCollection<Membro> Membros { get => _membros; }
         public IReadOnlyCollection<Evento> Eventos { get => _eventos; }
 
+        public bool MembroExiste(long usuarioId) => _membros.Any(m => m.UsuarioId == usuarioId);
         public void AdicionarMembro(Membro membro)
         {
-            if (!_membros.Contains(membro))
+            if (!MembroExiste(membro.UsuarioId))
                 _membros.Add(membro);
         }
 
         public void RemoverMembro(Membro membro)
         {
-            if (_membros.Contains(membro))
+            if (MembroExiste(membro.UsuarioId))
                 _membros.Remove(membro);
         }
     }

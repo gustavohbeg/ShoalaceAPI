@@ -58,9 +58,10 @@ namespace Shoalace.Domain.Entities
         public bool DiaInteiro { get => Hora == null; }
         public int Confirmados { get => _membrosEvento.Where(m => m.Comparecer == EComparecer.Sim).Count(); }
 
+        public bool MembroEventoExiste(long usuarioId) => _membrosEvento.Any(m => m.UsuarioId == usuarioId);
         public void AdicionarMembroEvento(MembroEvento membroEvento)
         {
-            if (!_membrosEvento.Any(m => m.UsuarioId == membroEvento.UsuarioId))
+            if (!MembroEventoExiste(membroEvento.UsuarioId))
                 _membrosEvento.Add(membroEvento);
         }
 
@@ -71,7 +72,7 @@ namespace Shoalace.Domain.Entities
 
         public void RemoverMembro(MembroEvento membroEvento)
         {
-            if (_membrosEvento.Any(m => m.UsuarioId == membroEvento.UsuarioId))
+            if (MembroEventoExiste(membroEvento.UsuarioId))
                 _membrosEvento.Remove(membroEvento);
         }
     }

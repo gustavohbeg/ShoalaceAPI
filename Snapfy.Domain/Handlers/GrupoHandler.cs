@@ -6,6 +6,7 @@ using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
 using Shoalace.Domain.Interfaces.Services;
+using Shoalace.Domain.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,11 +15,13 @@ namespace Shoalace.Domain.Handlers
     public class GrupoHandler : IHandler<NovoGrupoCommand>, IHandler<EditarGrupoCommand>
     {
         private readonly IGrupoRepository _grupoRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
         private readonly IFileUpload _fileUpload;
 
-        public GrupoHandler(IGrupoRepository grupoRepository, IFileUpload fileUpload)
+        public GrupoHandler(IGrupoRepository grupoRepository, IUsuarioRepository usuarioRepository, IFileUpload fileUpload)
         {
             _grupoRepository = grupoRepository;
+            _usuarioRepository = usuarioRepository;
             _fileUpload = fileUpload;
         }
         public async Task<IResultadoCommand> ManipularAsync(NovoGrupoCommand comando)
@@ -35,16 +38,31 @@ namespace Shoalace.Domain.Handlers
             Grupo grupo = new(comando.Nome, comando.Foto);
             retorno.AddNotifications(grupo);
 
+            List<string> tokens = new();
             foreach (MembroCommand membroCommand in comando.Membros)
             {
-                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, 0, membroCommand.Admin));
+                if (!grupo.MembroExiste(membroCommand.UsuarioId))
+                {
+                    Usuario usuario = await _usuarioRepository.ObterPorId(membroCommand.UsuarioId);
+                    if (usuario == null)
+                    {
+                        retorno.AddNotification("Membro.UsuarioId", "Usuario não encontrado");
+                        return retorno;
+                    }
+                    grupo.AdicionarMembro(new(membroCommand.UsuarioId, 0, membroCommand.Admin));
+
+                    if (!string.IsNullOrEmpty(usuario.Token))
+                        tokens.Add(usuario.Token);
+                }
             }
-            
+
             if (retorno.Valid)
             {
                 await _grupoRepository.Adicionar(grupo);
                 await _grupoRepository.Commit();
                 retorno.PreencherRetorno(grupo);
+                if (tokens.Count > 0)
+                    ExpoService.SendNotification(tokens, grupo.Nome, "Você foi adicionado no grupo");
             }
 
             return retorno;
@@ -69,9 +87,22 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
+            List<string> tokens = new();
             foreach (MembroCommand membroCommand in comando.Membros)
             {
-                grupo.AdicionarMembro(new Membro(membroCommand.UsuarioId, comando.Id, membroCommand.Admin));
+                if (!grupo.MembroExiste(membroCommand.UsuarioId))
+                {
+                    Usuario usuario = await _usuarioRepository.ObterPorId(membroCommand.UsuarioId);
+                    if (usuario == null)
+                    {
+                        retorno.AddNotification("Membro.UsuarioId", "Usuario não encontrado");
+                        return retorno;
+                    }
+                    grupo.AdicionarMembro(new(membroCommand.UsuarioId, 0, membroCommand.Admin));
+
+                    if (!string.IsNullOrEmpty(usuario.Token))
+                        tokens.Add(usuario.Token);
+                }
             }
 
             grupo.PreencherGrupo(comando.Nome, comando.Foto);
@@ -82,6 +113,8 @@ namespace Shoalace.Domain.Handlers
                 _grupoRepository.Atualizar(grupo);
                 await _grupoRepository.Commit();
                 retorno.PreencherRetorno(grupo);
+                if (tokens.Count > 0)
+                    ExpoService.SendNotification(tokens, grupo.Nome, "Você foi adicionado no grupo");
             }
 
             return retorno;

@@ -2,10 +2,12 @@
 using Shoalace.Domain.Commands.Evento;
 using Shoalace.Domain.Commands.Usuario;
 using Shoalace.Domain.Entities;
+using Shoalace.Domain.Enums;
 using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
 using Shoalace.Domain.Interfaces.Services;
+using Shoalace.Domain.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,12 +18,14 @@ namespace Shoalace.Domain.Handlers
     {
         private readonly IEventoRepository _eventoRepository;
         private readonly IGrupoRepository _grupoRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
         private readonly IFileUpload _fileUpload;
 
-        public EventoHandler(IEventoRepository eventoRepository, IGrupoRepository grupoRepository, IFileUpload fileUpload)
+        public EventoHandler(IEventoRepository eventoRepository, IGrupoRepository grupoRepository, IUsuarioRepository usuarioRepository, IFileUpload fileUpload)
         {
             _eventoRepository = eventoRepository;
             _grupoRepository = grupoRepository;
+            _usuarioRepository = usuarioRepository;
             _fileUpload = fileUpload;
         }
         public async Task<IResultadoCommand> ManipularAsync(NovoEventoCommand comando)
@@ -46,9 +50,24 @@ namespace Shoalace.Domain.Handlers
 
             Evento evento = new(comando.Titulo, comando.Descricao, comando.Local, comando.Valor, comando.Latitude, comando.Longitude, comando.Data, comando.Hora, comando.Tipo, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Foto, comando.Categoria);
 
+            List<string> tokens = new();
+
             foreach (MembroEventoCommand membroCommand in comando.Membros)
             {
-                evento.AdicionarMembroEvento(new MembroEvento(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
+                if (!evento.MembroEventoExiste(membroCommand.UsuarioId))
+                {
+                    Usuario usuario = await _usuarioRepository.ObterPorId(membroCommand.UsuarioId);
+                    if (usuario == null)
+                    {
+                        retorno.AddNotification("Membro.UsuarioId", "Usuario não encontrado");
+                        return retorno;
+                    }
+
+                    evento.AdicionarMembroEvento(new(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
+
+                    if (!string.IsNullOrEmpty(usuario.Token))
+                        tokens.Add(usuario.Token);
+                }
             }
 
             retorno.AddNotifications(evento);
@@ -58,6 +77,25 @@ namespace Shoalace.Domain.Handlers
                 await _eventoRepository.Adicionar(evento);
                 await _eventoRepository.Commit();
                 retorno.PreencherRetorno(evento);
+                if (tokens.Count > 0)
+                    ExpoService.SendNotification(tokens, evento.Titulo, "Você foi convidado para um novo evento");
+
+                if (evento.Categoria != ECategoria.Privado)
+                {
+                    List<string> tokensProximos = new();
+                    List<Usuario> usuariosProximos = await _usuarioRepository.ObterTodos(); //FILTRAR SOMENTE OS PROXIMOS
+                    foreach (Usuario usuarioProximo in usuariosProximos)
+                    {
+                        if (!evento.MembroEventoExiste(usuarioProximo.Id))
+                        {
+                            if (!string.IsNullOrEmpty(usuarioProximo.Token))
+                                tokens.Add(usuarioProximo.Token);
+                        }
+
+                        if (tokensProximos.Count > 0)
+                            ExpoService.SendNotification(tokensProximos, evento.Titulo, "Encontramos esse evento perto de você");
+                    }
+                }
             }
 
             return retorno;
@@ -91,9 +129,24 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
+            List<string> tokens = new();
+
             foreach (MembroEventoCommand membroCommand in comando.Membros)
             {
-                evento.AdicionarMembroEvento(new MembroEvento(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
+                if (!evento.MembroEventoExiste(membroCommand.UsuarioId))
+                {
+                    Usuario usuario = await _usuarioRepository.ObterPorId(membroCommand.UsuarioId);
+                    if (usuario == null)
+                    {
+                        retorno.AddNotification("MembroEvento.UsuarioId", "Usuario não encontrado");
+                        return retorno;
+                    }
+
+                    evento.AdicionarMembroEvento(new(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
+
+                    if (!string.IsNullOrEmpty(usuario.Token))
+                        tokens.Add(usuario.Token);
+                }
             }
 
             evento.PreencherEvento(comando.Titulo, comando.Descricao, comando.Local, comando.Valor, comando.Latitude, comando.Longitude, comando.Data, comando.Hora, comando.Tipo, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Foto, comando.Categoria);
@@ -104,6 +157,25 @@ namespace Shoalace.Domain.Handlers
                 _eventoRepository.Atualizar(evento);
                 await _eventoRepository.Commit();
                 retorno.PreencherRetorno(evento);
+                if (tokens.Count > 0)
+                    ExpoService.SendNotification(tokens, evento.Titulo, "Você foi convidado para um novo evento");
+
+                if (evento.Categoria != ECategoria.Privado)
+                {
+                    List<string> tokensProximos = new();
+                    List<Usuario> usuariosProximos = await _usuarioRepository.ObterTodos(); //FILTRAR SOMENTE OS PROXIMOS
+                    foreach (Usuario usuarioProximo in usuariosProximos)
+                    {
+                        if (!evento.MembroEventoExiste(usuarioProximo.Id))
+                        {
+                            if (!string.IsNullOrEmpty(usuarioProximo.Token))
+                                tokens.Add(usuarioProximo.Token);
+                        }
+
+                        if (tokensProximos.Count > 0)
+                            ExpoService.SendNotification(tokensProximos, evento.Titulo, "Encontramos esse evento perto de você");
+                    }
+                }
             }
 
             return retorno;
