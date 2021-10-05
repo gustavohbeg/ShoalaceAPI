@@ -21,7 +21,10 @@ namespace Shoalace.Domain.Entities
             Alterado = DateTime.Now;
             Nome = nome;
             Foto = foto;
+        }
 
+        public void Validar()
+        {
             if (string.IsNullOrEmpty(Nome))
                 AddNotification("Grupo.Nome", "Nome do grupo é obrigatório");
         }

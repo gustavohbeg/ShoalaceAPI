@@ -30,13 +30,15 @@ namespace Shoalace.Domain.Entities
             GrupoId = grupoId;
             Foto = foto;
             Categoria = categoria;
+        }
 
+        public void Validar()
+        {
             if (string.IsNullOrEmpty(Titulo))
                 AddNotification("Evento.Titulo", "Titulo do evento é obrigatório");
 
             if (Data == DateTime.MinValue)
                 AddNotification("Evento.Data", "Data do evento é obrigatório");
-
         }
 
         public string Titulo { get; private set; }

@@ -17,6 +17,15 @@ namespace Shoalace.Domain.Entities
             Admin = admin;
         }
 
+        public void Validar()
+        {
+            if (UsuarioId == 0)
+                AddNotification("Membro.UsuarioId", "Usuario é obrigatório");
+
+            if (GrupoId == 0)
+                AddNotification("Membro.GrupoId", "Grupo é obrigatório");
+        }
+
         public long UsuarioId { get; private set; }
         public Usuario Usuario { get; private set; }
         public long GrupoId { get; private set; }

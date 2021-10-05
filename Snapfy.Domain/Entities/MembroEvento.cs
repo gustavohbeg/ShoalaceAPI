@@ -19,6 +19,15 @@ namespace Shoalace.Domain.Entities
             Admin = admin;
         }
 
+        public void Validar()
+        {
+            if (UsuarioId <= 0)
+                AddNotification("MembroEvento.UsuarioId", "Usuario é obrigatório");
+
+            if (EventoId <= 0)
+                AddNotification("MembroEvento.EventoId", "Evento é obrigatório");
+        }
+
         public long UsuarioId { get; private set; }
         public Usuario Usuario { get; private set; }
         public long EventoId { get; private set; }

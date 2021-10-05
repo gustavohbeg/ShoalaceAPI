@@ -25,6 +25,15 @@ namespace Shoalace.Domain.Entities
             Status = status;
         }
 
+        public void Validar()
+        {
+            if (UsuarioId <= 0)
+                AddNotification("Mensagem.UsuarioId", "Usuario de origem é obrigatório");
+
+            if (UsuarioDestinoId <= 0 && GrupoId <= 0)
+                AddNotification("Mensagem.Destino", "Destino é obrigatório");
+        }
+
         public string Texto { get; private set; }
         public long UsuarioId { get; private set; }
         public Usuario Usuario { get; private set; }

@@ -23,7 +23,10 @@ namespace Shoalace.Domain.Entities
             Latitude = latitude;
             Longitude = longitude;
             Token = token;
+        }
 
+        public void Validar()
+        {
             if (string.IsNullOrEmpty(Nome)) AddNotification("Usuario.Nome", "Nome é obrigatório");
             if (string.IsNullOrEmpty(Token)) AddNotification("Usuario.Token", "Token é obrigatório");
         }

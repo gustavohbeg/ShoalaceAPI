@@ -36,6 +36,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             Grupo grupo = new(comando.Nome, comando.Foto);
+            grupo.Validar();
             retorno.AddNotifications(grupo);
 
             List<string> tokens = new();
@@ -106,6 +107,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             grupo.PreencherGrupo(comando.Nome, comando.Foto);
+            grupo.Validar();
             retorno.AddNotifications(grupo);
 
             if (retorno.Valid)
