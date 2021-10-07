@@ -28,6 +28,8 @@ namespace Shoalace.Domain.Handlers
             _usuarioRepository = usuarioRepository;
             _fileUpload = fileUpload;
         }
+
+        //NOVO EVENTO
         public async Task<IResultadoCommand> ManipularAsync(NovoEventoCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -65,7 +67,7 @@ namespace Shoalace.Domain.Handlers
 
                     evento.AdicionarMembroEvento(new(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
 
-                    if (!string.IsNullOrEmpty(usuario.Token))
+                    if (!string.IsNullOrEmpty(usuario.Token) && !membroCommand.Admin)
                         tokens.Add(usuario.Token);
                 }
             }
@@ -101,6 +103,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //EDITAR EVENTO
         public async Task<IResultadoCommand> ManipularAsync(EditarEventoCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -144,7 +147,7 @@ namespace Shoalace.Domain.Handlers
 
                     evento.AdicionarMembroEvento(new(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
 
-                    if (!string.IsNullOrEmpty(usuario.Token))
+                    if (!string.IsNullOrEmpty(usuario.Token) && !membroCommand.Admin)
                         tokens.Add(usuario.Token);
                 }
             }
@@ -182,6 +185,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //EXCLUIR EVENTO
         public async Task<IResultadoCommand> ManipularAsync(ExcluirCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -211,6 +215,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //NOVO LISTA EVENTO
         public async Task<IResultadoCommand> ManipularAsync(NovoListaEventoCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -241,6 +246,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //INSERIR MEMBRO
         public async Task<IResultadoCommand> ManipularAsync(InserirMembroEventoCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -281,6 +287,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //EDITAR MEMBRO
         public async Task<IResultadoCommand> ManipularAsync(EditarMembroEventoCommand comando)
         {
             ResultadoCommand retorno = new();

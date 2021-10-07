@@ -24,6 +24,8 @@ namespace Shoalace.Domain.Handlers
             _usuarioRepository = usuarioRepository;
             _fileUpload = fileUpload;
         }
+
+        //NOVO GRUPO
         public async Task<IResultadoCommand> ManipularAsync(NovoGrupoCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -52,7 +54,7 @@ namespace Shoalace.Domain.Handlers
                     }
                     grupo.AdicionarMembro(new(membroCommand.UsuarioId, 0, membroCommand.Admin));
 
-                    if (!string.IsNullOrEmpty(usuario.Token))
+                    if (!string.IsNullOrEmpty(usuario.Token) && !membroCommand.Admin)
                         tokens.Add(usuario.Token);
                 }
             }
@@ -69,6 +71,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //EDITAR GRUPO
         public async Task<IResultadoCommand> ManipularAsync(EditarGrupoCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -101,7 +104,7 @@ namespace Shoalace.Domain.Handlers
                     }
                     grupo.AdicionarMembro(new(membroCommand.UsuarioId, 0, membroCommand.Admin));
 
-                    if (!string.IsNullOrEmpty(usuario.Token))
+                    if (!string.IsNullOrEmpty(usuario.Token) && !membroCommand.Admin)
                         tokens.Add(usuario.Token);
                 }
             }
@@ -122,6 +125,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //EXCLUIR GRUPO
         public async Task<IResultadoCommand> ManipularAsync(ExcluirCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -151,6 +155,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //NOVO LISTA GRUPO
         public async Task<IResultadoCommand> ManipularAsync(NovoListaGrupoCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -180,6 +185,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //NOVO MEMBRO
         public async Task<IResultadoCommand> ManipularAsync(NovoMembroCommand comando)
         {
             ResultadoCommand retorno = new();

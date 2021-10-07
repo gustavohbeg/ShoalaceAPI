@@ -23,6 +23,8 @@ namespace Shoalace.Domain.Handlers
             _usuarioRepository = usuarioRepository;
             _grupoRepository = grupoRepository;
         }
+
+        //NOVO MENSAGEM
         public async Task<IResultadoCommand> ManipularAsync(NovoMensagemCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -64,6 +66,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             Mensagem mensagem = new(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0 ? comando.UsuarioDestinoId : null, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Audio, comando.Foto, EStatus.Enviado);
+            mensagem.Validar();
             retorno.AddNotifications(mensagem);
 
             if (retorno.Valid)
@@ -80,17 +83,17 @@ namespace Shoalace.Domain.Handlers
                     List<string> tokens = new();
                     foreach (Membro membro in grupo.Membros)
                     {
-                        if (!string.IsNullOrEmpty(membro.Usuario.Token))
+                        if (!string.IsNullOrEmpty(membro.Usuario.Token) && membro.UsuarioId != usuarioOrigem.Id)
                             tokens.Add(membro.Usuario.Token);
                     }
                     if (tokens.Count > 0)
                         ExpoService.SendNotification(tokens, usuarioOrigem.Nome, mensagem.Texto);
                 }
             }
-
             return retorno;
         }
 
+        //EDITAR MENSAGEM
         public async Task<IResultadoCommand> ManipularAsync(EditarMensagemCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -102,19 +105,16 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            Usuario usuarioOrigem = null;
-            Usuario usuarioDestino = null;
-            Grupo grupo = null;
             if (comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0)
             {
-                usuarioOrigem = await _usuarioRepository.ObterPorId(comando.UsuarioId);
+                Usuario usuarioOrigem = await _usuarioRepository.ObterPorId(comando.UsuarioId);
                 if (usuarioOrigem == null)
                 {
                     retorno.AddNotification("Mensagem.UsuarioId", "Usuario não encontrado");
                     return retorno;
                 }
 
-                usuarioDestino = await _usuarioRepository.ObterPorId(comando.UsuarioDestinoId.Value);
+                Usuario usuarioDestino = await _usuarioRepository.ObterPorId(comando.UsuarioDestinoId.Value);
                 if (usuarioDestino == null)
                 {
                     retorno.AddNotification("usuarioDestino.UsuarioId", "Usuario não encontrado");
@@ -123,7 +123,7 @@ namespace Shoalace.Domain.Handlers
             }
             else if (comando.GrupoId != null && comando.GrupoId > 0)
             {
-                grupo = await _grupoRepository.ObterPorId(comando.GrupoId.Value);
+                Grupo grupo = await _grupoRepository.ObterPorId(comando.GrupoId.Value);
 
                 if (grupo == null)
                 {
@@ -153,6 +153,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //EXCLUIR MENSAGEM
         public async Task<IResultadoCommand> ManipularAsync(ExcluirCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -182,6 +183,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //NOVO LISTA MENSAGEM
         public async Task<IResultadoCommand> ManipularAsync(NovoListaMensagemCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -193,13 +195,57 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            Mensagem mensagem;
             List<Mensagem> mensagens = new();
             foreach (NovoMensagemCommand mensagemCommand in comando.Mensagens)
             {
-                mensagem = new(mensagemCommand.Texto, mensagemCommand.UsuarioId, mensagemCommand.UsuarioDestinoId, mensagemCommand.GrupoId, mensagemCommand.Audio, mensagemCommand.Foto, EStatus.Enviado);
+                List<string> tokens = new();
+
+                Usuario usuarioOrigem = await _usuarioRepository.ObterPorId(mensagemCommand.UsuarioId);
+                if (usuarioOrigem == null)
+                {
+                    retorno.AddNotification("Mensagem.UsuarioId", "Usuario não encontrado");
+                    return retorno;
+                }
+
+                Usuario usuarioDestino = null;
+                Grupo grupo = null;
+                if (mensagemCommand.UsuarioDestinoId != null && mensagemCommand.UsuarioDestinoId > 0)
+                {
+                    usuarioDestino = await _usuarioRepository.ObterPorId(mensagemCommand.UsuarioDestinoId.Value);
+                    if (usuarioDestino == null)
+                    {
+                        retorno.AddNotification("Mensagem.UsuarioDestinoId", "Usuario não encontrado");
+                        return retorno;
+                    }
+                }
+                else if (mensagemCommand.GrupoId != null && mensagemCommand.GrupoId > 0)
+                {
+                    grupo = await _grupoRepository.ObterPorId(mensagemCommand.GrupoId.Value);
+
+                    if (grupo == null)
+                    {
+                        retorno.AddNotification("Mensagem.GrupoId", "Grupo não encontrado");
+                        return retorno;
+                    }
+                }
+
+                Mensagem mensagem = new(mensagemCommand.Texto, mensagemCommand.UsuarioId, mensagemCommand.UsuarioDestinoId != null && mensagemCommand.UsuarioDestinoId > 0 ? mensagemCommand.UsuarioDestinoId : null, mensagemCommand.GrupoId != null && mensagemCommand.GrupoId > 0 ? mensagemCommand.GrupoId : null, mensagemCommand.Audio, mensagemCommand.Foto, EStatus.Enviado);
                 retorno.AddNotifications(mensagem);
                 mensagens.Add(mensagem);
+                if (mensagem.UsuarioDestinoId != null && !string.IsNullOrEmpty(usuarioDestino.Token))
+                {
+                    ExpoService.SendNotification(new List<string>() { usuarioDestino.Token }, usuarioOrigem.Nome, mensagem.Texto);
+                }
+                else if (mensagem.GrupoId != null)
+                {
+                    foreach (Membro membro in grupo.Membros)
+                    {
+                        if (!string.IsNullOrEmpty(membro.Usuario.Token) && membro.UsuarioId != usuarioOrigem.Id)
+                            tokens.Add(membro.Usuario.Token);
+                    }
+                    if (tokens.Count > 0)
+                        ExpoService.SendNotification(tokens, usuarioOrigem.Nome, mensagem.Texto);
+                }
             }
 
             if (retorno.Valid)

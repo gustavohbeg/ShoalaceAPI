@@ -20,6 +20,8 @@ namespace Shoalace.Domain.Handlers
             _usuarioRepository = usuarioRepository;
             _fileUpload = fileUpload;
         }
+
+        //NOVO USUARIO
         public async Task<IResultadoCommand> ManipularAsync(NovoUsuarioCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -46,6 +48,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //EDITAR USUARIO
         public async Task<IResultadoCommand> ManipularAsync(EditarUsuarioCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -79,6 +82,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //ATUALIZAR VISTO
         public async Task<IResultadoCommand> ManipularAsync(AtualizarVistoCommand comando)
         {
             ResultadoCommand retorno = new();
@@ -110,6 +114,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
+        //EXCLUIR USUARIO
         public async Task<IResultadoCommand> ManipularAsync(ExcluirCommand comando)
         {
             ResultadoCommand retorno = new();

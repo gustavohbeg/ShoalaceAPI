@@ -9,7 +9,7 @@ namespace Shoalace.Domain.Services
 {
     public static class Comlete
     {
-        private static string API_KEY = "0b64ebf4-d310-48da-90be-3de615fc714b";
+        private static readonly string API_KEY = "0b64ebf4-d310-48da-90be-3de615fc714b";
 
         public static void SendCode(string number, string code)
         {

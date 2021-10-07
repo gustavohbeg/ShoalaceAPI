@@ -13,8 +13,8 @@ namespace Shoalace.Infra.Services
     {
         public string UploadBase64Image(string base64, string container)
         {
-            var fileName = Guid.NewGuid().ToString() + ".png";
-
+            string fileName = Guid.NewGuid().ToString() + ".png";
+            
             //var data = new Regex(@"");
 
             byte[] imageBytes = Convert.FromBase64String(base64);
