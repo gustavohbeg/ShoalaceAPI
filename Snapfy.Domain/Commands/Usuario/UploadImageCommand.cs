@@ -11,11 +11,9 @@ namespace Shoalace.Domain.Commands.Usuario
     {
         public string Base64 { get; set; }
 
-        public override void Validate()
-        {
-            AddNotifications(new Contract()
+        public override void Validate() =>
+            AddNotifications(new Contract<Command>()
                 .IsNotNullOrEmpty(Base64, "Base64.Base64", "Base64 é obrigatório.")
-                );
-        }
+            );
     }
 }

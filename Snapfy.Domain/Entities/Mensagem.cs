@@ -1,4 +1,7 @@
-﻿using Shoalace.Domain.Enums;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Enums;
+using Shoalace.Domain.Validations;
 using System;
 using System.Collections.Generic;
 
@@ -7,13 +10,13 @@ namespace Shoalace.Domain.Entities
     public class Mensagem : Base
     {
         private readonly List<StatusMensagem> _statusMensagens;
-        public Mensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatus status) : base()
+        public Mensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatusMensagem status) : base()
         {
             _statusMensagens = new List<StatusMensagem>();
             PreencherMensagem(texto, usuarioId, usuarioDestinoId, grupoId, audio, foto, status);
         }
 
-        public void PreencherMensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatus status)
+        public void PreencherMensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatusMensagem status)
         {
             Alterado = DateTime.Now;
             Texto = texto;
@@ -25,14 +28,12 @@ namespace Shoalace.Domain.Entities
             Status = status;
         }
 
-        public void Validar()
-        {
-            if (UsuarioId <= 0)
-                AddNotification("Mensagem.UsuarioId", "Usuario de origem é obrigatório");
-
-            if (UsuarioDestinoId <= 0 && GrupoId <= 0)
-                AddNotification("Mensagem.Destino", "Destino é obrigatório");
-        }
+        public void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                MensagemValidation.ValidateUsuarioId(UsuarioId),
+                MensagemValidation.ValidateDestino(UsuarioDestinoId, GrupoId)
+            });
 
         public string Texto { get; private set; }
         public long UsuarioId { get; private set; }
@@ -43,7 +44,7 @@ namespace Shoalace.Domain.Entities
         public Grupo Grupo { get; private set; }
         public string Audio { get; private set; }
         public string Foto { get; private set; }
-        public EStatus Status { get; private set; }
+        public EStatusMensagem Status { get; private set; }
 
         public IReadOnlyCollection<StatusMensagem> StatusMensagens { get => _statusMensagens; }
     }

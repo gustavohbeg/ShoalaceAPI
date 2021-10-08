@@ -3,7 +3,7 @@ using Shoalace.Domain.Interfaces.Commands;
 
 namespace Shoalace.Domain.Commands
 {
-    public class ResultadoCommand : Notifiable, IResultadoCommand
+    public class ResultadoCommand : Notifiable<Notification>, IResultadoCommand
     {
         public ResultadoCommand()
         {
@@ -16,12 +16,9 @@ namespace Shoalace.Domain.Commands
         }
 
         public object Retorno { get; private set; }
-        public bool Valido() => Valid;
-        public bool Invalido() => Invalid;
+        public bool Valid { get => IsValid; }
+        public bool Invalid { get => !IsValid; }
 
-        public void PreencherRetorno(object retorno)
-        {
-            Retorno = retorno;
-        }
+        public void PreencherRetorno(object retorno) => Retorno = retorno;
     }
 }

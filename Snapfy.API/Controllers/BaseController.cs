@@ -20,12 +20,7 @@ namespace Shoalace.API.Controllers
         /// Este método é utilizado para dar um retorno verificando se tem alguma notificação.
         /// </summary>
         /// <returns>Ou retorna um BadRequest ou Ok</returns>
-        protected IActionResult RetornoController(IResultadoCommand comando)
-        {
-            if (comando.Invalido())
-                return BadRequest(comando);
-
-            return Ok(comando);
-        }
+        protected IActionResult RetornoController(IResultadoCommand comando) =>
+            comando.Invalid ? BadRequest(comando) : Ok(comando);
     }
 }

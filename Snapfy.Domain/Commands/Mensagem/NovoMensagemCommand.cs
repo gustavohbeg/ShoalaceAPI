@@ -1,4 +1,7 @@
-﻿using Shoalace.Domain.Enums;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Enums;
+using Shoalace.Domain.Validations;
 
 namespace Shoalace.Domain.Commands.Mensagem
 {
@@ -10,11 +13,13 @@ namespace Shoalace.Domain.Commands.Mensagem
         public long? GrupoId { get; set; }
         public string Audio { get; set; }
         public string Foto { get; set; }
-        public EStatus Status { get; set; }
+        public EStatusMensagem Status { get; set; }
 
-        public override void Validate()
-        {
-
-        }
+        public override void Validate() =>
+           AddNotifications(new Contract<Notification>[]
+           {
+                MensagemValidation.ValidateUsuarioId(UsuarioId),
+                MensagemValidation.ValidateDestino(UsuarioDestinoId, GrupoId)
+           });
     }
 }

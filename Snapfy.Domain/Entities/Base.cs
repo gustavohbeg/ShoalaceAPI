@@ -3,7 +3,7 @@ using System;
 
 namespace Shoalace.Domain.Entities
 {
-    public abstract class Base : Notifiable
+    public abstract class Base : Notifiable<Notification>
     {
         public Base()
         {

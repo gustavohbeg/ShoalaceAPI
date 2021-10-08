@@ -20,14 +20,7 @@ namespace Shoalace.Domain.Services
              new string[] { number }  // Receivers: Numero de telefone que vai ser enviado o SMS.
             );
 
-            if (result.Success)
-            {
-                Console.WriteLine("A mensagem foi enviada com sucesso.");
-            }
-            else
-            {
-                Console.WriteLine("A mensagem não pode ser enviada. Detalhes: " + result.Message);
-            }
+            Console.WriteLine(result.Success ? "A mensagem foi enviada com sucesso." : "A mensagem não pode ser enviada. Detalhes: " + result.Message);
         }
     }
 }

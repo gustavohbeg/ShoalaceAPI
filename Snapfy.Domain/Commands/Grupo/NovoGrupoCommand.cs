@@ -1,5 +1,7 @@
-﻿using Flunt.Validations;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
 using Shoalace.Domain.Entities;
+using Shoalace.Domain.Validations;
 using System.Collections.Generic;
 
 namespace Shoalace.Domain.Commands.Grupo
@@ -10,11 +12,10 @@ namespace Shoalace.Domain.Commands.Grupo
         public string Foto { get; set; }
         public List<MembroCommand> Membros { get; set; }
 
-        public override void Validate()
-        {
-            AddNotifications(new Contract()
-                .IsNotNullOrEmpty(Nome, "Grupo.Nome", "Nome é obrigatório.")
-                );
-        }
+        public override void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                GrupoValidation.ValidateNome(Nome),
+            });
     }
 }

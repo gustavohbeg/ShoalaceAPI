@@ -71,7 +71,7 @@ namespace Shoalace.Domain.Handlers
                         tokens.Add(usuario.Token);
                 }
             }
-            evento.Validar();
+            evento.Validate();
             retorno.AddNotifications(evento);
 
             if (retorno.Valid)
@@ -153,7 +153,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             evento.PreencherEvento(comando.Titulo, comando.Descricao, comando.Local, comando.Valor, comando.Latitude, comando.Longitude, comando.Data, comando.Hora, comando.Tipo, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Foto, comando.Categoria);
-            evento.Validar();
+            evento.Validate();
             retorno.AddNotifications(evento);
 
             if (retorno.Valid)
@@ -247,7 +247,7 @@ namespace Shoalace.Domain.Handlers
         }
 
         //INSERIR MEMBRO
-        public async Task<IResultadoCommand> ManipularAsync(InserirMembroEventoCommand comando)
+        public async Task<IResultadoCommand> ManipularAsync(NovoMembroEventoCommand comando)
         {
             ResultadoCommand retorno = new();
 
@@ -320,7 +320,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
-        public async Task<IResultadoCommand> ManipularAsync(UploadImageCommand comando)
+        public IResultadoCommand Manipular(UploadImageCommand comando)
         {
             ResultadoCommand retorno = new();
             retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs"));

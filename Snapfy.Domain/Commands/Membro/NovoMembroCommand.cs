@@ -1,4 +1,6 @@
-﻿using Flunt.Validations;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Validations;
 
 namespace Shoalace.Domain.Commands.Grupo
 {
@@ -8,12 +10,11 @@ namespace Shoalace.Domain.Commands.Grupo
         public long GrupoId { get; set; }
         public bool Admin { get; private set; }
 
-        public override void Validate()
-        {
-            AddNotifications(new Contract()
-                 .AreNotEquals(UsuarioId, 0, "Membro.UsuarioId", "Usuario é obrigatório.")
-                 .AreNotEquals(GrupoId, 0, "Membro.GrupoId", "Grupo é obrigatório.")
-                 );
-        }
+        public override void Validate() =>
+              AddNotifications(new Contract<Notification>[]
+            {
+                MembroValidation.ValidateUsuarioId(UsuarioId),
+                MembroValidation.ValidateGrupoId(GrupoId),
+            });
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Validations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,11 +26,11 @@ namespace Shoalace.Domain.Entities
             Foto = foto;
         }
 
-        public void Validar()
-        {
-            if (string.IsNullOrEmpty(Nome))
-                AddNotification("Grupo.Nome", "Nome do grupo é obrigatório");
-        }
+        public void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                GrupoValidation.ValidateNome(Nome)
+            });
 
         public string Nome { get; private set; }
         public string Foto { get; private set; }

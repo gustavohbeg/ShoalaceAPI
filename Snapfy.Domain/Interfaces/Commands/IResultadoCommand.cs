@@ -2,7 +2,7 @@
 {
     public interface IResultadoCommand
     {
-        public bool Valido();
-        public bool Invalido();
+        public bool Valid { get; }
+        public bool Invalid { get; }
     }
 }

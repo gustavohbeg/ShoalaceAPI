@@ -109,7 +109,7 @@ namespace Shoalace.API.Controllers
         /// <returns>Retorna a url da foto inserido</returns>
         [HttpPost("image")]
         public async Task<IActionResult> UploadImage([FromBody] UploadImageCommand comando) =>
-            RetornoController(await _grupoHandler.ManipularAsync(comando));
+            RetornoController(_grupoHandler.Manipular(comando));
 
         /// <summary>
         /// Alterar um grupo

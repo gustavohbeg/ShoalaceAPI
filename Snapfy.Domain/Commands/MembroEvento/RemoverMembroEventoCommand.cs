@@ -1,20 +1,17 @@
 ﻿using Flunt.Notifications;
 using Flunt.Validations;
-using Shoalace.Domain.Entities;
 using Shoalace.Domain.Validations;
-using System.Collections.Generic;
 
-namespace Shoalace.Domain.Commands.Grupo
+namespace Shoalace.Domain.Commands
 {
-    public class EditarGrupoCommand : NovoGrupoCommand
+    public class RemoverMembroEventoCommand : Command
     {
         public long Id { get; set; }
 
         public override void Validate() =>
             AddNotifications(new Contract<Notification>[]
             {
-                GrupoValidation.ValidateId(Id),
-                GrupoValidation.ValidateNome(Nome)
+                MembroEventoValidation.ValidateId(Id),
             });
     }
 }

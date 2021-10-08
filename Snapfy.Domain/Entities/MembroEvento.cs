@@ -1,4 +1,7 @@
-﻿using Shoalace.Domain.Enums;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Enums;
+using Shoalace.Domain.Validations;
 using System;
 
 namespace Shoalace.Domain.Entities
@@ -19,14 +22,12 @@ namespace Shoalace.Domain.Entities
             Admin = admin;
         }
 
-        public void Validar()
-        {
-            if (UsuarioId <= 0)
-                AddNotification("MembroEvento.UsuarioId", "Usuario é obrigatório");
-
-            if (EventoId <= 0)
-                AddNotification("MembroEvento.EventoId", "Evento é obrigatório");
-        }
+        public void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                MembroEventoValidation.ValidateUsuarioId(UsuarioId),
+                MembroEventoValidation.ValidateEventoId(EventoId)
+            });
 
         public long UsuarioId { get; private set; }
         public Usuario Usuario { get; private set; }

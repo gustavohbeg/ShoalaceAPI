@@ -6,11 +6,9 @@ namespace Shoalace.Domain.Commands
     {
         public long Id { get; set; }
 
-        public override void Validate()
-        {
-            AddNotifications(new Contract()
+        public override void Validate() =>
+            AddNotifications(new Contract<Command>()
                 .AreNotEquals(Id, 0, "Id", "ID é obrigatório.")
             );
-        }
     }
 }

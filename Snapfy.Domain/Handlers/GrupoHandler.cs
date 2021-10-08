@@ -38,7 +38,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             Grupo grupo = new(comando.Nome, comando.Foto);
-            grupo.Validar();
+            grupo.Validate();
             retorno.AddNotifications(grupo);
 
             List<string> tokens = new();
@@ -110,7 +110,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             grupo.PreencherGrupo(comando.Nome, comando.Foto);
-            grupo.Validar();
+            grupo.Validate();
             retorno.AddNotifications(grupo);
 
             if (retorno.Valid)
@@ -219,7 +219,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
-        public async Task<IResultadoCommand> ManipularAsync(UploadImageCommand comando)
+        public IResultadoCommand Manipular(UploadImageCommand comando)
         {
             ResultadoCommand retorno = new();
             retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs"));

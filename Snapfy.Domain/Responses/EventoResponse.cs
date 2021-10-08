@@ -19,7 +19,7 @@ namespace Shoalace.Domain.Responses
         public double? Longitude { get; set; }
         public DateTime Data { get; set; }
         public DateTime? Hora { get; set; }
-        public ETipo Tipo { get; set; }
+        public ETipoEvento Tipo { get; set; }
         public long? GrupoId { get; set; }
         public string Foto { get; set; }
         public ECategoria Categoria { get; set; }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Validations;
+using System;
 
 namespace Shoalace.Domain.Entities
 {
@@ -17,14 +20,12 @@ namespace Shoalace.Domain.Entities
             Admin = admin;
         }
 
-        public void Validar()
-        {
-            if (UsuarioId == 0)
-                AddNotification("Membro.UsuarioId", "Usuario é obrigatório");
-
-            if (GrupoId == 0)
-                AddNotification("Membro.GrupoId", "Grupo é obrigatório");
-        }
+        public void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                MembroValidation.ValidateUsuarioId(UsuarioId),
+                MembroValidation.ValidateGrupoId(GrupoId)
+            });
 
         public long UsuarioId { get; private set; }
         public Usuario Usuario { get; private set; }

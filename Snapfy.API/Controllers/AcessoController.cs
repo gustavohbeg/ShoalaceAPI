@@ -69,7 +69,7 @@ namespace Shoalace.API.Controllers
         /// <returns>Retorna se deu sucesso</returns>
         [HttpPost("ChecarToken")]
         public async Task<IActionResult> ChecarToken([FromBody] ChecarTokenCommand comando) =>
-            RetornoController(await _acessoHandler.ManipularAsync(comando));
+            RetornoController(_acessoHandler.Manipular(comando));
 
         /// <summary>
         /// Alterar um acesso
@@ -93,6 +93,5 @@ namespace Shoalace.API.Controllers
                     Id = id,
                 }
             ));
-
     }
 }

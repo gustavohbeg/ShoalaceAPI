@@ -1,4 +1,6 @@
-﻿using Flunt.Validations;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Validations;
 
 namespace Shoalace.Domain.Commands.Acesso
 {
@@ -6,12 +8,11 @@ namespace Shoalace.Domain.Commands.Acesso
     {
         public long UsuarioId { get; set; }
         public string Token { get; set; }
-        public override void Validate()
-        {
-            AddNotifications(new Contract()
-                .AreNotEquals(UsuarioId, 0, "Acesso.UsuarioId", "Usuario é obrigatório.")
-                .IsNotNullOrEmpty(Token, "Acesso.Token", "Token é obrigatório.")
-                );
-        }
+        public override void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                AcessoValidation.ValidateUsuarioId(UsuarioId),
+                AcessoValidation.ValidateToken(Token),
+            });
     }
 }

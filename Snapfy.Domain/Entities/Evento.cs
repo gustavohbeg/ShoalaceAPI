@@ -1,4 +1,7 @@
-﻿using Shoalace.Domain.Enums;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Enums;
+using Shoalace.Domain.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +11,13 @@ namespace Shoalace.Domain.Entities
     public class Evento : Base
     {
         private readonly List<MembroEvento> _membrosEvento;
-        public Evento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, string foto, ECategoria categoria) : base()
+        public Evento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipoEvento tipo, long? grupoId, string foto, ECategoria categoria) : base()
         {
             _membrosEvento = new List<MembroEvento>();
             PreencherEvento(titulo, descricao, local, valor, latitude, longitude, data, hora, tipo, grupoId, foto, categoria);
         }
 
-        public void PreencherEvento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipo tipo, long? grupoId, string foto, ECategoria categoria)
+        public void PreencherEvento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipoEvento tipo, long? grupoId, string foto, ECategoria categoria)
         {
             Alterado = DateTime.Now;
             Titulo = titulo;
@@ -32,14 +35,11 @@ namespace Shoalace.Domain.Entities
             Categoria = categoria;
         }
 
-        public void Validar()
-        {
-            if (string.IsNullOrEmpty(Titulo))
-                AddNotification("Evento.Titulo", "Titulo do evento é obrigatório");
-
-            if (Data == DateTime.MinValue)
-                AddNotification("Evento.Data", "Data do evento é obrigatório");
-        }
+        public void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                EventoValidation.ValidateTitulo(Titulo)
+            });
 
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
@@ -50,7 +50,7 @@ namespace Shoalace.Domain.Entities
         public double? Longitude { get; private set; }
         public DateTime Data { get; private set; }
         public DateTime? Hora { get; private set; }
-        public ETipo Tipo { get; private set; }
+        public ETipoEvento Tipo { get; private set; }
         public long? GrupoId { get; private set; }
         public string Foto { get; private set; }
         public ECategoria Categoria { get; private set; }

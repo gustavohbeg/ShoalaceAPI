@@ -96,7 +96,7 @@ namespace Shoalace.API.Controllers
 
                                Status = mensagem.Status,
                                Cadastro = mensagem.Cadastro,
-                               NaoLidas = mensagem.UsuarioId != id && mensagem.Status != EStatus.Lida ? 1 : 0,
+                               NaoLidas = mensagem.UsuarioId != id && mensagem.Status != EStatusMensagem.Lida ? 1 : 0,
                                UsuarioId = mensagem.UsuarioId
                            }
                         );
@@ -118,9 +118,9 @@ namespace Shoalace.API.Controllers
                            Foto = grupo.Foto,
                            IsGrupo = true,
                            Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
-                           Status = mensagem != null ? mensagem.Status : EStatus.Entregue,
+                           Status = mensagem != null ? mensagem.Status : EStatusMensagem.Entregue,
                            Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
-                           NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatus.Lida ? 1 : 0,
+                           NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatusMensagem.Lida ? 1 : 0,
                            UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
                        }
                     );
@@ -247,7 +247,7 @@ namespace Shoalace.API.Controllers
         /// <returns>Retorna o usuario inserido</returns>
         [HttpPost("image")]
         public async Task<IActionResult> UploadImage([FromBody] UploadImageCommand comando) =>
-            RetornoController(await _usuarioHandler.ManipularAsync(comando));
+            RetornoController(_usuarioHandler.Manipular(comando));
 
 
         /// <summary>

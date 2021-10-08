@@ -2,13 +2,13 @@
 
 namespace Shoalace.Domain.Commands.Evento
 {
-    public class InserirListaMembroEventoCommand : Command
+    public class NovoListaMembroEventoCommand : Command
     {
-        public List<InserirMembroEventoCommand> MembrosEvento { get; set; }
+        public List<NovoMembroEventoCommand> MembrosEvento { get; set; }
 
         public override void Validate()
         {
-            foreach (InserirMembroEventoCommand membro in MembrosEvento)
+            foreach (NovoMembroEventoCommand membro in MembrosEvento)
             {
                 membro.Validate();
                 AddNotifications(membro);

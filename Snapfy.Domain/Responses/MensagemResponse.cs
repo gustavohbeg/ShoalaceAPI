@@ -16,7 +16,7 @@ namespace Shoalace.Domain.Responses
         public long? GrupoId { get; set; }
         public string Audio { get; set; }
         public string Foto { get; set; }
-        public EStatus Status { get; set; }
+        public EStatusMensagem Status { get; set; }
         public DateTime Cadastro { get; set; }
     }
 }

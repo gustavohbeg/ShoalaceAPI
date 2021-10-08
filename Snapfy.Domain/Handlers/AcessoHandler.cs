@@ -113,7 +113,7 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
-        public async Task<IResultadoCommand> ManipularAsync(ChecarTokenCommand comando)
+        public IResultadoCommand Manipular(ChecarTokenCommand comando)
         {
             ResultadoCommand retorno = new();
 

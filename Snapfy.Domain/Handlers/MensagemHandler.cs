@@ -65,8 +65,8 @@ namespace Shoalace.Domain.Handlers
                 }
             }
 
-            Mensagem mensagem = new(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0 ? comando.UsuarioDestinoId : null, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Audio, comando.Foto, EStatus.Enviado);
-            mensagem.Validar();
+            Mensagem mensagem = new(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0 ? comando.UsuarioDestinoId : null, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Audio, comando.Foto, EStatusMensagem.Enviado);
+            mensagem.Validate();
             retorno.AddNotifications(mensagem);
 
             if (retorno.Valid)
@@ -229,7 +229,7 @@ namespace Shoalace.Domain.Handlers
                     }
                 }
 
-                Mensagem mensagem = new(mensagemCommand.Texto, mensagemCommand.UsuarioId, mensagemCommand.UsuarioDestinoId != null && mensagemCommand.UsuarioDestinoId > 0 ? mensagemCommand.UsuarioDestinoId : null, mensagemCommand.GrupoId != null && mensagemCommand.GrupoId > 0 ? mensagemCommand.GrupoId : null, mensagemCommand.Audio, mensagemCommand.Foto, EStatus.Enviado);
+                Mensagem mensagem = new(mensagemCommand.Texto, mensagemCommand.UsuarioId, mensagemCommand.UsuarioDestinoId != null && mensagemCommand.UsuarioDestinoId > 0 ? mensagemCommand.UsuarioDestinoId : null, mensagemCommand.GrupoId != null && mensagemCommand.GrupoId > 0 ? mensagemCommand.GrupoId : null, mensagemCommand.Audio, mensagemCommand.Foto, EStatusMensagem.Enviado);
                 retorno.AddNotifications(mensagem);
                 mensagens.Add(mensagem);
                 if (mensagem.UsuarioDestinoId != null && !string.IsNullOrEmpty(usuarioDestino.Token))

@@ -1,4 +1,7 @@
-﻿using Shoalace.Domain.Enums;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Enums;
+using Shoalace.Domain.Validations;
 using System;
 
 namespace Shoalace.Domain.Entities
@@ -25,11 +28,12 @@ namespace Shoalace.Domain.Entities
             Token = token;
         }
 
-        public void Validar()
-        {
-            if (string.IsNullOrEmpty(Nome)) AddNotification("Usuario.Nome", "Nome é obrigatório");
-            if (string.IsNullOrEmpty(Token)) AddNotification("Usuario.Token", "Token é obrigatório");
-        }
+        public void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                UsuarioValidation.ValidateNome(Nome),
+                UsuarioValidation.ValidateToken(Token)
+            });
 
         public long Numero { get; private set; }
         public DateTime Aniversario { get; private set; }

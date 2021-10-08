@@ -1,8 +1,8 @@
 ﻿namespace Shoalace.Domain.Enums
 {
-    public enum EStatus
+    public enum EStatusMensagem
     {
-        Pendente = 0,
+        PendenteEnvio = 0,
         Enviado = 1,
         Entregue = 2,
         Lida = 3

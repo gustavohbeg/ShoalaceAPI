@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Shoalace.Domain.Validations;
+using System;
 
 
 namespace Shoalace.Domain.Entities
@@ -15,6 +18,13 @@ namespace Shoalace.Domain.Entities
         public string Codigo { get; private set; }
 
         public bool Checar(string codigo) => Codigo == codigo || "1234" == codigo;
+
+        public void Validate() =>
+            AddNotifications(new Contract<Notification>[]
+            {
+                AcessoValidation.ValidateUsuarioId(UsuarioId),
+                AcessoValidation.ValidateCodigo(Codigo),
+            });
     }
 
 }

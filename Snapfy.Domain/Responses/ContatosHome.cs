@@ -15,7 +15,7 @@ namespace Shoalace.Domain.Responses
         public string Foto { get; set; }
         public bool IsGrupo { get; set; }
         public string Texto { get; set; }
-        public EStatus Status { get; set; }
+        public EStatusMensagem Status { get; set; }
         public DateTime Cadastro { get; set; }
         public int NaoLidas { get; set; }
         public long UsuarioId { get; set; }

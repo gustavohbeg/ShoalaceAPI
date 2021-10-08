@@ -140,7 +140,7 @@ namespace Shoalace.API.Controllers
         /// <param name="comando">Dados do membroEvento</param>
         /// <returns>Retorna o membroEvento inserido</returns>
         [HttpPost("membros")]
-        public async Task<IActionResult> InserirMembro([FromBody] InserirMembroEventoCommand comando) =>
+        public async Task<IActionResult> InserirMembro([FromBody] NovoMembroEventoCommand comando) =>
             RetornoController(await _eventoHandler.ManipularAsync(comando));
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Shoalace.API.Controllers
         /// <returns>Retorna a url da foto inserido</returns>
         [HttpPost("image")]
         public async Task<IActionResult> UploadImage([FromBody] UploadImageCommand comando) =>
-            RetornoController(await _eventoHandler.ManipularAsync(comando));
+            RetornoController(_eventoHandler.Manipular(comando));
 
         /// <summary>
         /// Alterar membroEvento

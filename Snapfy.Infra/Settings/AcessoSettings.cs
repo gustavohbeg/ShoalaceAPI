@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shoalace.Domain.Entities;
+using Shoalace.Domain.Validations;
 
 namespace Shoalace.Infra.Settings
 {
@@ -9,7 +10,7 @@ namespace Shoalace.Infra.Settings
         public void Configure(EntityTypeBuilder<Acesso> builder)
         {
             builder.HasKey(a => a.Id);
-            builder.Property(a => a.Codigo).IsRequired().HasMaxLength(4);
+            builder.Property(a => a.Codigo).IsRequired().HasMaxLength(AcessoValidation.CODIGO_MAXLENGTH);
         }
     }
 }
