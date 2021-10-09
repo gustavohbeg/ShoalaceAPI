@@ -43,7 +43,7 @@ namespace Shoalace.Infra.Repositories
         public async Task<MensagemResponse> ObterUltimaMensagemResponse(long usuarioId, long contatoId, bool isGrupo)
         {
             Mensagem mensagem = await ObterUltimaMensagem(usuarioId, contatoId, isGrupo);
-            return new MensagemResponse()
+            return mensagem != null ? new MensagemResponse()
             {
                 Id = mensagem.Id,
                 Texto = mensagem.Texto,
@@ -54,7 +54,8 @@ namespace Shoalace.Infra.Repositories
                 Foto = mensagem.Foto,
                 Status = mensagem.Status,
                 Cadastro = mensagem.Cadastro
-            };
+            }
+            :null;
         }
     }
 }
