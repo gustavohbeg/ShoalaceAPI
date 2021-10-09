@@ -97,6 +97,5 @@ namespace Shoalace.API.Controllers
                     Id = id,
                 }
             ));
-
     }
 }

@@ -15,7 +15,7 @@ namespace Shoalace.Domain.Queries
             e => e.MembrosEvento != null && e.MembrosEvento.Any(m => m.UsuarioId == usuarioId);
 
         public static Expression<Func<Evento, bool>> ObterPor2Usuarios(long usuarioId, long contatoId) =>
-            e => e.MembrosEvento != null && e.GrupoId == null && e.MembrosEvento.Count == 2 && e.MembrosEvento.Any(m => m.UsuarioId == usuarioId) && e.MembrosEvento.Any(m => m.UsuarioId == contatoId);
+            e => e.MembrosEvento != null && e.GrupoId == null && e.MembrosEvento.Count() == 2 && e.MembrosEvento.Any(m => m.UsuarioId == contatoId);
 
         public static Expression<Func<Evento, bool>> ObterProximosPorUsuario(long usuarioId) =>
             e => e.Data >= DateTime.Now && e.MembrosEvento != null && e.MembrosEvento.Any(m => m.UsuarioId == usuarioId);
