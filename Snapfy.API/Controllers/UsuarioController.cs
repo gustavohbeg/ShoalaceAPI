@@ -66,52 +66,46 @@ namespace Shoalace.API.Controllers
             List<ContatosHome> contatosHome = new();
 
             List<Usuario> contatos = await _usuarioRepository.ObterContatos(id);
-            if ((contatos != null) && (contatos.Count > 0))
+            foreach (Usuario usuario in contatos)
             {
-                foreach (Usuario usuario in contatos)
+                MensagemResponse mensagem = await _mensagemRepository.ObterUltimaMensagemResponse(id, usuario.Id, false);
+                if (mensagem != null)
                 {
-                    MensagemResponse mensagem = await _mensagemRepository.ObterUltimaMensagemResponse(id, usuario.Id, false);
-                    if (mensagem != null)
-                    {
-                        contatosHome.Add(
-                           new ContatosHome()
-                           {
-                               Id = usuario.Id,
-                               Nome = usuario.Nome,
-                               Foto = usuario.Foto,
-                               IsGrupo = false,
-                               Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
-                               Status = mensagem != null ? mensagem.Status : EStatusMensagem.Entregue,
-                               Cadastro = mensagem.Cadastro,
-                               NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatusMensagem.Lida ? 1 : 0,
-                               UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
-                           }
-                        );
-                    }
-                }
-            }
-
-            List<Grupo> grupos = await _grupoRepository.ObterTodosPorUsuario(id);
-            if ((grupos != null) && (grupos.Count > 0))
-            {
-                foreach (Grupo grupo in grupos)
-                {
-                    MensagemResponse mensagem = await _mensagemRepository.ObterUltimaMensagemResponse(id, grupo.Id, false);
                     contatosHome.Add(
                        new ContatosHome()
                        {
-                           Id = grupo.Id,
-                           Nome = grupo.Nome,
-                           Foto = grupo.Foto,
-                           IsGrupo = true,
+                           Id = usuario.Id,
+                           Nome = usuario.Nome,
+                           Foto = usuario.Foto,
+                           IsGrupo = false,
                            Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
                            Status = mensagem != null ? mensagem.Status : EStatusMensagem.Entregue,
-                           Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
+                           Cadastro = mensagem.Cadastro,
                            NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatusMensagem.Lida ? 1 : 0,
                            UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
                        }
                     );
                 }
+            }
+
+            List<Grupo> grupos = await _grupoRepository.ObterTodosPorUsuario(id);
+            foreach (Grupo grupo in grupos)
+            {
+                MensagemResponse mensagem = await _mensagemRepository.ObterUltimaMensagemResponse(id, grupo.Id, false);
+                contatosHome.Add(
+                   new ContatosHome()
+                   {
+                       Id = grupo.Id,
+                       Nome = grupo.Nome,
+                       Foto = grupo.Foto,
+                       IsGrupo = true,
+                       Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
+                       Status = mensagem != null ? mensagem.Status : EStatusMensagem.Entregue,
+                       Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
+                       NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatusMensagem.Lida ? 1 : 0,
+                       UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
+                   }
+                );
             }
 
             return RetornoController(
