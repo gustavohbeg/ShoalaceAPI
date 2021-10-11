@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Shoalace.Domain.Enums;
+using Shoalace.Domain.Commands.Mensagem;
 
 namespace Shoalace.API.Controllers
 {
@@ -21,13 +22,15 @@ namespace Shoalace.API.Controllers
         private readonly IMensagemRepository _mensagemRepository;
         private readonly IEventoRepository _eventoRepository;
         private readonly UsuarioHandler _usuarioHandler;
-        public UsuarioController(IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, IEventoRepository eventoRepository, UsuarioHandler usuarioHandler)
+        private readonly MensagemHandler _mensagemHandler;
+        public UsuarioController(IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, IEventoRepository eventoRepository, UsuarioHandler usuarioHandler, MensagemHandler mensagemHandler)
         {
             _usuarioRepository = usuarioRepository;
             _grupoRepository = grupoRepository;
             _mensagemRepository = mensagemRepository;
             _eventoRepository = eventoRepository;
             _usuarioHandler = usuarioHandler;
+            _mensagemHandler = mensagemHandler;
         }
 
         /// <summary>
@@ -142,11 +145,11 @@ namespace Shoalace.API.Controllers
             );
 
         /// <summary>
-        /// Pegar um Usuario com mensagem pelo Id
+        /// Pegar um Usuario com mensagens pelo Id (e ler a mensagens)
         /// </summary>
         /// <param name="usuarioId">Id do usuario</param>
-        /// /// <param name="contatoId">Id do usuario</param>
-        /// <returns>Retorna um usuario</returns>
+        /// /// <param name="contatoId">Id do contato</param>
+        /// <returns>Retorna um usuario com mensagens</returns>
         [HttpGet("mensagens/{usuarioId:long}/{contatoId:long}")]
         public async Task<IActionResult> ObterUsuarioComMensagem(long usuarioId, long contatoId)
         {
@@ -155,7 +158,13 @@ namespace Shoalace.API.Controllers
             {
                 contatoChat.Mensagens = await _mensagemRepository.ObterTodosResponsePorUsuario(usuarioId, contatoId);
                 contatoChat.Eventos = await _eventoRepository.ObterResponsesPor2Usuarios(usuarioId, contatoId);
-            }
+
+                List<long> ids = new();
+                foreach (MensagemResponse mensagem in contatoChat.Mensagens)
+                    if (mensagem.Status != EStatusMensagem.Lida) ids.Add(mensagem.Id);
+
+                if (ids.Count > 0) await _mensagemHandler.ManipularAsync(new LerMensagensCommand() { Ids = ids });
+            };
             return RetornoController(
                  new ResultadoCommand(
                      contatoChat

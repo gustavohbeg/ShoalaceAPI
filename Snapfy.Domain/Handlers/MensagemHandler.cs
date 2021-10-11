@@ -166,9 +166,9 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            foreach (EditarMensagemCommand mensagemCommand in comando.Mensagens)
+            foreach (long id in comando.Ids)
             {
-                Mensagem mensagem = await _mensagemRepository.ObterPorId(mensagemCommand.Id);
+                Mensagem mensagem = await _mensagemRepository.ObterPorId(id);
 
                 if (mensagem == null)
                 {
@@ -176,15 +176,18 @@ namespace Shoalace.Domain.Handlers
                     return retorno;
                 }
 
-                mensagem.Ler();
-                mensagem.Validate();
-                retorno.AddNotifications(mensagem);
-
-                if (retorno.Valid)
+                if (mensagem.Status != EStatusMensagem.Lida)
                 {
-                    _mensagemRepository.Atualizar(mensagem);
-                    await _mensagemRepository.Commit();
-                    retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
+                    mensagem.Ler();
+                    mensagem.Validate();
+                    retorno.AddNotifications(mensagem);
+
+                    if (retorno.Valid)
+                    {
+                        _mensagemRepository.Atualizar(mensagem);
+                        await _mensagemRepository.Commit();
+                        retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
+                    }
                 }
             }
 
