@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Grupo;
+using Shoalace.Domain.Commands.Mensagem;
 using Shoalace.Domain.Commands.Usuario;
 using Shoalace.Domain.Entities;
+using Shoalace.Domain.Enums;
 using Shoalace.Domain.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
 using Shoalace.Domain.Responses;
@@ -19,11 +21,13 @@ namespace Shoalace.API.Controllers
         private readonly IGrupoRepository _grupoRepository;
         private readonly IMensagemRepository _mensagemRepository;
         private readonly GrupoHandler _grupoHandler;
-        public GrupoController(IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, GrupoHandler grupoHandler)
+        private readonly MensagemHandler _mensagemHandler;
+        public GrupoController(IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, GrupoHandler grupoHandler, MensagemHandler mensagemHandler)
         {
             _grupoRepository = grupoRepository;
             _mensagemRepository = mensagemRepository;
             _grupoHandler = grupoHandler;
+            _mensagemHandler = mensagemHandler;
         }
 
         /// <summary>
@@ -77,6 +81,13 @@ namespace Shoalace.API.Controllers
             {
                 contatoChat.Mensagens = (await _mensagemRepository.ObterTodosPorGrupo(grupoId)).Select(msg => new MensagemResponse() { Id = msg.Id, Texto = msg.Texto, UsuarioId = msg.UsuarioId, UsuarioDestinoId = msg.UsuarioDestinoId, GrupoId =  msg.GrupoId, Audio = msg.Audio, Foto = msg.Foto, Status = msg.Status, Cadastro = msg.Cadastro }).ToList();
             }
+
+            List<long> ids = new();
+            foreach (MensagemResponse mensagem in contatoChat.Mensagens)
+                if (mensagem.Status != EStatusMensagem.Lida) ids.Add(mensagem.Id);
+
+            if (ids.Count > 0) await _mensagemHandler.ManipularAsync(new LerMensagensCommand() { Ids = ids });
+
             return RetornoController(
                  new ResultadoCommand(
                      contatoChat
