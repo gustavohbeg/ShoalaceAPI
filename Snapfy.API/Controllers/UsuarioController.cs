@@ -81,7 +81,7 @@ namespace Shoalace.API.Controllers
                            Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
                            Status = mensagem != null ? mensagem.Status : EStatusMensagem.Entregue,
                            Cadastro = mensagem.Cadastro,
-                           NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatusMensagem.Lida ? 1 : 0,
+                           NaoLidas = (await _mensagemRepository.ObterNaoLidasPorContato(id, usuario.Id)).Count,
                            UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
                        }
                     );
@@ -102,7 +102,7 @@ namespace Shoalace.API.Controllers
                        Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
                        Status = mensagem != null ? mensagem.Status : EStatusMensagem.Entregue,
                        Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
-                       NaoLidas = mensagem != null && mensagem.UsuarioId != id && mensagem.Status != EStatusMensagem.Lida ? 1 : 0,
+                       NaoLidas = (await _mensagemRepository.ObterNaoLidasPorContato(id, grupo.Id)).Count,
                        UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
                    }
                 );

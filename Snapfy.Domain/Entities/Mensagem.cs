@@ -16,6 +16,20 @@ namespace Shoalace.Domain.Entities
             PreencherMensagem(texto, usuarioId, usuarioDestinoId, grupoId, audio, foto, status);
         }
 
+        public string Texto { get; private set; }
+        public long UsuarioId { get; private set; }
+        public Usuario Usuario { get; private set; }
+        public long? UsuarioDestinoId { get; private set; }
+        public Usuario UsuarioDestino { get; private set; }
+        public long? GrupoId { get; private set; }
+        public Grupo Grupo { get; private set; }
+        public string Audio { get; private set; }
+        public string Foto { get; private set; }
+        public EStatusMensagem Status { get; private set; }
+
+        public IReadOnlyCollection<StatusMensagem> StatusMensagens { get => _statusMensagens; }
+
+
         public void PreencherMensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatusMensagem status)
         {
             Alterado = DateTime.Now;
@@ -35,17 +49,6 @@ namespace Shoalace.Domain.Entities
                 MensagemValidation.ValidateDestino(UsuarioDestinoId, GrupoId)
             });
 
-        public string Texto { get; private set; }
-        public long UsuarioId { get; private set; }
-        public Usuario Usuario { get; private set; }
-        public long? UsuarioDestinoId { get; private set; }
-        public Usuario UsuarioDestino { get; private set; }
-        public long? GrupoId { get; private set; }
-        public Grupo Grupo { get; private set; }
-        public string Audio { get; private set; }
-        public string Foto { get; private set; }
-        public EStatusMensagem Status { get; private set; }
-
-        public IReadOnlyCollection<StatusMensagem> StatusMensagens { get => _statusMensagens; }
+        public void Ler() => Status = EStatusMensagem.Lida;
     }
 }

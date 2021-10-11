@@ -85,6 +85,15 @@ namespace Shoalace.API.Controllers
             RetornoController(await _mensagemHandler.ManipularAsync(comando));
 
         /// <summary>
+        /// Ler uma lista de mensagens
+        /// </summary>
+        /// <param name="comando">mensagem</param>
+        /// <returns>Retorna uma lista de mensagens lidas</returns>
+        [HttpPut("ler")]
+        public async Task<IActionResult> LerMensagens([FromBody] LerMensagensCommand comando) =>
+            RetornoController(await _mensagemHandler.ManipularAsync(comando));
+
+        /// <summary>
         /// Deleta uma mensagem
         /// </summary>
         /// <param name="id">Id da mensagem</param>

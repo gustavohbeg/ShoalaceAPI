@@ -141,6 +141,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             mensagem.PreencherMensagem(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0 ? comando.UsuarioDestinoId : null, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Audio, comando.Foto, comando.Status);
+            mensagem.Validate();
             retorno.AddNotifications(mensagem);
 
             if (retorno.Valid)
@@ -148,6 +149,43 @@ namespace Shoalace.Domain.Handlers
                 _mensagemRepository.Atualizar(mensagem);
                 await _mensagemRepository.Commit();
                 retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
+            }
+
+            return retorno;
+        }
+
+        //LER MENSAGEM
+        public async Task<IResultadoCommand> ManipularAsync(LerMensagensCommand comando)
+        {
+            ResultadoCommand retorno = new();
+
+            comando.Validate();
+            if (comando.Invalid)
+            {
+                retorno.AddNotifications(comando);
+                return retorno;
+            }
+
+            foreach (EditarMensagemCommand mensagemCommand in comando.Mensagens)
+            {
+                Mensagem mensagem = await _mensagemRepository.ObterPorId(mensagemCommand.Id);
+
+                if (mensagem == null)
+                {
+                    retorno.AddNotification("Mensagem.Id", "Mensagem não encontrado");
+                    return retorno;
+                }
+
+                mensagem.Ler();
+                mensagem.Validate();
+                retorno.AddNotifications(mensagem);
+
+                if (retorno.Valid)
+                {
+                    _mensagemRepository.Atualizar(mensagem);
+                    await _mensagemRepository.Commit();
+                    retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
+                }
             }
 
             return retorno;
@@ -182,6 +220,7 @@ namespace Shoalace.Domain.Handlers
 
             return retorno;
         }
+
 
         //NOVO LISTA MENSAGEM
         public async Task<IResultadoCommand> ManipularAsync(NovoListaMensagemCommand comando)

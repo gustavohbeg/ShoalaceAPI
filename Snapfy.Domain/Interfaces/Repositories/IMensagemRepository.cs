@@ -13,5 +13,7 @@ namespace Shoalace.Domain.Interfaces.Repositories
         Task<List<Mensagem>> ObterTodosPorUsuario(long usuarioId, long contatoId);
         Task<List<MensagemResponse>> ObterTodosResponsePorUsuario(long usuarioId, long contatoId);
         Task<List<Mensagem>> ObterTodosPorGrupo(long grupoId);
+        Task<List<Mensagem>> ObterNaoLidasPorContato(long usuarioId, long contatoId);
+        Task<List<Mensagem>> ObterNaoLidasPorGrupo(long usuarioId, long grupoId);
     }
 }

@@ -26,10 +26,10 @@ namespace Shoalace.Domain.Services
 
             if (result?.PushTicketErrors?.Count > 0)
             {
-                foreach (var error in result.PushTicketErrors)
+                /*foreach (var error in result.PushTicketErrors)
                 {
                     Console.WriteLine($"Error: {error.ErrorCode} - {error.ErrorMessage}");
-                }
+                }*/
             }
         }
     }

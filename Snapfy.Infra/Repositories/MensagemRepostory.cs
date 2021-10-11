@@ -57,5 +57,11 @@ namespace Shoalace.Infra.Repositories
             }
             :null;
         }
+
+        public async Task<List<Mensagem>> ObterNaoLidasPorContato(long usuarioId, long contatoId) =>
+            await _ShoalaceContexto.Mensagem.Where(MensagemQuery.ObterNaoLidasPorContato(usuarioId, contatoId)).ToListAsync();
+
+        public async Task<List<Mensagem>> ObterNaoLidasPorGrupo(long usuarioId, long contatoId) =>
+            await _ShoalaceContexto.Mensagem.Where(MensagemQuery.ObterNaoLidasPorGrupo(usuarioId, contatoId)).ToListAsync();
     }
 }
