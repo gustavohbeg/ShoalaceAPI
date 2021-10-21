@@ -21,18 +21,18 @@ namespace Shoalace.Infra.Repositories
             await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPorUsuario(usuarioId, contatoId)).AsNoTracking().ToListAsync();
 
         public async Task<List<MensagemResponse>> ObterTodosResponsePorUsuario(long usuarioId, long contatoId) =>
-            (await ObterTodosPorUsuario(usuarioId, contatoId)).Select(m => new MensagemResponse()
-            {
-                Id = m.Id,
-                Texto = m.Texto,
-                UsuarioId = m.UsuarioId,
-                UsuarioDestinoId = m.UsuarioDestinoId,
-                GrupoId = m.GrupoId,
-                Audio = m.Audio,
-                Foto = m.Foto,
-                Status = m.Status,
-                Cadastro = m.Cadastro
-            }).ToList();
+            (await ObterTodosPorUsuario(usuarioId, contatoId)).Select(m => new MensagemResponse
+            (
+                m.Id,
+                m.Texto,
+                m.UsuarioId,
+                m.UsuarioDestinoId,
+                m.GrupoId,
+                m.Audio,
+                m.Foto,
+                m.Status,
+                m.Cadastro
+            )).ToList();
 
         public async Task<List<Mensagem>> ObterTodosPorGrupo(long grupoId) =>
             await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPorGrupo(grupoId)).AsNoTracking().ToListAsync();
@@ -43,18 +43,18 @@ namespace Shoalace.Infra.Repositories
         public async Task<MensagemResponse> ObterUltimaMensagemResponse(long usuarioId, long contatoId, bool isGrupo)
         {
             Mensagem mensagem = await ObterUltimaMensagem(usuarioId, contatoId, isGrupo);
-            return mensagem != null ? new MensagemResponse()
-            {
-                Id = mensagem.Id,
-                Texto = mensagem.Texto,
-                UsuarioId = mensagem.UsuarioId,
-                UsuarioDestinoId = mensagem.UsuarioDestinoId,
-                GrupoId = mensagem.GrupoId,
-                Audio = mensagem.Audio,
-                Foto = mensagem.Foto,
-                Status = mensagem.Status,
-                Cadastro = mensagem.Cadastro
-            }
+            return mensagem != null ? new MensagemResponse
+            (
+                mensagem.Id,
+                mensagem.Texto,
+                mensagem.UsuarioId,
+                mensagem.UsuarioDestinoId,
+                mensagem.GrupoId,
+                mensagem.Audio,
+                mensagem.Foto,
+                mensagem.Status,
+                mensagem.Cadastro
+            )
             :null;
         }
 

@@ -73,7 +73,7 @@ namespace Shoalace.Domain.Handlers
             {
                 await _mensagemRepository.Adicionar(mensagem);
                 await _mensagemRepository.Commit();
-                retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
+                retorno.PreencherRetorno(new MensagemResponse(mensagem.Id, mensagem.Texto, mensagem.UsuarioId, mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro ));
                 if (mensagem.UsuarioDestinoId != null && !string.IsNullOrEmpty(usuarioDestino.Token))
                 {
                     ExpoService.SendNotification(new List<string>() { usuarioDestino.Token }, usuarioOrigem.Nome, mensagem.Texto);
@@ -105,7 +105,7 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            if (comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0)
+            if (comando.UsuarioDestinoId > 0)
             {
                 Usuario usuarioOrigem = await _usuarioRepository.ObterPorId(comando.UsuarioId);
                 if (usuarioOrigem == null)
@@ -121,7 +121,7 @@ namespace Shoalace.Domain.Handlers
                     return retorno;
                 }
             }
-            else if (comando.GrupoId != null && comando.GrupoId > 0)
+            else if (comando.GrupoId > 0)
             {
                 Grupo grupo = await _grupoRepository.ObterPorId(comando.GrupoId.Value);
 
@@ -148,7 +148,7 @@ namespace Shoalace.Domain.Handlers
             {
                 _mensagemRepository.Atualizar(mensagem);
                 await _mensagemRepository.Commit();
-                retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
+                retorno.PreencherRetorno(new MensagemResponse(mensagem.Id,mensagem.Texto,mensagem.UsuarioId,mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro ));
             }
 
             return retorno;
@@ -186,7 +186,7 @@ namespace Shoalace.Domain.Handlers
                     {
                         _mensagemRepository.Atualizar(mensagem);
                         await _mensagemRepository.Commit();
-                        retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
+                        retorno.PreencherRetorno(new MensagemResponse(mensagem.Id, mensagem.Texto, mensagem.UsuarioId, mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro ));
                     }
                 }
             }

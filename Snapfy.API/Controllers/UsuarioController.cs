@@ -75,18 +75,19 @@ namespace Shoalace.API.Controllers
                 if (mensagem != null)
                 {
                     contatosHome.Add(
-                       new ContatosHome()
-                       {
-                           Id = usuario.Id,
-                           Nome = usuario.Nome,
-                           Foto = usuario.Foto,
-                           IsGrupo = false,
-                           Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
-                           Status = mensagem != null ? mensagem.Status : EStatusMensagem.Entregue,
-                           Cadastro = mensagem.Cadastro,
-                           NaoLidas = (await _mensagemRepository.ObterNaoLidasPorContato(id, usuario.Id)).Count,
-                           UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
-                       }
+                       new ContatosHome
+                       (
+                           usuario.Id,
+                           usuario.Nome,
+                           usuario.Foto,
+                           false,
+                           string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
+                           mensagem.Status,
+                           mensagem.Cadastro,
+                           (await _mensagemRepository.ObterNaoLidasPorContato(id, usuario.Id)).Count,
+                           mensagem.UsuarioId,
+                           null
+                       )
                     );
                 }
             }
@@ -96,18 +97,19 @@ namespace Shoalace.API.Controllers
             {
                 MensagemResponse mensagem = await _mensagemRepository.ObterUltimaMensagemResponse(id, grupo.Id, false);
                 contatosHome.Add(
-                   new ContatosHome()
-                   {
-                       Id = grupo.Id,
-                       Nome = grupo.Nome,
-                       Foto = grupo.Foto,
-                       IsGrupo = true,
-                       Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
-                       Status = mensagem != null ? mensagem.Status : EStatusMensagem.Entregue,
-                       Cadastro = mensagem != null ? mensagem.Cadastro : grupo.Cadastro,
-                       NaoLidas = (await _mensagemRepository.ObterNaoLidasPorContato(id, grupo.Id)).Count,
-                       UsuarioId = mensagem != null ? mensagem.UsuarioId : 0
-                   }
+                   new ContatosHome
+                   (
+                       grupo.Id,
+                       grupo.Nome,
+                       grupo.Foto,
+                       true,
+                       mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
+                       mensagem?.Status ?? EStatusMensagem.Entregue,
+                       mensagem?.Cadastro ?? grupo.Cadastro,
+                       (await _mensagemRepository.ObterNaoLidasPorContato(id, grupo.Id)).Count,
+                       mensagem?.UsuarioId ?? 0,
+                       null
+                   )
                 );
             }
 

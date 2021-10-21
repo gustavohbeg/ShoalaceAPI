@@ -18,6 +18,13 @@ namespace Shoalace.Domain.Entities
             PreencherGrupo(nome, foto);
         }
 
+        public string Nome { get; private set; }
+        public string Foto { get; private set; }
+
+        public IReadOnlyCollection<Membro> Membros { get => _membros; }
+        public IReadOnlyCollection<Evento> Eventos { get => _eventos; }
+
+        public bool MembroExiste(long usuarioId) => _membros.Any(m => m.UsuarioId == usuarioId);
 
         public void PreencherGrupo(string nome, string foto)
         {
@@ -32,13 +39,6 @@ namespace Shoalace.Domain.Entities
                 GrupoValidation.ValidateNome(Nome)
             });
 
-        public string Nome { get; private set; }
-        public string Foto { get; private set; }
-
-        public IReadOnlyCollection<Membro> Membros { get => _membros; }
-        public IReadOnlyCollection<Evento> Eventos { get => _eventos; }
-
-        public bool MembroExiste(long usuarioId) => _membros.Any(m => m.UsuarioId == usuarioId);
         public void AdicionarMembro(Membro membro)
         {
             if (!MembroExiste(membro.UsuarioId))

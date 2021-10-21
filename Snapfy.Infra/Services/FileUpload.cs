@@ -1,11 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Shoalace.Domain.Interfaces.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoalace.Infra.Services
 {

@@ -41,7 +41,7 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            if (comando.GrupoId != null && comando.GrupoId > 0)
+            if (comando.GrupoId > 0)
             {
                 if (await _grupoRepository.ObterPorId(comando.GrupoId.Value) == null)
                 {
@@ -115,7 +115,7 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            if (comando.GrupoId != null && comando.GrupoId > 0)
+            if (comando.GrupoId > 0)
             {
                 if (await _grupoRepository.ObterPorId(comando.GrupoId.Value) == null)
                 {
@@ -267,7 +267,7 @@ namespace Shoalace.Domain.Handlers
             }
 
             MembroEvento membroEvento = evento.MembrosEvento.FirstOrDefault(a => a.UsuarioId == comando.UsuarioId);
-            if (membroEvento != null && membroEvento.Id > 0)
+            if (membroEvento?.Id > 0)
             {
                 membroEvento.PreencherMembroEvento(comando.UsuarioId, comando.EventoId, comando.Comparecer, comando.Admin);
                 evento.FazerCheckIn(membroEvento);
