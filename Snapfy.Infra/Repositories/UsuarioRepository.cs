@@ -22,21 +22,18 @@ namespace Shoalace.Infra.Repositories
 
         public async Task<ContatoChatResponse> ObterContatoChatPorId(long id) =>
             await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterPorId(id))
-            .Select(u => new ContatoChatResponse
-            (
-                u.Id,
-                u.Numero,
-                u.Nome,
-                u.Foto,
-                u.Bio,
-                u.Aniversario,
-                u.Sexo,
-                false,
-                u.Cadastro,
-                null,
-                null,
-                null
-            )).FirstOrDefaultAsync();
+            .Select(u => new ContatoChatResponse()
+            {
+                Id = u.Id,
+                Nome = u.Nome,
+                Foto = u.Foto,
+                Bio = u.Bio,
+                Aniversario = u.Aniversario,
+                Sexo = u.Sexo,
+                Numero = u.Numero,
+                IsGrupo = false,
+                Cadastro = u.Cadastro,
+            }).FirstOrDefaultAsync();
 
         public async Task<List<Usuario>> ObterContatos(long id) =>
             await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterContatos(id)).AsNoTracking().ToListAsync();

@@ -54,23 +54,27 @@ namespace Shoalace.Domain.Handlers
 
             List<string> tokens = new();
 
-            foreach (MembroEventoCommand membroCommand in comando.Membros)
+            if (comando.Membros != null && comando.Membros.Count > 0)
             {
-                if (!evento.MembroEventoExiste(membroCommand.UsuarioId))
+                foreach (MembroEventoCommand membroCommand in comando.Membros)
                 {
-                    Usuario usuario = await _usuarioRepository.ObterPorId(membroCommand.UsuarioId);
-                    if (usuario == null)
+                    if (!evento.MembroEventoExiste(membroCommand.UsuarioId))
                     {
-                        retorno.AddNotification("Membro.UsuarioId", "Usuario não encontrado");
-                        return retorno;
+                        Usuario usuario = await _usuarioRepository.ObterPorId(membroCommand.UsuarioId);
+                        if (usuario == null)
+                        {
+                            retorno.AddNotification("Membro.UsuarioId", "Usuario não encontrado");
+                            return retorno;
+                        }
+
+                        evento.AdicionarMembroEvento(new(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
+
+                        if (!string.IsNullOrEmpty(usuario.Token) && !membroCommand.Admin)
+                            tokens.Add(usuario.Token);
                     }
-
-                    evento.AdicionarMembroEvento(new(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
-
-                    if (!string.IsNullOrEmpty(usuario.Token) && !membroCommand.Admin)
-                        tokens.Add(usuario.Token);
                 }
             }
+
             evento.Validate();
             retorno.AddNotifications(evento);
 
@@ -134,21 +138,24 @@ namespace Shoalace.Domain.Handlers
 
             List<string> tokens = new();
 
-            foreach (MembroEventoCommand membroCommand in comando.Membros)
+            if (comando.Membros != null && comando.Membros.Count > 0)
             {
-                if (!evento.MembroEventoExiste(membroCommand.UsuarioId))
+                foreach (MembroEventoCommand membroCommand in comando.Membros)
                 {
-                    Usuario usuario = await _usuarioRepository.ObterPorId(membroCommand.UsuarioId);
-                    if (usuario == null)
+                    if (!evento.MembroEventoExiste(membroCommand.UsuarioId))
                     {
-                        retorno.AddNotification("MembroEvento.UsuarioId", "Usuario não encontrado");
-                        return retorno;
+                        Usuario usuario = await _usuarioRepository.ObterPorId(membroCommand.UsuarioId);
+                        if (usuario == null)
+                        {
+                            retorno.AddNotification("MembroEvento.UsuarioId", "Usuario não encontrado");
+                            return retorno;
+                        }
+
+                        evento.AdicionarMembroEvento(new(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
+
+                        if (!string.IsNullOrEmpty(usuario.Token) && !membroCommand.Admin)
+                            tokens.Add(usuario.Token);
                     }
-
-                    evento.AdicionarMembroEvento(new(membroCommand.UsuarioId, 0, membroCommand.Comparecer, membroCommand.Admin));
-
-                    if (!string.IsNullOrEmpty(usuario.Token) && !membroCommand.Admin)
-                        tokens.Add(usuario.Token);
                 }
             }
 

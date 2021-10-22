@@ -73,7 +73,7 @@ namespace Shoalace.Domain.Handlers
             {
                 await _mensagemRepository.Adicionar(mensagem);
                 await _mensagemRepository.Commit();
-                retorno.PreencherRetorno(new MensagemResponse(mensagem.Id, mensagem.Texto, mensagem.UsuarioId, mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro ));
+                retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
                 if (mensagem.UsuarioDestinoId != null && !string.IsNullOrEmpty(usuarioDestino.Token))
                 {
                     ExpoService.SendNotification(new List<string>() { usuarioDestino.Token }, usuarioOrigem.Nome, mensagem.Texto);
@@ -148,7 +148,7 @@ namespace Shoalace.Domain.Handlers
             {
                 _mensagemRepository.Atualizar(mensagem);
                 await _mensagemRepository.Commit();
-                retorno.PreencherRetorno(new MensagemResponse(mensagem.Id,mensagem.Texto,mensagem.UsuarioId,mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro ));
+                retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
             }
 
             return retorno;
@@ -186,7 +186,7 @@ namespace Shoalace.Domain.Handlers
                     {
                         _mensagemRepository.Atualizar(mensagem);
                         await _mensagemRepository.Commit();
-                        retorno.PreencherRetorno(new MensagemResponse(mensagem.Id, mensagem.Texto, mensagem.UsuarioId, mensagem.UsuarioDestinoId, mensagem.GrupoId, mensagem.Audio, mensagem.Foto, mensagem.Status, mensagem.Cadastro ));
+                        retorno.PreencherRetorno(new MensagemResponse() { Id = mensagem.Id, Texto = mensagem.Texto, UsuarioId = mensagem.UsuarioId, UsuarioDestinoId = mensagem.UsuarioDestinoId, GrupoId = mensagem.GrupoId, Audio = mensagem.Audio, Foto = mensagem.Foto, Status = mensagem.Status, Cadastro = mensagem.Cadastro });
                     }
                 }
             }
