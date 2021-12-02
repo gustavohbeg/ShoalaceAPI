@@ -97,5 +97,14 @@ namespace Shoalace.API.Controllers
                     Id = id,
                 }
             ));
+
+        /// <summary>
+        /// Salva um audio
+        /// </summary>
+        /// <param name="comando">Dados do audio</param>
+        /// <returns>Retorna o audio inserido</returns>
+        [HttpPost("audio")]
+        public async Task<IActionResult> UploadImage([FromBody] UploadAudioCommand comando) =>
+            RetornoController(_mensagemHandler.ManipularAsync(comando));
     }
 }

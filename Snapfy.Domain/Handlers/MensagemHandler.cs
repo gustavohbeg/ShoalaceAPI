@@ -5,6 +5,7 @@ using Shoalace.Domain.Enums;
 using Shoalace.Domain.Interfaces.Commands;
 using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
+using Shoalace.Domain.Interfaces.Services;
 using Shoalace.Domain.Responses;
 using Shoalace.Domain.Services;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace Shoalace.Domain.Handlers
         private readonly IMensagemRepository _mensagemRepository;
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IGrupoRepository _grupoRepository;
-        public MensagemHandler(IMensagemRepository mensagemRepository, IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository)
+        private readonly IFileUpload _fileUpload;
+        public MensagemHandler(IMensagemRepository mensagemRepository, IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository, IFileUpload fileUpload)
         {
             _mensagemRepository = mensagemRepository;
             _usuarioRepository = usuarioRepository;
             _grupoRepository = grupoRepository;
+            _fileUpload = fileUpload;
         }
 
         //NOVO MENSAGEM
@@ -296,6 +299,13 @@ namespace Shoalace.Domain.Handlers
                 await _mensagemRepository.Commit();
             }
 
+            return retorno;
+        }
+
+        public IResultadoCommand ManipularAsync(UploadAudioCommand comando)
+        {
+            ResultadoCommand retorno = new();
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs"));
             return retorno;
         }
     }
