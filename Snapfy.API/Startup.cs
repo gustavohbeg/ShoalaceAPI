@@ -49,7 +49,9 @@ namespace Shoalace.API
             services.Configure<FormOptions>(options =>
             {
                 options.ValueCountLimit = int.MaxValue;
-                options.ValueLengthLimit = 1024 * 1024 * 100; // 100MB max len form data
+                options.ValueLengthLimit = int.MaxValue;
+                options.MultipartBodyLengthLimit = int.MaxValue;
+                options.MultipartHeadersLengthLimit = int.MaxValue;
             });
 
             //Repositories
