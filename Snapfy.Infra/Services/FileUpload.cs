@@ -9,7 +9,7 @@ namespace Shoalace.Infra.Services
     {
         public string UploadBase64Image(string base64, string container)
         {
-            string fileName = Guid.NewGuid().ToString() + ".png";
+            string fileName = Guid.NewGuid().ToString() + ".m4a";
             
             //var data = new Regex(@"");
 
