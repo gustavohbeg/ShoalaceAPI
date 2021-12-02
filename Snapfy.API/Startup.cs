@@ -50,6 +50,7 @@ namespace Shoalace.API
             {
                 options.ValueCountLimit = int.MaxValue;
                 options.ValueLengthLimit = int.MaxValue;
+                options.KeyLengthLimit = int.MaxValue;
                 options.MultipartBodyLengthLimit = int.MaxValue;
                 options.MultipartHeadersLengthLimit = int.MaxValue;
             });
