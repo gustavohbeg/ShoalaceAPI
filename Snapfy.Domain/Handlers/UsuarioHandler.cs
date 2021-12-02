@@ -147,7 +147,7 @@ namespace Shoalace.Domain.Handlers
         public IResultadoCommand Manipular(UploadImageCommand comando)
         {
             ResultadoCommand retorno = new();
-            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs"));
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "png"));
             return retorno;
         }
     }

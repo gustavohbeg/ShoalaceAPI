@@ -305,7 +305,7 @@ namespace Shoalace.Domain.Handlers
         public IResultadoCommand ManipularAsync(UploadAudioCommand comando)
         {
             ResultadoCommand retorno = new();
-            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs"));
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "m4a"));
             return retorno;
         }
     }

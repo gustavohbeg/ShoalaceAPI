@@ -8,6 +8,6 @@ namespace Shoalace.Domain.Interfaces.Services
 {
     public interface IFileUpload
     {
-        public string UploadBase64Image(string base64, string container);
+        public string UploadBase64Image(string base64, string container, string format);
     }
 }
