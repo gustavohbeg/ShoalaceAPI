@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,16 +34,22 @@ namespace Shoalace.API
 
             //Adicionando a connection string do nosso banco de dados e informando que as Migrations serão feitas no projeto chamado Infra
             //services.AddDbContext<ShoalaceContexto>(options => options.UseInMemoryDatabase("DataBase"));
-            services.AddDbContext<ShoalaceContexto>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"), m => m.MigrationsAssembly("Shoalace.Infra")));
+            services.AddDbContext<ShoalaceContexto>(options => options .UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"), m => m.MigrationsAssembly("Shoalace.Infra")));
 
-            services.AddMvc(opcoes =>
+            services.AddMvc(options =>
             {
-                opcoes.Filters.Add(typeof(ExceptionFilter)); //Adicionando o Filtro de Exception
-                opcoes.Filters.Add(typeof(ActionFilter)); //Filtro de entrada de dados para preencher ClienteId e AcessoId
-            }).AddJsonOptions(opcoes =>
+                options.Filters.Add(typeof(ExceptionFilter)); //Adicionando o Filtro de Exception
+                options.Filters.Add(typeof(ActionFilter)); //Filtro de entrada de dados para preencher ClienteId e AcessoId
+            }).AddJsonOptions(options =>
             { //Configurando a nossa resposta de JSON para não conter valores nullos e o máximo de 30 interações
-                opcoes.JsonSerializerOptions.IgnoreNullValues = true;
-                opcoes.JsonSerializerOptions.MaxDepth = 30;
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+                options.JsonSerializerOptions.MaxDepth = 30;
+            });
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueCountLimit = int.MaxValue;
+                options.ValueLengthLimit = 1024 * 1024 * 100; // 100MB max len form data
             });
 
             //Repositories
