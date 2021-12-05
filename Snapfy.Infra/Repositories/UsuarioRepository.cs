@@ -36,6 +36,6 @@ namespace Shoalace.Infra.Repositories
             }).FirstOrDefaultAsync();
 
         public async Task<List<Usuario>> ObterContatos(long id) =>
-            await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterContatos(id)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Usuario.Where(u => _ShoalaceContexto.Contato.Any(c => c.UsuarioId == id && c.UsuarioContatoId == u.Id)).AsNoTracking().ToListAsync();
     }
 }

@@ -57,6 +57,7 @@ namespace Shoalace.API
 
             //Repositories
             services.AddScoped<IAcessoRepository, AcessoRepository>();
+            services.AddScoped<IContatoRepository, ContatoRepository>();
             services.AddScoped<IErroRepository, ErroRepository>();
             services.AddScoped<IEventoRepository, EventoRepository>();
             services.AddScoped<IGrupoRepository, GrupoRepository>();
@@ -65,6 +66,7 @@ namespace Shoalace.API
 
             //Handlers
             services.AddScoped<AcessoHandler>();
+            services.AddScoped<ContatoHandler>();
             services.AddScoped<EventoHandler>();
             services.AddScoped<GrupoHandler>();
             services.AddScoped<MensagemHandler>();

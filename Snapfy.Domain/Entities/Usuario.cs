@@ -3,13 +3,18 @@ using Flunt.Validations;
 using Shoalace.Domain.Enums;
 using Shoalace.Domain.Validations;
 using System;
+using System.Collections.Generic;
 
 namespace Shoalace.Domain.Entities
 {
     public class Usuario : Base
     {
+        private List<Contato> _contatos;
+        private List<Contato> _eContatos;
         public Usuario(long numero, DateTime aniversario, ESexo sexo, string foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token) : base()
         {
+            _contatos = new();
+            _eContatos = new();
             PreencherUsuario(numero, aniversario, sexo, foto, nome, bio, visto, latitude, longitude, token);
         }
 
@@ -47,6 +52,9 @@ namespace Shoalace.Domain.Entities
         public string Token { get; private set; }
 
         public bool Online { get => Visto >= DateTime.Now.AddMinutes(-1); }
+
+        public IReadOnlyCollection<Contato> Contatos { get => _contatos; }
+        public IReadOnlyCollection<Contato> EContatos { get => _eContatos; }
 
         public void AtualizarVisto() => Visto = DateTime.Now;
     }

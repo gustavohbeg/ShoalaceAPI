@@ -12,6 +12,7 @@ namespace Shoalace.Infra.Contexto
 
         //Ordem Alfabética
         public DbSet<Acesso> Acesso { get; set; }
+        public DbSet<Contato> Contato { get; set; }
         public DbSet<Evento> Evento { get; set; }
         public DbSet<Erro> Erro { get; set; }
         public DbSet<Grupo> Grupo { get; set; }
@@ -26,6 +27,7 @@ namespace Shoalace.Infra.Contexto
             modelBuilder.Ignore<Notification>();
             //Ordem Alfabética
             modelBuilder.ApplyConfiguration(new AcessoSettings());
+            modelBuilder.ApplyConfiguration(new ContatoSettings());
             modelBuilder.ApplyConfiguration(new EventoSettings());
             modelBuilder.ApplyConfiguration(new ErroSettings());
             modelBuilder.ApplyConfiguration(new GrupoSettings());
