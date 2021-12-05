@@ -6,7 +6,7 @@ namespace Shoalace.Domain.Queries
 {
     public static class UsuarioQuery
     {
-        public static Expression<Func<Usuario, bool>> ObterPorNumero(long numero) =>
+        public static Expression<Func<Usuario, bool>> ObterPorNumero(string numero) =>
             u => u.Numero == numero;
 
         public static Expression<Func<Usuario, bool>> ObterPorId(long id) =>

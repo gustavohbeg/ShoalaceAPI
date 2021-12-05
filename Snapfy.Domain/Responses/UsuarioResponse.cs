@@ -10,7 +10,7 @@ namespace Shoalace.Domain.Responses
     public class UsuarioResponse
     {
         public long Id { get; set; }
-        public long Numero { get; set; }
+        public string Numero { get; set; }
         public DateTime Aniversario { get; set; }
         public ESexo Sexo { get; set; }
         public string Foto { get; set; }

@@ -10,7 +10,7 @@ namespace Shoalace.Domain.Commands.Usuario
     public class NovoListaContatoCommand : Command
     {
         public long Id { get; set; }
-        public List<long> Contatos { get; set; }
+        public List<string> Numeros { get; set; }
 
         public override void Validate() =>
             AddNotifications(new Contract<Notification>[]

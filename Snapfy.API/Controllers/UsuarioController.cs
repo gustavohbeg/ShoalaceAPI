@@ -139,7 +139,7 @@ namespace Shoalace.API.Controllers
         /// <param name="numero">Numero do usuario</param>
         /// <returns>Retorna um usuario</returns>
         [HttpGet("numero/{numero:long}")]
-        public async Task<IActionResult> ObterUsuarioPorNumero(long numero) =>
+        public async Task<IActionResult> ObterUsuarioPorNumero(string numero) =>
             RetornoController(
                 new ResultadoCommand(
                     await _usuarioRepository.ObterPorNumero(numero)

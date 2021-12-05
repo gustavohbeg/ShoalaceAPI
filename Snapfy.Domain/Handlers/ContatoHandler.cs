@@ -6,6 +6,7 @@ using Shoalace.Domain.Interfaces.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
 using Shoalace.Domain.Interfaces.Services;
 using Shoalace.Domain.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Shoalace.Domain.Handlers
@@ -43,15 +44,19 @@ namespace Shoalace.Domain.Handlers
                 return retorno;
             }
 
-            foreach (long contatoId in comando.Contatos)
+            List<Contato> contatoIds = new();
+            foreach (string numero in comando.Numeros)
             {
-                Contato contato = new(comando.Id, contatoId);
-                retorno.AddNotifications(contato);
-                await _contatoRepository.Adicionar(contato);
+                Usuario usuarioContato = await _usuarioRepository.ObterPorNumero(numero);
+                if (usuarioContato != null)
+                {
+                    contatoIds.Add(new(comando.Id, usuarioContato.Id));
+                }
             }
             
-            if (retorno.Valid)
+            if (retorno.Valid && contatoIds.Count > 0)
             {
+                await _contatoRepository.AdicionarLista(contatoIds);
                 await _contatoRepository.Commit();
                 retorno.PreencherRetorno("Adicionados");
                 //ExpoService.SendNotification(usuario.Token, "Cadastro", "Cadastrado com sucesso");

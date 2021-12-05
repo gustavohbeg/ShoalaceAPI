@@ -14,7 +14,7 @@ namespace Shoalace.Infra.Repositories
     {
         public UsuarioRepository(ShoalaceContexto ShoalaceContexto) : base(ShoalaceContexto) { }
 
-        public async Task<Usuario> ObterPorNumero(long numero) =>
+        public async Task<Usuario> ObterPorNumero(string numero) =>
             await _ShoalaceContexto.Usuario.Where(UsuarioQuery.ObterPorNumero(numero)).FirstOrDefaultAsync();
 
         public new async Task<Usuario> ObterPorId(long id) =>

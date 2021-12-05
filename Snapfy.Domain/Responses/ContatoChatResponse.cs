@@ -10,7 +10,7 @@ namespace Shoalace.Domain.Responses
     public class ContatoChatResponse
     {
         public long Id { get; set; }
-        public long Numero { get; set; }
+        public string Numero { get; set; }
         public string Nome { get; set; }
         public string Foto { get; set; }
         public string Bio { get; set; }

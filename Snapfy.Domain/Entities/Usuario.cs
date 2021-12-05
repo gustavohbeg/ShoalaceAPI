@@ -11,14 +11,14 @@ namespace Shoalace.Domain.Entities
     {
         private List<Contato> _contatos;
         private List<Contato> _eContatos;
-        public Usuario(long numero, DateTime aniversario, ESexo sexo, string foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token) : base()
+        public Usuario(string numero, DateTime aniversario, ESexo sexo, string foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token) : base()
         {
             _contatos = new();
             _eContatos = new();
             PreencherUsuario(numero, aniversario, sexo, foto, nome, bio, visto, latitude, longitude, token);
         }
 
-        public void PreencherUsuario(long numero, DateTime aniversario, ESexo sexo, string foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token)
+        public void PreencherUsuario(string numero, DateTime aniversario, ESexo sexo, string foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token)
         {
             Numero = numero;
             Alterado = DateTime.Now;
@@ -40,7 +40,7 @@ namespace Shoalace.Domain.Entities
                 UsuarioValidation.ValidateToken(Token)
             });
 
-        public long Numero { get; private set; }
+        public string Numero { get; private set; }
         public DateTime Aniversario { get; private set; }
         public ESexo Sexo { get; private set; }
         public string Foto { get; private set; }

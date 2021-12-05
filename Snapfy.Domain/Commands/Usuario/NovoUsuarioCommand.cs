@@ -8,7 +8,7 @@ namespace Shoalace.Domain.Commands.Usuario
 {
     public class NovoUsuarioCommand : Command
     {
-        public long Numero { get; set; }
+        public string Numero { get; set; }
         public DateTime Aniversario { get; set; }
         public ESexo Sexo { get; set; }
         public string Foto { get; set; }
