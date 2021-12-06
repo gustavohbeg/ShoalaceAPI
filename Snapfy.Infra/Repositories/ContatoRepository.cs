@@ -16,5 +16,8 @@ namespace Shoalace.Infra.Repositories
 
         public async Task<List<Contato>> ObterContatosPorUsuario(long usuarioId) =>
             await _ShoalaceContexto.Contato.Where(c => c.UsuarioId == usuarioId).AsNoTracking().ToListAsync();
+
+        public async Task<Contato> ObterPorNumero(long usuarioId, string numero) =>
+            await _ShoalaceContexto.Contato.Where(c => c.UsuarioId == usuarioId && c.Numero == numero).FirstOrDefaultAsync();
     }
 }

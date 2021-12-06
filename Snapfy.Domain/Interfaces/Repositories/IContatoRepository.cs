@@ -8,5 +8,6 @@ namespace Shoalace.Domain.Interfaces.Repositories
     public interface IContatoRepository : IBaseRepository<Contato>
     {
         Task<List<Contato>> ObterContatosPorUsuario(long usuarioId);
+        Task<Contato> ObterPorNumero(long usuarioId, string numero);
     }
 }

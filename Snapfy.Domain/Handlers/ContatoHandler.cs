@@ -7,6 +7,7 @@ using Shoalace.Domain.Interfaces.Repositories;
 using Shoalace.Domain.Interfaces.Services;
 using Shoalace.Domain.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shoalace.Domain.Handlers
@@ -43,14 +44,14 @@ namespace Shoalace.Domain.Handlers
                 retorno.AddNotification("Usuario.Id", "Usuario não encontrado");
                 return retorno;
             }
-
-            List<Contato> contatoIds = new();
-            foreach (string numero in comando.Numeros)
+            List<Contato> todosContatos = await _contatoRepository.ObterContatosPorUsuario(comando.Id);
+            List <Contato> contatoIds = new();
+            foreach (NumerosCommand numeroCommand in comando.Numeros)
             {
-                Usuario usuarioContato = await _usuarioRepository.ObterPorNumero(numero);
-                if (usuarioContato != null)
+                if (!todosContatos.Any(c => c.Numero == numeroCommand.Numero))
                 {
-                    contatoIds.Add(new(comando.Id, usuarioContato.Id));
+                    Usuario usuarioContato = await _usuarioRepository.ObterPorNumero(numeroCommand.Numero);
+                    contatoIds.Add(new(comando.Id, usuarioContato?.Id, usuarioContato?.Nome ?? numeroCommand.Nome, numeroCommand.Numero));
                 }
             }
             

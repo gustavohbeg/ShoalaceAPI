@@ -18,14 +18,16 @@ namespace Shoalace.API.Controllers
     public class UsuarioController : BaseController
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IContatoRepository _contatoRepository;
         private readonly IGrupoRepository _grupoRepository;
         private readonly IMensagemRepository _mensagemRepository;
         private readonly IEventoRepository _eventoRepository;
         private readonly UsuarioHandler _usuarioHandler;
         private readonly MensagemHandler _mensagemHandler;
-        public UsuarioController(IUsuarioRepository usuarioRepository, IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, IEventoRepository eventoRepository, UsuarioHandler usuarioHandler, MensagemHandler mensagemHandler)
+        public UsuarioController(IUsuarioRepository usuarioRepository, IContatoRepository contatoRepository, IGrupoRepository grupoRepository, IMensagemRepository mensagemRepository, IEventoRepository eventoRepository, UsuarioHandler usuarioHandler, MensagemHandler mensagemHandler)
         {
             _usuarioRepository = usuarioRepository;
+            _contatoRepository = contatoRepository;
             _grupoRepository = grupoRepository;
             _mensagemRepository = mensagemRepository;
             _eventoRepository = eventoRepository;
@@ -51,12 +53,28 @@ namespace Shoalace.API.Controllers
         /// <param name="id">Id do usuario logado</param>
         /// <returns>Retorna todos os contatos</returns>
         [HttpGet("contatos/{id:long}")]
-        public async Task<IActionResult> ObterContatos(long id) =>
-            RetornoController(
-                new ResultadoCommand(
-                    await _usuarioRepository.ObterContatos(id)
-                )
-            );
+        public async Task<IActionResult> ObterContatos(long id)
+        {
+            List<Usuario> usuarios = (await _usuarioRepository.ObterContatos(id)).OrderBy(u => u.Nome).ToList();
+            List<ContatosResponse> contatosResponse = new();
+            foreach (Usuario usuario in usuarios)
+            {
+                contatosResponse.Add(new() { Id = usuario.Id, Numero = usuario.Numero, Nome = usuario.Nome, Foto = usuario.Foto, Cadastro = usuario.Cadastro, Aniversario = usuario.Aniversario, Bio = usuario.Bio, Visto = usuario.Visto, Latitude = usuario.Latitude, Longitude = usuario.Longitude });
+            }
+
+            List<Contato> contatos = (await _contatoRepository.ObterContatosPorUsuario(id)).OrderBy(c => c.Nome).ToList();
+            foreach (Contato contato in contatos)
+            {
+                if (!contatosResponse.Any(c => c.Numero == contato.Numero))
+                    contatosResponse.Add(new() { Id = null, Numero = contato.Numero, Nome = contato.Nome, Foto = "", Cadastro = null, Aniversario = null, Bio = "", Visto = null, Latitude = null, Longitude = null });
+            }
+
+            return RetornoController(
+                 new ResultadoCommand(
+                     contatosResponse.OrderByDescending(c => c.Cadastro)
+                 )
+             );
+        }
 
         /// <summary>
         /// Pegar todos os contatos/grupos com ultima mensagem
@@ -76,7 +94,7 @@ namespace Shoalace.API.Controllers
                 {
                     contatosHome.Add(
                        new ContatosHome()
-                       { 
+                       {
                            Id = usuario.Id,
                            Nome = usuario.Nome,
                            Foto = usuario.Foto,
@@ -98,7 +116,7 @@ namespace Shoalace.API.Controllers
                 MensagemResponse mensagem = await _mensagemRepository.ObterUltimaMensagemResponse(id, grupo.Id, true);
                 contatosHome.Add(
                    new ContatosHome()
-                   { 
+                   {
                        Id = grupo.Id,
                        Nome = grupo.Nome,
                        Foto = grupo.Foto,
