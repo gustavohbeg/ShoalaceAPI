@@ -63,10 +63,12 @@ namespace Shoalace.API.Controllers
             }
 
             List<Contato> contatos = (await _contatoRepository.ObterContatosPorUsuario(id)).OrderBy(c => c.Nome).ToList();
+            long fakeId = 9999;
             foreach (Contato contato in contatos)
             {
+                fakeId++;
                 if (!contatosResponse.Any(c => c.Numero == contato.Numero))
-                    contatosResponse.Add(new() { Id = null, Numero = contato.Numero, Nome = contato.Nome, Foto = "", Cadastro = null, Aniversario = null, Bio = "", Visto = null, Latitude = null, Longitude = null });
+                    contatosResponse.Add(new() { Id = fakeId, Numero = contato.Numero, Nome = contato.Nome, Foto = "", Cadastro = null, Aniversario = null, Bio = "", Visto = null, Latitude = null, Longitude = null });
             }
 
             return RetornoController(
