@@ -59,16 +59,18 @@ namespace Shoalace.API.Controllers
             List<ContatosResponse> contatosResponse = new();
             foreach (Usuario usuario in usuarios)
             {
-                contatosResponse.Add(new() { Id = usuario.Id, Numero = usuario.Numero, Nome = usuario.Nome, Foto = usuario.Foto, Cadastro = usuario.Cadastro, Aniversario = usuario.Aniversario, Bio = usuario.Bio, Visto = usuario.Visto, Latitude = usuario.Latitude, Longitude = usuario.Longitude });
+                contatosResponse.Add(new() { Id = usuario.Id, Numero = usuario.Numero, Nome = usuario.Nome, Existente = 0, Foto = usuario.Foto, Cadastro = usuario.Cadastro, Aniversario = usuario.Aniversario, Bio = usuario.Bio, Visto = usuario.Visto, Latitude = usuario.Latitude, Longitude = usuario.Longitude });
             }
 
             List<Contato> contatos = (await _contatoRepository.ObterContatosPorUsuario(id)).OrderBy(c => c.Nome).ToList();
             long fakeId = 9999;
             foreach (Contato contato in contatos)
             {
-                fakeId++;
                 if (!contatosResponse.Any(c => c.Numero == contato.Numero))
-                    contatosResponse.Add(new() { Id = fakeId, Numero = contato.Numero, Nome = contato.Nome, Foto = "", Cadastro = null, Aniversario = null, Bio = "", Visto = null, Latitude = null, Longitude = null });
+                {
+                    contatosResponse.Add(new() { Id = fakeId, Numero = contato.Numero, Nome = contato.Nome, Existente = 1, Foto = "", Cadastro = null, Aniversario = null, Bio = "", Visto = null, Latitude = null, Longitude = null });
+                    fakeId++;
+                }
             }
 
             return RetornoController(
