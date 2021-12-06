@@ -58,10 +58,8 @@ namespace Shoalace.Domain.Handlers
             {
                 await _contatoRepository.AdicionarLista(contatoIds);
                 await _contatoRepository.Commit();
-                retorno.PreencherRetorno("Adicionados");
-                //ExpoService.SendNotification(usuario.Token, "Cadastro", "Cadastrado com sucesso");
+                retorno.PreencherRetorno(contatoIds);
             }
-
             return retorno;
         }
 

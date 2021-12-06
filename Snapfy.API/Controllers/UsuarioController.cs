@@ -59,7 +59,7 @@ namespace Shoalace.API.Controllers
             );
 
         /// <summary>
-        /// Pegar todos os contatos com ultima mensagem
+        /// Pegar todos os contatos/grupos com ultima mensagem
         /// </summary>
         /// <param name="id">Id do usuario</param>
         /// <returns>Retorna todos os contatos</returns>
@@ -95,7 +95,7 @@ namespace Shoalace.API.Controllers
             List<Grupo> grupos = await _grupoRepository.ObterTodosPorUsuario(id);
             foreach (Grupo grupo in grupos)
             {
-                MensagemResponse mensagem = await _mensagemRepository.ObterUltimaMensagemResponse(id, grupo.Id, false);
+                MensagemResponse mensagem = await _mensagemRepository.ObterUltimaMensagemResponse(id, grupo.Id, true);
                 contatosHome.Add(
                    new ContatosHome()
                    { 
