@@ -18,7 +18,7 @@ namespace Shoalace.Infra.Repositories
             await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPendentesPorUsuario(usuarioId)).AsNoTracking().ToListAsync();
 
         public async Task<List<Mensagem>> ObterTodosPorUsuario(long usuarioId, long contatoId) =>
-            await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPorUsuario(usuarioId, contatoId)).AsNoTracking().ToListAsync();
+            await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Include(m => m.Usuario).Where(MensagemQuery.ObterPorUsuario(usuarioId, contatoId)).AsNoTracking().ToListAsync();
 
         public async Task<List<MensagemResponse>> ObterTodosResponsePorUsuario(long usuarioId, long contatoId) =>
             (await ObterTodosPorUsuario(usuarioId, contatoId)).Select(m => new MensagemResponse()
@@ -31,14 +31,15 @@ namespace Shoalace.Infra.Repositories
                 Audio = m.Audio,
                 Foto = m.Foto,
                 Status = m.Status,
-                Cadastro = m.Cadastro
+                Cadastro = m.Cadastro,
+                Nome = m.Usuario.Nome
             }).ToList();
 
         public async Task<List<Mensagem>> ObterTodosPorGrupo(long grupoId) =>
             await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPorGrupo(grupoId)).AsNoTracking().ToListAsync();
 
         public async Task<Mensagem> ObterUltimaMensagem(long usuarioId, long contatoId, bool isGrupo) =>
-            await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Where(MensagemQuery.ObterPorContato(usuarioId, contatoId, isGrupo)).OrderByDescending(m => m.Cadastro).AsNoTracking().FirstOrDefaultAsync();
+            await _ShoalaceContexto.Mensagem.Include(m => m.StatusMensagens).Include(m => m.Usuario).Where(MensagemQuery.ObterPorContato(usuarioId, contatoId, isGrupo)).OrderByDescending(m => m.Cadastro).AsNoTracking().FirstOrDefaultAsync();
 
         public async Task<MensagemResponse> ObterUltimaMensagemResponse(long usuarioId, long contatoId, bool isGrupo)
         {
@@ -53,7 +54,8 @@ namespace Shoalace.Infra.Repositories
                 Audio = mensagem.Audio,
                 Foto = mensagem.Foto,
                 Status = mensagem.Status,
-                Cadastro = mensagem.Cadastro
+                Cadastro = mensagem.Cadastro,
+                Nome = mensagem.Usuario.Nome
             }
             : null;
         }

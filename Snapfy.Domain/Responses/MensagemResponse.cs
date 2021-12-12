@@ -18,5 +18,6 @@ namespace Shoalace.Domain.Responses
         public string Foto { get; set; }
         public EStatusMensagem Status { get; set; }
         public DateTime Cadastro { get; set; }
+        public string Nome { get; set; }
     }
 }
