@@ -74,7 +74,7 @@ namespace Shoalace.API.Controllers
         /// <param name="grupoId">Id do usuario</param>
         /// <returns>Retorna um usuario</returns>
         [HttpGet("mensagens/{grupoId:long}")]
-        public async Task<IActionResult> ObterUsuarioComMensagem(long grupoId)
+        public async Task<IActionResult> ObterGrupoComMensagem(long grupoId)
         {
             ContatoChatResponse contatoChat = await _grupoRepository.ObterContatoChatPorId(grupoId);
             if (contatoChat != null)
