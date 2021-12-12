@@ -308,5 +308,19 @@ namespace Shoalace.Domain.Handlers
             retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "m4a"));
             return retorno;
         }
+
+        public IResultadoCommand ManipularAsync(UploadImagemCommand comando)
+        {
+            ResultadoCommand retorno = new();
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "png"));
+            return retorno;
+        }
+
+        public IResultadoCommand ManipularAsync(UploadVideoCommand comando)
+        {
+            ResultadoCommand retorno = new();
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "mp4"));
+            return retorno;
+        }
     }
 }

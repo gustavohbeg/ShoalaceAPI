@@ -185,7 +185,7 @@ namespace Shoalace.API.Controllers
 
                 List<long> ids = new();
                 foreach (MensagemResponse mensagem in contatoChat.Mensagens)
-                    if (mensagem.Status != EStatusMensagem.Lida) ids.Add(mensagem.Id);
+                    if (mensagem.Status != EStatusMensagem.Lida && mensagem.UsuarioId != usuarioId) ids.Add(mensagem.Id);
 
                 if (ids.Count > 0) await _mensagemHandler.ManipularAsync(new LerMensagensCommand() { Ids = ids });
             };

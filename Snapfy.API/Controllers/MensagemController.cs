@@ -104,7 +104,25 @@ namespace Shoalace.API.Controllers
         /// <param name="comando">Dados do audio</param>
         /// <returns>Retorna o audio inserido</returns>
         [HttpPost("audio")]
-        public async Task<IActionResult> UploadImage([FromBody] UploadAudioCommand comando) =>
+        public async Task<IActionResult> UploadAudio([FromBody] UploadAudioCommand comando) =>
+            RetornoController(_mensagemHandler.ManipularAsync(comando));
+
+        /// <summary>
+        /// Salva uma imagem
+        /// </summary>
+        /// <param name="comando">Dados da imagem</param>
+        /// <returns>Retorna a imagem inserido</returns>
+        [HttpPost("imagem")]
+        public async Task<IActionResult> UploadImage([FromBody] UploadImagemCommand comando) =>
+            RetornoController(_mensagemHandler.ManipularAsync(comando));
+
+        /// <summary>
+        /// Salva um video
+        /// </summary>
+        /// <param name="comando">Dados do video</param>
+        /// <returns>Retorna o video inserido</returns>
+        [HttpPost("video")]
+        public async Task<IActionResult> UploadVideo([FromBody] UploadVideoCommand comando) =>
             RetornoController(_mensagemHandler.ManipularAsync(comando));
     }
 }
