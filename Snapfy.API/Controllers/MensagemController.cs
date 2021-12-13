@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Mensagem;
+using Shoalace.Domain.Commands.Usuario;
 using Shoalace.Domain.Handlers;
 using Shoalace.Domain.Interfaces.Repositories;
 using System.Threading.Tasks;
@@ -99,30 +100,12 @@ namespace Shoalace.API.Controllers
             ));
 
         /// <summary>
-        /// Salva um audio
+        /// Salva um arquivo de media
         /// </summary>
-        /// <param name="comando">Dados do audio</param>
-        /// <returns>Retorna o audio inserido</returns>
+        /// <param name="comando">Dados do media</param>
+        /// <returns>Retorna o media inserido</returns>
         [HttpPost("audio")]
-        public async Task<IActionResult> UploadAudio([FromBody] UploadAudioCommand comando) =>
-            RetornoController(_mensagemHandler.ManipularAsync(comando));
-
-        /// <summary>
-        /// Salva uma imagem
-        /// </summary>
-        /// <param name="comando">Dados da imagem</param>
-        /// <returns>Retorna a imagem inserido</returns>
-        [HttpPost("imagem")]
-        public async Task<IActionResult> UploadImage([FromBody] UploadImagemCommand comando) =>
-            RetornoController(_mensagemHandler.ManipularAsync(comando));
-
-        /// <summary>
-        /// Salva um video
-        /// </summary>
-        /// <param name="comando">Dados do video</param>
-        /// <returns>Retorna o video inserido</returns>
-        [HttpPost("video")]
-        public async Task<IActionResult> UploadVideo([FromBody] UploadVideoCommand comando) =>
+        public async Task<IActionResult> UploadMedia([FromBody] UploadMediaCommand comando) =>
             RetornoController(_mensagemHandler.ManipularAsync(comando));
     }
 }

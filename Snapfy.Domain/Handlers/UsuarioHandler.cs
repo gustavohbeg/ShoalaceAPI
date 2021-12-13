@@ -144,10 +144,10 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
-        public IResultadoCommand Manipular(UploadImageCommand comando)
+        public IResultadoCommand Manipular(UploadMediaCommand comando)
         {
             ResultadoCommand retorno = new();
-            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "png"));
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", comando.Formato));
             return retorno;
         }
     }

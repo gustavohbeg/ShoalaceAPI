@@ -1,5 +1,6 @@
 ﻿using Shoalace.Domain.Commands;
 using Shoalace.Domain.Commands.Mensagem;
+using Shoalace.Domain.Commands.Usuario;
 using Shoalace.Domain.Entities;
 using Shoalace.Domain.Enums;
 using Shoalace.Domain.Interfaces.Commands;
@@ -302,24 +303,10 @@ namespace Shoalace.Domain.Handlers
             return retorno;
         }
 
-        public IResultadoCommand ManipularAsync(UploadAudioCommand comando)
+        public IResultadoCommand ManipularAsync(UploadMediaCommand comando)
         {
             ResultadoCommand retorno = new();
-            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "m4a"));
-            return retorno;
-        }
-
-        public IResultadoCommand ManipularAsync(UploadImagemCommand comando)
-        {
-            ResultadoCommand retorno = new();
-            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "png"));
-            return retorno;
-        }
-
-        public IResultadoCommand ManipularAsync(UploadVideoCommand comando)
-        {
-            ResultadoCommand retorno = new();
-            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", "mp4"));
+            retorno.PreencherRetorno(_fileUpload.UploadBase64Image(comando.Base64, "blobs", comando.Formato));
             return retorno;
         }
     }

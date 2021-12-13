@@ -103,7 +103,7 @@ namespace Shoalace.API.Controllers
                            Nome = usuario.Nome,
                            Foto = usuario.Foto,
                            IsGrupo = false,
-                           Texto = string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto,
+                           Texto = !string.IsNullOrEmpty(mensagem.Texto) ? mensagem.Texto : (!string.IsNullOrEmpty(mensagem.Audio) ? "Mensagem de áudio" : "Mensagem de mídia"),
                            Status = mensagem.Status,
                            Cadastro = mensagem.Cadastro,
                            NaoLidas = (await _mensagemRepository.ObterNaoLidasPorContato(id, usuario.Id)).Count,
@@ -125,7 +125,7 @@ namespace Shoalace.API.Controllers
                        Nome = grupo.Nome,
                        Foto = grupo.Foto,
                        IsGrupo = true,
-                       Texto = mensagem != null ? string.IsNullOrEmpty(mensagem.Texto) ? (mensagem.Audio != "" ? "Mensagem de áudio" : "Mensagem de mídia") : mensagem.Texto : "Grupo novo",
+                       Texto = mensagem != null ? !string.IsNullOrEmpty(mensagem.Texto) ? mensagem.Texto : !string.IsNullOrEmpty(mensagem.Audio) ? "Mensagem de áudio" : "Mensagem de mídia"  : "Grupo novo",
                        Status = mensagem?.Status ?? EStatusMensagem.Entregue,
                        Cadastro = mensagem?.Cadastro ?? grupo.Cadastro,
                        NaoLidas = (await _mensagemRepository.ObterNaoLidasPorContato(id, grupo.Id)).Count,
@@ -211,7 +211,7 @@ namespace Shoalace.API.Controllers
         /// <param name="comando">Dados do usuario</param>
         /// <returns>Retorna o usuario inserido</returns>
         [HttpPost("image")]
-        public async Task<IActionResult> UploadImage([FromBody] UploadImageCommand comando) =>
+        public async Task<IActionResult> UploadMedia([FromBody] UploadMediaCommand comando) =>
             RetornoController(_usuarioHandler.Manipular(comando));
 
 
