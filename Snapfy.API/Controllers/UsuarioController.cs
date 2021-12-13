@@ -210,7 +210,7 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <param name="comando">Dados do usuario</param>
         /// <returns>Retorna o usuario inserido</returns>
-        [HttpPost("image")]
+        [HttpPost("media")]
         public async Task<IActionResult> UploadMedia([FromBody] UploadMediaCommand comando) =>
             RetornoController(_usuarioHandler.Manipular(comando));
 
