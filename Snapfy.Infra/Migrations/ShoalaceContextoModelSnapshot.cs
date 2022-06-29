@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoalace.Infra.Contexto;
 
+#nullable disable
+
 namespace Shoalace.Infra.Migrations
 {
     [DbContext(typeof(ShoalaceContexto))]
@@ -15,16 +17,18 @@ namespace Shoalace.Infra.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.10")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Acesso", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Alterado")
                         .HasColumnType("datetime2");
@@ -42,15 +46,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Acesso");
+                    b.ToTable("Acesso", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Contato", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Alterado")
                         .HasColumnType("datetime2");
@@ -76,15 +81,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Contato");
+                    b.ToTable("Contato", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Erro", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DataHora")
                         .HasColumnType("datetime2");
@@ -100,15 +106,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Erro");
+                    b.ToTable("Erro", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Evento", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Alterado")
                         .HasColumnType("datetime2");
@@ -160,15 +167,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasIndex("GrupoId");
 
-                    b.ToTable("Evento");
+                    b.ToTable("Evento", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Grupo", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Alterado")
                         .HasColumnType("datetime2");
@@ -185,15 +193,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Grupo");
+                    b.ToTable("Grupo", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Membro", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<bool>("Admin")
                         .HasColumnType("bit");
@@ -216,15 +225,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Membro");
+                    b.ToTable("Membro", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.MembroEvento", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<bool>("Admin")
                         .HasColumnType("bit");
@@ -250,15 +260,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("MembroEvento");
+                    b.ToTable("MembroEvento", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Mensagem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Alterado")
                         .HasColumnType("datetime2");
@@ -295,15 +306,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Mensagem");
+                    b.ToTable("Mensagem", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.StatusMensagem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Alterado")
                         .HasColumnType("datetime2");
@@ -326,15 +338,16 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasIndex("MensagemId");
 
-                    b.ToTable("StatusMensagem");
+                    b.ToTable("StatusMensagem", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Usuario", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Alterado")
                         .HasColumnType("datetime2");
@@ -376,7 +389,7 @@ namespace Shoalace.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("Shoalace.Domain.Entities.Contato", b =>
