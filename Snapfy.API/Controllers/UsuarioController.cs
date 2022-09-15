@@ -48,7 +48,7 @@ namespace Shoalace.API.Controllers
             );
 
         /// <summary>
-        /// Pegar todos os contatos
+        /// Pegar todos os contatos pra mostrar nas telas de contatos
         /// </summary>
         /// <param name="id">Id do usuario logado</param>
         /// <returns>Retorna todos os contatos</returns>
@@ -81,7 +81,7 @@ namespace Shoalace.API.Controllers
         }
 
         /// <summary>
-        /// Pegar todos os contatos/grupos com ultima mensagem
+        /// Pegar todos os contatos/grupos com ultima mensagem pra mostrar na tela inicial
         /// </summary>
         /// <param name="id">Id do usuario</param>
         /// <returns>Retorna todos os contatos</returns>
@@ -169,7 +169,7 @@ namespace Shoalace.API.Controllers
             );
 
         /// <summary>
-        /// Pegar um Usuario com mensagens pelo Id (e ler a mensagens)
+        /// Pegar um Usuario com mensagens pelo Id e mostrar na tela de Chat (e ler a mensagens)
         /// </summary>
         /// <param name="usuarioId">Id do usuario</param>
         /// /// <param name="contatoId">Id do contato</param>

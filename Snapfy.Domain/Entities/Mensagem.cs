@@ -12,7 +12,7 @@ namespace Shoalace.Domain.Entities
         private readonly List<StatusMensagem> _statusMensagens;
         public Mensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatusMensagem status) : base()
         {
-            _statusMensagens = new List<StatusMensagem>();
+            _statusMensagens = new();
             PreencherMensagem(texto, usuarioId, usuarioDestinoId, grupoId, audio, foto, status);
         }
 
@@ -28,6 +28,7 @@ namespace Shoalace.Domain.Entities
         public EStatusMensagem Status { get; private set; }
 
         public IReadOnlyCollection<StatusMensagem> StatusMensagens { get => _statusMensagens; }
+        public string MensagemDinamica { get => Texto ?? Audio ?? Foto; }
 
 
         public void PreencherMensagem(string texto, long usuarioId, long? usuarioDestinoId, long? grupoId, string audio, string foto, EStatusMensagem status)
@@ -40,6 +41,7 @@ namespace Shoalace.Domain.Entities
             Audio = audio;
             Foto = foto;
             Status = status;
+            Validate();
         }
 
         public void Validate() =>

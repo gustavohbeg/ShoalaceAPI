@@ -12,7 +12,7 @@ namespace Shoalace.Infra.Settings
             builder.Property(u => u.Nome).IsRequired();
             builder.Property(u => u.Token).IsRequired();
             builder.HasMany(u => u.Contatos).WithOne(r => r.Usuario).HasForeignKey(r => r.UsuarioId);
-            builder.HasMany(u => u.EContatos).WithOne(r => r.UsuarioContato).HasForeignKey(r => r.UsuarioContatoId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(u => u.EContato).WithOne(r => r.UsuarioContato).HasForeignKey(r => r.UsuarioContatoId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

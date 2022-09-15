@@ -11,10 +11,12 @@ namespace Shoalace.Domain.Entities
     {
         private readonly List<Membro> _membros;
         private readonly List<Evento> _eventos;
+        private readonly List<Mensagem> _mensagens;
         public Grupo(string nome, string foto) : base()
         {
-            _membros = new List<Membro>();
-            _eventos = new List<Evento>();
+            _membros = new();
+            _eventos = new();
+            _mensagens = new();
             PreencherGrupo(nome, foto);
         }
 
@@ -23,6 +25,7 @@ namespace Shoalace.Domain.Entities
 
         public IReadOnlyCollection<Membro> Membros { get => _membros; }
         public IReadOnlyCollection<Evento> Eventos { get => _eventos; }
+        public IReadOnlyCollection<Mensagem> Mensagens { get => _mensagens; }
 
         public bool MembroExiste(long usuarioId) => _membros.Any(m => m.UsuarioId == usuarioId);
 
@@ -31,6 +34,7 @@ namespace Shoalace.Domain.Entities
             Alterado = DateTime.Now;
             Nome = nome;
             Foto = foto;
+            Validate();
         }
 
         public void Validate() =>

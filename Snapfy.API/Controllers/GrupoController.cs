@@ -69,7 +69,7 @@ namespace Shoalace.API.Controllers
             );
 
         /// <summary>
-        /// Pegar um Grupo com mensagens pelo Id
+        /// Pegar um Grupo com eventos e mensagens pelo Id pra ser mostrado na tela de Chat
         /// </summary>
         /// <param name="grupoId">Id do usuario</param>
         /// <returns>Retorna um usuario</returns>
@@ -79,7 +79,6 @@ namespace Shoalace.API.Controllers
             ContatoChatResponse contatoChat = await _grupoRepository.ObterContatoChatPorId(grupoId);
             if (contatoChat != null)
             {
-                contatoChat.Mensagens = (await _mensagemRepository.ObterTodosPorGrupo(grupoId)).Select(msg => new MensagemResponse() { Id = msg.Id, Texto = msg.Texto, UsuarioId = msg.UsuarioId, UsuarioDestinoId = msg.UsuarioDestinoId, GrupoId = msg.GrupoId, Audio = msg.Audio, Foto = msg.Foto, Status = msg.Status, Cadastro = msg.Cadastro, Nome = msg.Usuario.Nome }).ToList();
                 List<long> ids = new();
                 foreach (MensagemResponse mensagem in contatoChat.Mensagens)
                     if (mensagem.Status != EStatusMensagem.Lida) ids.Add(mensagem.Id);

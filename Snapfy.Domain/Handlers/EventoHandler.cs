@@ -75,7 +75,6 @@ namespace Shoalace.Domain.Handlers
                 }
             }
 
-            evento.Validate();
             retorno.AddNotifications(evento);
 
             if (retorno.Valid)
@@ -160,7 +159,6 @@ namespace Shoalace.Domain.Handlers
             }
 
             evento.PreencherEvento(comando.Titulo, comando.Descricao, comando.Local, comando.Valor, comando.Latitude, comando.Longitude, comando.Data, comando.Hora, comando.Tipo, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Foto, comando.Categoria);
-            evento.Validate();
             retorno.AddNotifications(evento);
 
             if (retorno.Valid)

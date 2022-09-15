@@ -34,7 +34,6 @@ namespace Shoalace.Domain.Handlers
             }
 
             Usuario usuario = new(comando.Numero, comando.Aniversario, comando.Sexo, comando.Foto, comando.Nome, comando.Bio, comando.Visto, comando.Latitude, comando.Longitude, comando.Token);
-            usuario.Validate();
             retorno.AddNotifications(usuario);
 
             if (retorno.Valid)
@@ -69,7 +68,6 @@ namespace Shoalace.Domain.Handlers
             }
 
             usuario.PreencherUsuario(comando.Numero, comando.Aniversario, comando.Sexo, comando.Foto, comando.Nome, comando.Bio, comando.Visto, comando.Latitude, comando.Longitude, comando.Token);
-            usuario.Validate();
             retorno.AddNotifications(usuario);
 
             if (retorno.Valid)

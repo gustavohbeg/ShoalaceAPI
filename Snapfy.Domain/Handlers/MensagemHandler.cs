@@ -70,7 +70,6 @@ namespace Shoalace.Domain.Handlers
             }
 
             Mensagem mensagem = new(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0 ? comando.UsuarioDestinoId : null, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Audio, comando.Foto, EStatusMensagem.Enviado);
-            mensagem.Validate();
             retorno.AddNotifications(mensagem);
 
             if (retorno.Valid)
@@ -145,7 +144,6 @@ namespace Shoalace.Domain.Handlers
             }
 
             mensagem.PreencherMensagem(comando.Texto, comando.UsuarioId, comando.UsuarioDestinoId != null && comando.UsuarioDestinoId > 0 ? comando.UsuarioDestinoId : null, comando.GrupoId != null && comando.GrupoId > 0 ? comando.GrupoId : null, comando.Audio, comando.Foto, comando.Status);
-            mensagem.Validate();
             retorno.AddNotifications(mensagem);
 
             if (retorno.Valid)
@@ -183,7 +181,6 @@ namespace Shoalace.Domain.Handlers
                 if (mensagem.Status != EStatusMensagem.Lida)
                 {
                     mensagem.Ler();
-                    mensagem.Validate();
                     retorno.AddNotifications(mensagem);
 
                     if (retorno.Valid)

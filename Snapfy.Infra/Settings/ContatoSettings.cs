@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shoalace.Domain.Entities;
+using Shoalace.Domain.Validations;
 
 namespace Shoalace.Infra.Settings
 {
@@ -9,6 +10,7 @@ namespace Shoalace.Infra.Settings
         public void Configure(EntityTypeBuilder<Contato> builder)
         {
             builder.HasKey(u => u.Id);
+            builder.Property(U => U.Numero).IsRequired().HasMaxLength(ContatoValidation.NUMERO_MAXLENGTH);
         }
     }
 }

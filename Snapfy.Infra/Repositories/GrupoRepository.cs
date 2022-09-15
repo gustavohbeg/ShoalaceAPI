@@ -15,10 +15,10 @@ namespace Shoalace.Infra.Repositories
         public GrupoRepository(ShoalaceContexto ShoalaceContexto) : base(ShoalaceContexto) { }
 
         public new async Task<Grupo> ObterPorId(long id) =>
-            await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).Where(GrupoQuery.ObterPorId(id)).FirstOrDefaultAsync();
+            await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).FirstOrDefaultAsync(GrupoQuery.ObterPorId(id));
 
         public async Task<ContatoChatResponse> ObterContatoChatPorId(long id) =>
-            await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).Where(GrupoQuery.ObterPorId(id))
+            await _ShoalaceContexto.Grupo.Include(g => g.Membros).ThenInclude(m => m.Usuario).Include(g => g.Eventos).ThenInclude(e => e.MembrosEvento).Include(g => g.Mensagens).ThenInclude(m => m.Usuario).Where(GrupoQuery.ObterPorId(id))
             .Select(g => new ContatoChatResponse()
             {
                 Id = g.Id,
@@ -26,7 +26,7 @@ namespace Shoalace.Infra.Repositories
                 Foto = g.Foto,
                 IsGrupo = true,
                 Cadastro = g.Cadastro,
-                Mensagens = new List<MensagemResponse>(),
+                Mensagens = g.Mensagens.Select(msg => new MensagemResponse() { Id = msg.Id, Texto = msg.Texto, UsuarioId = msg.UsuarioId, UsuarioDestinoId = msg.UsuarioDestinoId, GrupoId = msg.GrupoId, Audio = msg.Audio, Foto = msg.Foto, Status = msg.Status, Cadastro = msg.Cadastro, Nome = msg.Usuario.Nome }).ToList(),
                 Membros = g.Membros.Select(m => new MembroResponse()
                 {
                     Id = m.Id,

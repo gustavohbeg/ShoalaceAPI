@@ -19,5 +19,6 @@ namespace Shoalace.Domain.Responses
         public EStatusMensagem Status { get; set; }
         public DateTime Cadastro { get; set; }
         public string Nome { get; set; }
+        public string MensagemDinamica { get; set; }
     }
 }

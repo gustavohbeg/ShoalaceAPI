@@ -20,6 +20,7 @@ namespace Shoalace.Domain.Entities
             EventoId = eventoId;
             Comparecer = comparecer;
             Admin = admin;
+            Validate();
         }
 
         public void Validate() =>

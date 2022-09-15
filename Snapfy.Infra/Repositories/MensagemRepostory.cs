@@ -32,7 +32,8 @@ namespace Shoalace.Infra.Repositories
                 Foto = m.Foto,
                 Status = m.Status,
                 Cadastro = m.Cadastro,
-                Nome = m.Usuario.Nome
+                Nome = m.Usuario.Nome,
+                MensagemDinamica = m.MensagemDinamica
             }).ToList();
 
         public async Task<List<Mensagem>> ObterTodosPorGrupo(long grupoId) =>
@@ -55,7 +56,8 @@ namespace Shoalace.Infra.Repositories
                 Foto = mensagem.Foto,
                 Status = mensagem.Status,
                 Cadastro = mensagem.Cadastro,
-                Nome = mensagem.Usuario.Nome
+                Nome = mensagem.Usuario.Nome,
+                MensagemDinamica = mensagem.MensagemDinamica
             }
             : null;
         }

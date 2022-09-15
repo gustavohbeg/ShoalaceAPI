@@ -12,6 +12,7 @@ namespace Shoalace.Domain.Entities
         {
             UsuarioId = usuarioId;
             Codigo = new Random().Next(1000, 10000).ToString();
+            Validate();
         }
 
         public long UsuarioId { get; private set; }

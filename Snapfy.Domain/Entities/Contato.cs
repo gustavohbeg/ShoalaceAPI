@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Flunt.Notifications;
+using Flunt.Validations;
+using Newtonsoft.Json.Linq;
+using Shoalace.Domain.Validations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +15,7 @@ namespace Shoalace.Domain.Entities
     {
         public Contato(long usuarioId, long? usuarioContatoId, string nome, string numero)
         {
-            UsuarioId = usuarioId;
-            UsuarioContatoId = usuarioContatoId;
-            Nome = nome;
-            Numero = numero;
+            PreencherContato(usuarioId, usuarioContatoId, nome, numero);
         }
 
         public long UsuarioId { get; private set; }
@@ -25,5 +26,22 @@ namespace Shoalace.Domain.Entities
         public Usuario UsuarioContato { get; private set; }
         public string Nome { get; private set; }
         public string Numero { get; private set; }
+
+        public void PreencherContato(long usuarioId, long? usuarioContatoId, string nome, string numero)
+        {
+            UsuarioId = usuarioId;
+            UsuarioContatoId = usuarioContatoId;
+            Nome = nome;
+            Numero = numero;
+            Validate();
+        }
+
+        public void Validate() =>
+        AddNotifications(new Contract<Notification>[]
+           {
+                ContatoValidation.ValidateNome(Nome),
+                ContatoValidation.ValidateNome(Numero),
+                ContatoValidation.ValidateUsuarioId(UsuarioId)
+           });
     }
 }

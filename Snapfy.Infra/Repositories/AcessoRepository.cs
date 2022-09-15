@@ -13,6 +13,6 @@ namespace Shoalace.Infra.Repositories
         public AcessoRepository(ShoalaceContexto ShoalaceContexto) : base(ShoalaceContexto) { }
 
         public async Task<Acesso> ObterPorUsuario(long usuarioId) =>
-            await _ShoalaceContexto.Acesso.Where(AcessoQuery.ObterPorUsuario(usuarioId)).FirstOrDefaultAsync();
+            await _ShoalaceContexto.Acesso.FirstOrDefaultAsync(AcessoQuery.ObterPorUsuario(usuarioId));
     }
 }

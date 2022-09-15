@@ -18,6 +18,7 @@ namespace Shoalace.Domain.Entities
             UsuarioId = usuarioId;
             GrupoId = grupoId;
             Admin = admin;
+            Validate();
         }
 
         public void Validate() =>

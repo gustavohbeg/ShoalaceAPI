@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoalace.Infra.Contexto;
 
@@ -11,9 +12,10 @@ using Shoalace.Infra.Contexto;
 namespace Shoalace.Infra.Migrations
 {
     [DbContext(typeof(ShoalaceContexto))]
-    partial class ShoalaceContextoModelSnapshot : ModelSnapshot
+    [Migration("20220915132014_MaxLengthContato")]
+    partial class MaxLengthContato
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

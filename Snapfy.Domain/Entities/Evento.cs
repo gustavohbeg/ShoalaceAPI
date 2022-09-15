@@ -13,7 +13,7 @@ namespace Shoalace.Domain.Entities
         private readonly List<MembroEvento> _membrosEvento;
         public Evento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipoEvento tipo, long? grupoId, string foto, ECategoria categoria) : base()
         {
-            _membrosEvento = new List<MembroEvento>();
+            _membrosEvento = new();
             PreencherEvento(titulo, descricao, local, valor, latitude, longitude, data, hora, tipo, grupoId, foto, categoria);
         }
 
@@ -35,6 +35,7 @@ namespace Shoalace.Domain.Entities
         public string DiaSemana { get => Data.ToString("dddd"); }
         public bool DiaInteiro { get => Hora == null; }
         public int Confirmados { get => _membrosEvento.Where(m => m.Comparecer == EComparecer.Sim).Count(); }
+        public int Pendentes { get => _membrosEvento.Where(m => m.Comparecer == EComparecer.Talvez).Count(); }
 
         public void PreencherEvento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipoEvento tipo, long? grupoId, string foto, ECategoria categoria)
         {
@@ -46,12 +47,13 @@ namespace Shoalace.Domain.Entities
             Valor = valor;
             Latitude = latitude;
             Longitude = longitude;
-            Data = data;
+            Data = data.Date;
             Hora = hora;
             Tipo = tipo;
             GrupoId = grupoId;
             Foto = foto;
             Categoria = categoria;
+            Validate();
         }
 
         public void Validate() =>

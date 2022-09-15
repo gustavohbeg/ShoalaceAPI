@@ -25,7 +25,6 @@ namespace Shoalace.Domain.Handlers
             _fileUpload = fileUpload;
         }
 
-        //NOVO USUARIO
         public async Task<IResultadoCommand> ManipularAsync(NovoListaContatoCommand comando)
         {
             ResultadoCommand retorno = new();

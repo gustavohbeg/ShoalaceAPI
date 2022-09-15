@@ -10,11 +10,11 @@ namespace Shoalace.Domain.Entities
     public class Usuario : Base
     {
         private List<Contato> _contatos;
-        private List<Contato> _eContatos;
+        private List<Contato> _eContato;
         public Usuario(string numero, DateTime aniversario, ESexo sexo, string foto, string nome, string bio, DateTime visto, double? latitude, double? longitude, string token) : base()
         {
             _contatos = new();
-            _eContatos = new();
+            _eContato = new();
             PreencherUsuario(numero, aniversario, sexo, foto, nome, bio, visto, latitude, longitude, token);
         }
 
@@ -31,6 +31,7 @@ namespace Shoalace.Domain.Entities
             Latitude = latitude;
             Longitude = longitude;
             Token = token;
+            Validate();
         }
 
         public void Validate() =>
@@ -54,8 +55,9 @@ namespace Shoalace.Domain.Entities
         public bool Online { get => Visto >= DateTime.Now.AddMinutes(-1); }
 
         public IReadOnlyCollection<Contato> Contatos { get => _contatos; }
-        public IReadOnlyCollection<Contato> EContatos { get => _eContatos; }
+        public IReadOnlyCollection<Contato> EContato { get => _eContato; }
 
-        public void AtualizarVisto() => Visto = DateTime.Now;
-    }
+
+    public void AtualizarVisto() => Visto = DateTime.Now;
+}
 }
