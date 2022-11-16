@@ -1,13 +1,13 @@
 ﻿namespace Shoalace.Domain.Enums
 {
-    public enum ECategoria
+    public enum ECategoriaEvento
     {
         Privado = 0,
         Publico = 1,
-        Musica = 2,
-        Curso = 3,
+        Show = 2,
+        WorkShop = 3,
         Festa = 4,
         Esporte = 5,
-        Passeio = 6
+        ArLivre = 6
     }
 }

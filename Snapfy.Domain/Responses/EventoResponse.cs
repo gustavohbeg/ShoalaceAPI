@@ -22,7 +22,7 @@ namespace Shoalace.Domain.Responses
         public ETipoEvento Tipo { get; set; }
         public long? GrupoId { get; set; }
         public string Foto { get; set; }
-        public ECategoria Categoria { get; set; }
+        public ECategoriaEvento Categoria { get; set; }
         public List<MembroEventoResponse> MembrosEvento { get; set; }
     }
 }

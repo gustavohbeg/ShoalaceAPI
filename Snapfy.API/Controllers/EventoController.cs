@@ -87,7 +87,7 @@ namespace Shoalace.API.Controllers
         /// </summary>
         /// <returns>Retorna uma lista de eventos por cidade</returns>
         [HttpGet("{categoria:int}/{cidade}")]
-        public async Task<IActionResult> ObterPorCategoriaECidade(ECategoria categoria, string cidade) =>
+        public async Task<IActionResult> ObterPorCategoriaECidade(ECategoriaEvento categoria, string cidade) =>
             RetornoController(
                 new ResultadoCommand(
                     await _eventoRepository.ObterPorCategoriaECidade(categoria, cidade)

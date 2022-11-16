@@ -85,7 +85,7 @@ namespace Shoalace.Domain.Handlers
                 if (tokens.Count > 0)
                     ExpoService.SendNotification(tokens, evento.Titulo, "Você foi convidado para um novo evento");
 
-                if (evento.Categoria != ECategoria.Privado)
+                if (evento.Categoria != ECategoriaEvento.Privado)
                 {
                     List<string> tokensProximos = new();
                     List<Usuario> usuariosProximos = await _usuarioRepository.ObterTodos(); //FILTRAR SOMENTE OS PROXIMOS
@@ -169,7 +169,7 @@ namespace Shoalace.Domain.Handlers
                 if (tokens.Count > 0)
                     ExpoService.SendNotification(tokens, evento.Titulo, "Você foi convidado para um novo evento");
 
-                if (evento.Categoria != ECategoria.Privado)
+                if (evento.Categoria != ECategoriaEvento.Privado)
                 {
                     List<string> tokensProximos = new();
                     List<Usuario> usuariosProximos = await _usuarioRepository.ObterTodos(); //FILTRAR SOMENTE OS PROXIMOS

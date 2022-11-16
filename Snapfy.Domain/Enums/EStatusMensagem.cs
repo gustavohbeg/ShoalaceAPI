@@ -3,8 +3,8 @@
     public enum EStatusMensagem
     {
         PendenteEnvio = 0,
-        Enviado = 1,
-        Entregue = 2,
+        EnviadoServidor = 1,
+        EntregueDestinatario = 2,
         Lida = 3
     }
 }

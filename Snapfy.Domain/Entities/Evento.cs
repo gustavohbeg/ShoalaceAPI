@@ -11,7 +11,7 @@ namespace Shoalace.Domain.Entities
     public class Evento : Base
     {
         private readonly List<MembroEvento> _membrosEvento;
-        public Evento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipoEvento tipo, long? grupoId, string foto, ECategoria categoria) : base()
+        public Evento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipoEvento tipo, long? grupoId, string foto, ECategoriaEvento categoria) : base()
         {
             _membrosEvento = new();
             PreencherEvento(titulo, descricao, local, valor, latitude, longitude, data, hora, tipo, grupoId, foto, categoria);
@@ -29,7 +29,7 @@ namespace Shoalace.Domain.Entities
         public ETipoEvento Tipo { get; private set; }
         public long? GrupoId { get; private set; }
         public string Foto { get; private set; }
-        public ECategoria Categoria { get; private set; }
+        public ECategoriaEvento Categoria { get; private set; }
         public IReadOnlyCollection<MembroEvento> MembrosEvento { get => _membrosEvento; }
 
         public string DiaSemana { get => Data.ToString("dddd"); }
@@ -37,7 +37,8 @@ namespace Shoalace.Domain.Entities
         public int Confirmados { get => _membrosEvento.Where(m => m.Comparecer == EComparecer.Sim).Count(); }
         public int Pendentes { get => _membrosEvento.Where(m => m.Comparecer == EComparecer.Talvez).Count(); }
 
-        public void PreencherEvento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipoEvento tipo, long? grupoId, string foto, ECategoria categoria)
+
+        public void PreencherEvento(string titulo, string descricao, string local, double valor, double? latitude, double? longitude, DateTime data, DateTime? hora, ETipoEvento tipo, long? grupoId, string foto, ECategoriaEvento categoria)
         {
             Alterado = DateTime.Now;
             Titulo = titulo;

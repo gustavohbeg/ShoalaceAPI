@@ -74,7 +74,7 @@ namespace Shoalace.Infra.Repositories
         public async Task<List<Evento>> ObterTodosPorData(DateTime data) =>
             await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterTodosPorData(data)).AsNoTracking().ToListAsync();
 
-        public async Task<List<Evento>> ObterPorCategoriaECidade(ECategoria categoria, string cidade) =>
+        public async Task<List<Evento>> ObterPorCategoriaECidade(ECategoriaEvento categoria, string cidade) =>
             await _ShoalaceContexto.Evento.Include(e => e.MembrosEvento).ThenInclude(m => m.Usuario).Where(EventoQuery.ObterPorCategoriaECidade(categoria, cidade)).AsNoTracking().OrderBy(m => m.Data).ToListAsync();
     }
 }
